@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 
-const StockEntry = (props) => {
+const Posting = (props) => {
   return (
     <View style={styles.rootContainer}>
       <View style={styles.imageContainer}>
@@ -41,4 +41,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default StockEntry;
+export default Posting;

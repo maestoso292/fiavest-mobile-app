@@ -1,48 +1,49 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import AdSlideShow from "../components/AdSlideshow";
-import StockEntry from "../components/StockEntry";
+import Posting from "../components/Posting";
 
-const renderStockListItem = ({ item }) => {
-  return <StockEntry name={item.name} source={item.source} />;
+const renderPosting = ({ item }) => {
+  return <Posting name={item.name} source={item.source} />;
 };
 
-// TODO Fetching data of all stocks
-const fetchData = () => {
+// TODO Fetching data of company postings
+const fetchPostingData = () => {
   const data = [
     {
-      id: "MXM100",
-      name: "Stock Name",
-      source: "https://cdn.logo.com/hotlink-ok/logo-social.png",
+      id: "id1",
+      name: "Title and Details",
+      source: "https://image.shutterstock.com/image-vector/sample-stamp-grunge-texture-vector-260nw-1389188336.jpg",
     },
     {
-      id: "MXM101",
-      name: "Stock Name",
-      source: "https://cdn.logo.com/hotlink-ok/logo-social.png",
+      id: "id2",
+      name: "Title and Details",
+      source: "https://image.shutterstock.com/image-vector/sample-stamp-grunge-texture-vector-260nw-1389188336.jpg",
     },
     {
-      id: "MXM102",
-      name: "Stock Name",
-      source: "https://cdn.logo.com/hotlink-ok/logo-social.png",
-      },
+      id: "id3",
+      name: "Title and Details",
+      source: "https://image.shutterstock.com/image-vector/sample-stamp-grunge-texture-vector-260nw-1389188336.jpg",
+    },
     {
-      id: "MXM103",
-      name: "Stock Name",
-      source: "https://cdn.logo.com/hotlink-ok/logo-social.png",
+      id: "id4",
+      name: "Title and Details",
+      source: "https://image.shutterstock.com/image-vector/sample-stamp-grunge-texture-vector-260nw-1389188336.jpg",
     },
   ];
   return data;
 };
 
 const HomeScreen = (props) => {
-  const [stocks, setStocks] = useState(fetchData());
+  // TODO Unsure if this needs to be a state
+  const [postings, setPostings] = useState(fetchPostingData());
   return (
     <View style={styles.screen}>
       <AdSlideShow />
       <View style={styles.listContainer}>
         <FlatList
-          data={stocks}
-          renderItem={renderStockListItem}
+          data={postings}
+          renderItem={renderPosting}
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.list}
         />
@@ -54,7 +55,7 @@ const HomeScreen = (props) => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-        width: "100%",
+    width: "100%",
     marginTop: 100,
     justifyContent: "center",
     alignItems: "center",
