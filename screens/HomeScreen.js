@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
+import { Header } from "react-native-elements";
+import { SafeAreaView } from "react-native-safe-area-context";
 import AdSlideShow from "../components/AdSlideshow";
 import Posting from "../components/Posting";
 
@@ -13,33 +15,48 @@ const fetchPostingData = () => {
     {
       id: "id1",
       name: "Title and Details",
-      source: "https://image.shutterstock.com/image-vector/sample-stamp-grunge-texture-vector-260nw-1389188336.jpg",
+      source:
+        "https://image.shutterstock.com/image-vector/sample-stamp-grunge-texture-vector-260nw-1389188336.jpg",
     },
     {
       id: "id2",
       name: "Title and Details",
-      source: "https://image.shutterstock.com/image-vector/sample-stamp-grunge-texture-vector-260nw-1389188336.jpg",
+      source:
+        "https://image.shutterstock.com/image-vector/sample-stamp-grunge-texture-vector-260nw-1389188336.jpg",
     },
     {
       id: "id3",
       name: "Title and Details",
-      source: "https://image.shutterstock.com/image-vector/sample-stamp-grunge-texture-vector-260nw-1389188336.jpg",
+      source:
+        "https://image.shutterstock.com/image-vector/sample-stamp-grunge-texture-vector-260nw-1389188336.jpg",
     },
     {
       id: "id4",
       name: "Title and Details",
-      source: "https://image.shutterstock.com/image-vector/sample-stamp-grunge-texture-vector-260nw-1389188336.jpg",
+      source:
+        "https://image.shutterstock.com/image-vector/sample-stamp-grunge-texture-vector-260nw-1389188336.jpg",
     },
   ];
   return data;
+};
+
+// TODO Fetching ads (Company ads? Playstore ads?)
+fetchAdsData = () => {
+  return [
+    "https://source.unsplash.com/1024x768/?nature",
+    "https://source.unsplash.com/1024x768/?water",
+    "https://source.unsplash.com/1024x768/?girl",
+    "https://source.unsplash.com/1024x768/?tree",
+  ];
 };
 
 const HomeScreen = (props) => {
   // TODO Unsure if this needs to be a state
   const [postings, setPostings] = useState(fetchPostingData());
   return (
-    <View style={styles.screen}>
-      <AdSlideShow />
+    // TODO Header for the screen
+    <SafeAreaView style={styles.screen}>
+      <AdSlideShow data={fetchAdsData} />
       <View style={styles.listContainer}>
         <FlatList
           data={postings}
@@ -48,7 +65,7 @@ const HomeScreen = (props) => {
           contentContainerStyle={styles.list}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -56,7 +73,7 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     width: "100%",
-    marginTop: 100,
+    paddingVertical: 10,
     justifyContent: "center",
     alignItems: "center",
   },
