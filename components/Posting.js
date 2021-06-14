@@ -16,8 +16,8 @@ const Posting = (props) => {
 
 const styles = StyleSheet.create({
   rootContainer: {
-        width: "100%",
-      marginVertical: 5,
+    width: "100%",
+    marginVertical: 5,
     padding: 10,
     alignItems: "center",
     borderColor: "black",
@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
     width: "100%",
     borderColor: "black",
     borderWidth: 1,
-    padding: 10,
     overflow: "hidden",
   },
   image: {
