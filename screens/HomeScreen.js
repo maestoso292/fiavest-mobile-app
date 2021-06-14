@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, FlatList } from "react-native";
+import { View, Button, Text, StyleSheet, FlatList, Image } from "react-native";
 import { Header } from "react-native-elements";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AdSlideShow from "../components/AdSlideshow";
 import Posting from "../components/Posting";
+import AdPopup from "../components/AdPopup";
 
 const renderPosting = ({ item }) => {
   return <Posting name={item.name} source={item.source} />;
@@ -41,7 +42,7 @@ const fetchPostingData = () => {
 };
 
 // TODO Fetching ads (Company ads? Playstore ads?)
-fetchAdsData = () => {
+const fetchAdSlideshowData = () => {
   return [
     "https://source.unsplash.com/1024x768/?nature",
     "https://source.unsplash.com/1024x768/?water",
@@ -50,13 +51,30 @@ fetchAdsData = () => {
   ];
 };
 
+// TODO Fetching ad popup (Company ad?)
+const fetchAdPopup = () => {
+  return "https://source.unsplash.com/1024x768/?nature";
+};
+
 const HomeScreen = (props) => {
   // TODO Unsure if this needs to be a state
   const [postings, setPostings] = useState(fetchPostingData());
+  const [adVisible, setAdVisible] = useState(true);
+
+  const closeAdPopup = () => {
+    setAdVisible(false);
+  };
+
   return (
     // TODO Header for the screen
     <SafeAreaView style={styles.screen}>
-      <AdSlideShow data={fetchAdsData} />
+      <AdPopup
+        visible={adVisible}
+        source={fetchAdPopup()}
+        onPress={closeAdPopup}
+        animationType="fade"
+      />
+      <AdSlideShow data={fetchAdSlideshowData()} />
       <View style={styles.listContainer}>
         <FlatList
           data={postings}
@@ -80,7 +98,7 @@ const styles = StyleSheet.create({
   listContainer: {
     flex: 1,
     width: "90%",
-    paddingVertical: 10,
+    paddingTop: 10,
   },
   list: {
     flexGrow: 1,

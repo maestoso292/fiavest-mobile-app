@@ -11,7 +11,7 @@ const renderAd = ({ item, index }) => {
   );
 };
 
-// TODO Implement an autoplaying slideshow
+// TODO Transitions are a little buggy
 const AdSlideShow = (props) => {
   const [ads, setAds] = useState(props.data);
   const [currentAdIndex, setCurrentAdIndex] = useState(0);
