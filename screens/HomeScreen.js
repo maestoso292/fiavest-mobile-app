@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+/* import React, { useState } from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import AdSlideShow from "../components/AdSlideshow";
 import Posting from "../components/Posting";
@@ -68,6 +68,43 @@ const styles = StyleSheet.create({
   list: {
     flexGrow: 1,
   },
+});
+
+export default HomeScreen; */
+
+import React from 'react';
+import { StyleSheet, View, Text, ScrollView, FlatList } from 'react-native';
+
+import { ImageSwiper } from '../components/AdSwiper';
+import ItemCard from '../components/ItemCard';
+
+const images = [
+    "https://cdn.business2community.com/wp-content/uploads/2013/09/best-press-release-example.jpg",
+    "https://en.pimg.jp/054/313/779/1/54313779.jpg",
+    "https://secureservercdn.net/160.153.138.163/t55.c04.myftpupload.com/wp-content/uploads/2016/01/IB-Examples.jpg",
+    "https://image.shutterstock.com/image-illustration/server-room-center-exchanging-cyber-260nw-784596430.jpg"
+];
+
+const HomeScreen = () => {
+    return (
+        <View style={styles.container}>
+            <ImageSwiper images={images} />
+            <ItemCard 
+                imageURL="https://cdn-media-2.freecodecamp.org/w1280/5f9c9e5e740569d1a4ca3cbb.jpg"
+                title="Title"
+                details="Lorem ipsum dolor sit amet."
+            />
+        </View>
+    )
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        //justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'grey',
+    }
 });
 
 export default HomeScreen;
