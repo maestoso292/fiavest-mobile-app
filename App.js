@@ -12,26 +12,31 @@ export default function App() {
       {Following element is for changing style of the status bar based on app theme (unsure)}
       <StatusBar style="auto" />
     </View> */
-import { StatusBar } from 'expo-status-bar';
-import React, {Component} from 'react';
-import { render } from 'react-dom';
-import { StyleSheet, Text, View, Image } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import {  } from '@expo/vector-icons';
+import { StatusBar } from "expo-status-bar";
+import React, { Component } from "react";
+import { StyleSheet, Text, View, Image } from "react-native";
+import {} from "@expo/vector-icons";
 
-import AuthScreen from './screens/AuthScreen';
-import HomeScreen from './screens/HomeScreen';
+import MainNavigator from "./navigation/MainNavigator";
+import navReducer from "./store/reducers/navigation";
+import { applyMiddleware, combineReducers, createStore } from "redux";
+import { Provider, useSelector } from "react-redux";
+import authReducer from "./store/reducers/auth";
+import thunk from "redux-thunk";
 
-const Stack = createStackNavigator();
+
+const rootReducer = combineReducers({
+  auth: authReducer,
+  navigation: navReducer,
+});
+
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
 export default function App() {
-  return(
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+  return (
+    <Provider store={store}>
+      <MainNavigator />
+    </Provider>
   );
 }
 
