@@ -10,7 +10,7 @@ import Popup from "./Popup";
 
 const AdPopup = (props) => {
   return (
-    <Popup {...props} popupStyle={{ ...styles.popup, ...props.style }}>
+    <Popup {...props} popupStyle={styles.popup} modalStyle={styles.modal}>
       <Image source={{ uri: props.source, width: "100%", height: "100%" }} />
       <View style={styles.button}>
         <TouchableWithoutFeedback onPress={props.onPress}>
@@ -22,6 +22,10 @@ const AdPopup = (props) => {
 };
 
 const styles = StyleSheet.create({
+  modal: {
+    backgroundColor: "black",
+    opacity: 0.75,
+  },
   popup: {
     width: "95%",
     // TODO Adjust height of ad. Should it be dynamic according to ad?
