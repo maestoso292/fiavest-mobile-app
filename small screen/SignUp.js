@@ -110,7 +110,6 @@ const SignUpPage = () => {
             keyboardType='default' 
             secureTextEntry={true}
             required
-            pass
             errorText="Please enter valid password"
             minLength={8}
             onInputChange={inputChangeHandler}
@@ -122,7 +121,6 @@ const SignUpPage = () => {
             keyboardType='default' 
             secureTextEntry={true}
             required
-            conPass
             errorText="Password not matches"
             minLength={8}
             onInputChange={inputChangeHandler}
@@ -140,6 +138,17 @@ const SignUpPage = () => {
             onInputChange={inputChangeHandler}
             initialValue=''
             />
+            <InputCard
+            id="address"
+            placeholder='Address'
+            keyboardType='default'
+            autoCorrect={false}
+            errorText="Please enter a valid address"
+            required
+            minLength={10}
+            onInputChange={inputChangeHandler}
+            initialValue=''
+            />
             <View style={styles.Picker}>
                 <Text style={{color: '#000'}}>Brokerage Company : </Text>
                 <Picker
@@ -153,17 +162,6 @@ const SignUpPage = () => {
                     <Picker.Item label="Test 4" value="test 4" />
                 </Picker>
             </View>
-            <InputCard
-            id="address"
-            placeholder='Address'
-            keyboardType='default'
-            autoCorrect={false}
-            errorText="Please enter a valid address"
-            required
-            minLength={10}
-            onInputChange={inputChangeHandler}
-            initialValue=''
-            />
             <View style={styles.Picker}>
                 <Text style={{color: '#000'}}>Investment Term : </Text>
                 <Picker
@@ -207,22 +205,22 @@ const SignUpPage = () => {
                     </TouchableOpacity>
                 </View>
             </View>
-            <View style={{marginTop:32}}>
-                <MyButton onPress={authHandler}>Register</MyButton>
-            </View>
             {/* <View style={{marginTop:32}}>
+                <MyButton onPress={authHandler}>Register</MyButton>
+            </View> */}
+            <View style={{marginTop:32}}>
               {isLoading ? (
                 <ActivityIndicator size="small" color={'#d3d3d3'} />
               ) : (
-                <MyButton onPress={()=>{authHandler}}>
+                <MyButton onPress={authHandler}>
                 Register
                 </MyButton>
               )}
-              <MyButton onPress={() => {}}>Sign In</MyButton>
+              {/* <MyButton onPress={() => {}}>Sign In</MyButton>
               <TouchableOpacity style={styles.forgetButton} onPress={() => alert('Forget')} >
                 <Text style={styles.forgetText}>Reset Password</Text>
-            </TouchableOpacity>
-            </View> */}
+              </TouchableOpacity> */}
+            </View>
             <View style={{marginTop: 30}} />
         </View>
     </ScrollView>
