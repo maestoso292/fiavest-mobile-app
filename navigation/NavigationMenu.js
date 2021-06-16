@@ -1,4 +1,4 @@
-import { CommonActions } from "@react-navigation/native";
+import { CommonActions, useRoute } from "@react-navigation/native";
 import React from "react";
 import {
   View,
@@ -14,7 +14,7 @@ import {
   MaterialIcons,
 } from "@expo/vector-icons";
 import { BORDER_PRIMARY, POPUP_LIGHT } from "../constants/colors";
-import { ROUTE_NAMES } from "./AppNavigator";
+import { Routes } from "../constants/routes";
 
 const ICON_SIZE = 36;
 
@@ -23,47 +23,69 @@ const NavigationMenu = ({ navigation }) => {
   const buttonPressHandler = (name) => {
     navigation.dispatch(CommonActions.navigate({ name: name }));
   };
+  const route = useRoute();
+  const { current } = route.params;
   return (
     <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
       <View style={styles.menu}>
         <View style={styles.menuRow}>
           <MenuButton
-            name={ROUTE_NAMES.HOME}
-            onPress={buttonPressHandler.bind(this, ROUTE_NAMES.HOME)}
+            name={Routes.HOME}
+            onPress={buttonPressHandler.bind(this, Routes.HOME)}
+            style={current == Routes.HOME ? styles.menuButtonHighlight : {}}
           >
             <Ionicons name="home" size={ICON_SIZE} />
           </MenuButton>
           <MenuButton
-            name={ROUTE_NAMES.STOCKS}
-            onPress={buttonPressHandler.bind(this, ROUTE_NAMES.STOCKS)}
+            name={Routes.STOCKS}
+            onPress={buttonPressHandler.bind(this, Routes.STOCKS)}
+            style={current == Routes.STOCKS ? styles.menuButtonHighlight : {}}
           >
             <FontAwesome5 name="coins" size={ICON_SIZE} />
           </MenuButton>
         </View>
 
         <View style={styles.menuRow}>
-          <MenuButton name={ROUTE_NAMES.PORTFOLIO}>
+          <MenuButton
+            name={Routes.PORTFOLIO}
+            style={current == Routes.PORTFOLIO ? styles.menuButtonHighlight : {}}
+          >
             <Ionicons name="briefcase" size={ICON_SIZE} />
           </MenuButton>
-          <MenuButton name={ROUTE_NAMES.EMA5}>
+          <MenuButton
+            name={Routes.EMA5}
+            style={current == Routes.EMA5 ? styles.menuButtonHighlight : {}}
+          >
             <Entypo name="line-graph" size={ICON_SIZE} />
           </MenuButton>
         </View>
 
         <View style={styles.menuRow}>
-          <MenuButton name={ROUTE_NAMES.CALCULATOR}>
+          <MenuButton
+            name={Routes.CALCULATOR}
+            style={current == Routes.CALCULATOR ? styles.menuButtonHighlight : {}}
+          >
             <Ionicons name="calculator" size={ICON_SIZE} />
           </MenuButton>
-          <MenuButton name={ROUTE_NAMES.NEWS}>
+          <MenuButton
+            name={Routes.NEWS}
+            style={current == Routes.NEWS ? styles.menuButtonHighlight : {}}
+          >
             <Ionicons name="newspaper" size={ICON_SIZE} />
           </MenuButton>
         </View>
 
         <View style={styles.menuRow}>
-          <MenuButton name={ROUTE_NAMES.HISTORY}>
+          <MenuButton
+            name={Routes.HISTORY}
+            style={current == Routes.HISTORY ? styles.menuButtonHighlight : {}}
+          >
             <MaterialIcons name="history" size={ICON_SIZE} />
           </MenuButton>
-          <MenuButton name={ROUTE_NAMES.PROFILE}>
+          <MenuButton
+            name={Routes.PROFILE}
+            style={current == Routes.PROFILE ? styles.menuButtonHighlight : {}}
+          >
             <Ionicons name="person-circle" size={ICON_SIZE} />
           </MenuButton>
         </View>
@@ -75,7 +97,7 @@ const NavigationMenu = ({ navigation }) => {
 const MenuButton = (props) => {
   return (
     <TouchableOpacity onPress={props.onPress} activeOpacity={0.7}>
-      <View style={styles.menuButton}>
+      <View style={{ ...styles.menuButton, ...props.style }}>
         {props.children}
         <View style={styles.menuButtonText}>
           <Text>{props.name}</Text>
@@ -108,6 +130,9 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     justifyContent: "center",
     alignItems: "center",
+  },
+  menuButtonHighlight: {
+    backgroundColor: "#ffeebf",
   },
   menuButtonText: {
     marginTop: 5,

@@ -8,20 +8,7 @@ import HomeScreen from "../screens/HomeScreen";
 import StocksScreen from "../screens/StocksScreen";
 import NavigationMenu from "./NavigationMenu";
 import MenuHeaderButton from "./MenuHeaderButton";
-
-export const ROUTE_NAMES = {
-  AUTH: "Auth",
-  HOME: "Home",
-  STOCKS: "Stocks",
-  STOCKS_SEARCH: "Stock Search",
-  STOCK_DETAILS: "Stock Details",
-  PORTFOLIO: "Portfolio",
-  EMA5: "EMA5",
-  CALCULATOR: "Calculator",
-  NEWS: "News",
-  HISTORY: "History",
-  PROFILE: "Profile",
-};
+import { Routes } from "../constants/routes";
 
 const Drawer = createDrawerNavigator();
 
@@ -38,8 +25,8 @@ const MainNavigator = () => {
         },
       }}
     >
-      <Drawer.Screen name={ROUTE_NAMES.HOME} component={HomeScreen} />
-      <Drawer.Screen name={ROUTE_NAMES.STOCKS} component={StocksScreen} />
+      <Drawer.Screen name={Routes.HOME} component={HomeScreen} />
+      <Drawer.Screen name={Routes.STOCKS} component={StocksScreen} />
     </Drawer.Navigator>
   );
 };
