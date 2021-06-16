@@ -1,8 +1,8 @@
 import React, { useEffect, useReducer } from 'react';
-import { Text, View, TextInput, StyleSheet } from 'react-native';
+import { View, TextInput, StyleSheet, Text } from 'react-native';
 
 const INPUT_CHANGE = 'INPUT_CHANGE';
-const INPUT_BLUR = 'INPUT_BLUR';
+//const INPUT_BLUR = 'INPUT_BLUR';
 
 const inputReducer = (state, action) => {
     switch (action.type) {
@@ -12,12 +12,11 @@ const inputReducer = (state, action) => {
                 value: action.value,
                 isValid: action.isValid
             };
-        case INPUT_BLUR:
-            console.log(state);
+        {/* case INPUT_BLUR:
             return{
                 ...state,
                 touched: true
-            };
+            }; */}
         default:
             return state;
     }
@@ -58,15 +57,12 @@ const InputCard = props => {
         if (props.minLength != null && text.length < props.minLength) {
         isValid = false;
         }
-        if (props.conPass !== props.pass) {
-        isValid = false;
-        }
         dispatch({ type: INPUT_CHANGE, value: text, isValid: isValid });
     };
 
-    const lostFocusHandler = () => {
+    {/* const lostFocusHandler = () => {
         dispatch({ type : INPUT_BLUR });
-    };
+    }; */}
 
     return (
         <View style={styles.inputCon}>
@@ -75,7 +71,7 @@ const InputCard = props => {
             {...props}
             value={inputState.value}
             onChangeText={textChangeHandler}
-            onBlur={lostFocusHandler}
+            //onBlur={lostFocusHandler}
             />
             {!inputState.isValid && inputState.touched && (
                 <View style={styles.errorContainer}>

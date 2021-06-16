@@ -1,5 +1,5 @@
 import React, { useState, useReducer, useEffect, useCallback } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import CheckBox from '@react-native-community/checkbox';
 import { useDispatch } from 'react-redux';
@@ -64,6 +64,7 @@ const SignUpPage = () => {
     }, [error]);
 
     const authHandler = async() => {
+        console.log('register')
         let action;
         action = authActions.register(
           formState.inputValues.email,
@@ -73,7 +74,7 @@ const SignUpPage = () => {
         setIsLoading(true);
         try {
           await dispatch(action);
-          props.navigation.navigate('Home');
+          //props.navigation.navigate('Home');
         } catch(err) {
           setError(err.message);
           setIsLoading(false);
@@ -109,7 +110,6 @@ const SignUpPage = () => {
             keyboardType='default' 
             secureTextEntry={true}
             required
-            pass
             errorText="Please enter valid password"
             minLength={8}
             onInputChange={inputChangeHandler}
@@ -121,7 +121,6 @@ const SignUpPage = () => {
             keyboardType='default' 
             secureTextEntry={true}
             required
-            conPass
             errorText="Password not matches"
             minLength={8}
             onInputChange={inputChangeHandler}
@@ -139,6 +138,17 @@ const SignUpPage = () => {
             onInputChange={inputChangeHandler}
             initialValue=''
             />
+            <InputCard
+            id="address"
+            placeholder='Address'
+            keyboardType='default'
+            autoCorrect={false}
+            errorText="Please enter a valid address"
+            required
+            minLength={10}
+            onInputChange={inputChangeHandler}
+            initialValue=''
+            />
             <View style={styles.Picker}>
                 <Text style={{color: '#000'}}>Brokerage Company : </Text>
                 <Picker
@@ -152,16 +162,6 @@ const SignUpPage = () => {
                     <Picker.Item label="Test 4" value="test 4" />
                 </Picker>
             </View>
-            <InputCard
-            id="address"
-            placeholder='Address'
-            keyboardType='default'
-            autoCorrect={false}
-            required
-            minLength={10}
-            onInputChange={inputChangeHandler}
-            initialValue=''
-            />
             <View style={styles.Picker}>
                 <Text style={{color: '#000'}}>Investment Term : </Text>
                 <Picker
@@ -205,24 +205,23 @@ const SignUpPage = () => {
                     </TouchableOpacity>
                 </View>
             </View>
-            {/* <View>
-                <MyButton onPress={() => {}}>Register</MyButton>
+            {/* <View style={{marginTop:32}}>
+                <MyButton onPress={authHandler}>Register</MyButton>
             </View> */}
             <View style={{marginTop:32}}>
               {isLoading ? (
                 <ActivityIndicator size="small" color={'#d3d3d3'} />
               ) : (
-                <MyButton onPress={()=>{authHandler}}>
+                <MyButton onPress={authHandler}>
                 Register
                 </MyButton>
               )}
-              {/*<MyButton onPress={() => {}}>Sign In</MyButton>
+              {/* <MyButton onPress={() => {}}>Sign In</MyButton>
               <TouchableOpacity style={styles.forgetButton} onPress={() => alert('Forget')} >
                 <Text style={styles.forgetText}>Reset Password</Text>
-            </TouchableOpacity> */}
+              </TouchableOpacity> */}
             </View>
-            <View style={{marginTop: 30}}>
-            </View>
+            <View style={{marginTop: 30}} />
         </View>
     </ScrollView>
     );

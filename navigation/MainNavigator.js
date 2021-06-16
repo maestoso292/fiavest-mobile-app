@@ -6,7 +6,6 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import HomeScreen from "../screens/HomeScreen";
 import AuthScreen from "../screens/AuthScreen";
-import StartScreen from "../screens/StartScreen";
 import { useSelector } from "react-redux";
 
 const MainDrawer = createDrawerNavigator();
@@ -24,24 +23,18 @@ export const HomeNavigator = () => {
 export const MainNavigator = () => {
   return (
     <MainDrawer.Navigator>
-      <MainDrawer.Screen name="Home" component={HomeNavigator} />
+      <MainDrawer.Screen name="Main" component={HomeNavigator} />
     </MainDrawer.Navigator>
   );
 };
 
 export const AuthNavigator = () => {
-  const didAutoLogin = useSelector((state) => state.auth.didAutoLogin);
 
   return (
     <AuthStack.Navigator>
       <AuthStack.Screen
         name="Auth"
         component={AuthScreen}
-        options={{ headerShown: false }}
-      />
-      <AuthStack.Screen
-        name="Start"
-        component={StartScreen}
         options={{ headerShown: false }}
       />
     </AuthStack.Navigator>
