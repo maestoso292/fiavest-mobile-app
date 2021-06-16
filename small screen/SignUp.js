@@ -1,5 +1,5 @@
 import React, { useState, useReducer, useEffect, useCallback } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import CheckBox from '@react-native-community/checkbox';
 import { useDispatch } from 'react-redux';
@@ -12,7 +12,7 @@ import * as authActions from '../store/actions/auth';
 const FORM_UPDATE = 'FORM_UPDATE';
 
 const formReducer = (state, action) => {
-  if (action.type === FORM_INPUT_UPDATE) {
+  if (action.type === FORM_UPDATE) {
     const updatedValues = {
       ...state.inputValues,
       [action.input]: action.value
@@ -64,6 +64,7 @@ const SignUpPage = () => {
     }, [error]);
 
     const authHandler = async() => {
+        console.log('register')
         let action;
         action = authActions.register(
           formState.inputValues.email,
@@ -73,7 +74,7 @@ const SignUpPage = () => {
         setIsLoading(true);
         try {
           await dispatch(action);
-          props.navigation.navigate('Home');
+          //props.navigation.navigate('Home');
         } catch(err) {
           setError(err.message);
           setIsLoading(false);
@@ -157,6 +158,7 @@ const SignUpPage = () => {
             placeholder='Address'
             keyboardType='default'
             autoCorrect={false}
+            errorText="Please enter a valid address"
             required
             minLength={10}
             onInputChange={inputChangeHandler}
@@ -205,10 +207,10 @@ const SignUpPage = () => {
                     </TouchableOpacity>
                 </View>
             </View>
-            {/* <View>
-                <MyButton onPress={() => {}}>Register</MyButton>
-            </View> */}
             <View style={{marginTop:32}}>
+                <MyButton onPress={authHandler}>Register</MyButton>
+            </View>
+            {/* <View style={{marginTop:32}}>
               {isLoading ? (
                 <ActivityIndicator size="small" color={'#d3d3d3'} />
               ) : (
@@ -216,13 +218,12 @@ const SignUpPage = () => {
                 Register
                 </MyButton>
               )}
-              {/*<MyButton onPress={() => {}}>Sign In</MyButton>
+              <MyButton onPress={() => {}}>Sign In</MyButton>
               <TouchableOpacity style={styles.forgetButton} onPress={() => alert('Forget')} >
                 <Text style={styles.forgetText}>Reset Password</Text>
-            </TouchableOpacity> */}
-            </View>
-            <View style={{marginTop: 30}}>
-            </View>
+            </TouchableOpacity>
+            </View> */}
+            <View style={{marginTop: 30}} />
         </View>
     </ScrollView>
     );

@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer } from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
+import { View, TextInput, StyleSheet, Text } from 'react-native';
 
 const INPUT_CHANGE = 'INPUT_CHANGE';
 const INPUT_BLUR = 'INPUT_BLUR';
@@ -55,9 +55,6 @@ const InputCard = props => {
         isValid = false;
         }
         if (props.minLength != null && text.length < props.minLength) {
-        isValid = false;
-        }
-        if (props.conPass !== props.pass) {
         isValid = false;
         }
         dispatch({ type: INPUT_CHANGE, value: text, isValid: isValid });

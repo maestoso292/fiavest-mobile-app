@@ -5,19 +5,14 @@ import { useDispatch, useSelector } from "react-redux";
 
 import * as authActions from "../store/actions/auth";
 
-const StartScreen = (props) => {
+const StartScreen = props => {
   const dispatch = useDispatch();
-  // I don't know what this value is? Not inside reducers/auth.js
-  const didAutoLogin = useSelector((state) => state.auth.didAutoLogin);
 
   useEffect(() => {
     const tryLogin = async () => {
-      if (didAutoLogin) {
-        props.navigation.navigate("Auth");
-      }
-      const userData = await AsyncStorage.getItem("userData");
-      if (userData == null) {
-        props.navigation.navigate("Auth");
+      const userData = await AsyncStorage.getItem('userData');
+      if (!userData) {
+        dispatch(authActions.setDidAutoLogin());
         return;
       }
 
@@ -26,17 +21,13 @@ const StartScreen = (props) => {
       const expirationDate = new Date(expiryDate);
 
       if (expirationDate <= new Date() || !token || !userId) {
-        props.navigation.navigate("Auth");
+        //props.navigation.navigate("Auth");
+        dispatch(authActions.setDidAutoLogin());
         return;
       }
 
-      //const expirationTime = expirationDate.getTime() - new Date().getTime();
-
-      navigation.navigate("Home");
       dispatch(
-        authActions.authenticate(userId, token, {
-          /*, expirationTime*/
-        })
+        authActions.authenticate(userId, token)
       );
     };
 

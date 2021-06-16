@@ -1,6 +1,5 @@
 import React, { useState, useReducer, useEffect, useCallback } from 'react';
-import { Alert } from 'react-native';
-import { StyleSheet, View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import CustomButton from '../components/CustomButton';
@@ -11,7 +10,7 @@ import * as authActions from '../store/actions/auth';
 const FORM_UPDATE = 'FORM_UPDATE';
 
 const formReducer = (state, action) => {
-  if (action.type === FORM_INPUT_UPDATE) {
+  if (action.type === FORM_UPDATE) {
     const updatedValues = {
       ...state.inputValues,
       [action.input]: action.value
@@ -68,7 +67,7 @@ const SignInPage = () => {
       setIsLoading(true);
       try {
         await dispatch(action);
-        props.navigation.navigate('Home');
+        //props.navigation.navigate('Home');
       } catch(err) {
         setError(err.message);
         setIsLoading(false);
@@ -116,7 +115,7 @@ const SignInPage = () => {
               {isLoading ? (
                 <ActivityIndicator size="small" color={'#d3d3d3'} />
               ) : (
-                <MyButton onPress={()=>{authHandler}}>
+                <MyButton onPress={authHandler}>
                 Login
                 </MyButton>
               )}

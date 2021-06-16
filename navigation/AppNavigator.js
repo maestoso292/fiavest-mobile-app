@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 
 import { MainNavigator, AuthNavigator } from "./MainNavigator";
+import StartScreen from "../screens/StartScreen";
 
 const AppNavigator = (props) => {
   const isAuth = useSelector((state) => !!state.auth.token);
@@ -11,7 +12,8 @@ const AppNavigator = (props) => {
   return (
     <NavigationContainer>
       {isAuth && <MainNavigator />}
-      {!isAuth && <AuthNavigator />}
+      {!isAuth && didAutoLogin && <AuthNavigator />}
+      {!isAuth && !didAutoLogin && <StartScreen />}
     </NavigationContainer>
   );
 };
