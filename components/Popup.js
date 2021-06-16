@@ -1,10 +1,11 @@
 import React from "react";
-import { View, Text, Modal, StyleSheet } from "react-native";
+import { View, Modal, StyleSheet } from "react-native";
+import { BORDER_PRIMARY } from "../constants/colors";
 
 const Popup = (props) => {
   return (
     <Modal transparent {...props}>
-      <View style={styles.modal}>
+      <View style={{ ...styles.modal, ...props.modalStyle}}>
         <View style={{ ...styles.container, ...props.popupStyle }}>
           {props.children}
         </View>
@@ -21,8 +22,13 @@ const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: "white",
-    borderColor: "black",
-    borderWidth: 1,
+    borderColor: BORDER_PRIMARY,
+    borderWidth: StyleSheet.hairlineWidth,
+    shadowColor: "black",
+    shadowOpacity: 0.26,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 8,
+    elevation: 5,
     width: 50,
     height: 50,
   },
