@@ -236,7 +236,7 @@ const AuthScreen = () => {
   }
 
   return (
-    <View>
+    <View style={{paddingTop: 60}}>
       <Text>Auth Screen</Text>
       <Button title="Login" onPress={authHandler}/>
     </View>

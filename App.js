@@ -17,7 +17,7 @@ import React, { Component } from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 import {} from "@expo/vector-icons";
 
-import MainNavigator from "./navigation/MainNavigator";
+import AppNavigator from "./navigation/AppNavigator";
 import navReducer from "./store/reducers/navigation";
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import { Provider, useSelector } from "react-redux";
@@ -35,7 +35,7 @@ const store = createStore(rootReducer, applyMiddleware(thunk));
 export default function App() {
   return (
     <Provider store={store}>
-      <MainNavigator />
+      <AppNavigator />
     </Provider>
   );
 }
