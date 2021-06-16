@@ -1,52 +1,52 @@
-import React, { useEffect, useCallback, useReducer } from 'react';
-import { View, TextInput, StyleSheet, Text } from 'react-native';
+import React, { useEffect, useReducer } from 'react';
+import { View, TextInput, StyleSheet } from 'react-native';
 
 const INPUT_CHANGE = 'INPUT_CHANGE';
 const INPUT_BLUR = 'INPUT_BLUR';
 
-const InputReducer = (state, action) => {
-    switch(action.type) {
+const inputReducer = (state, action) => {
+    switch (action.type) {
         case INPUT_CHANGE:
-            return {
+            return{
                 ...state,
                 value: action.value,
-                isValid: action.isValid,
-            }
+                isValid: action.isValid
+            };
         case INPUT_BLUR:
-            return {
+            return{
                 ...state,
-                touched: true,
-
-            }
+                touched: true
+            };
         default:
-                return state;
+            return state;
     }
 }
 
 const InputCard = props => {
 
-    const [inputState, dispatch] = useReducer(InputReducer, {
-        value: props.initialValue ? props.initialValue: '',
-        isValid: props.initiallyValid,
-        touched: false,
+    const [inputState, dispatch] = useReducer(inputReducer, {
+        value: props.initialValue ? props.initialValue : '',
+        isValid: props.initValid,
+        touched: false
     });
 
-    const { onInputChanged, id } = props;
+    const { onInputChange, id } = props;
 
     useEffect(() => {
-        if(inputState.touched) {
-            onInputChanged(id, inputState.value, inputState.isValid);
+        if (inputState.touched) {
+            onInputChange(id, inputState.value, inputState.isValid);
         }
-    }, [inputState, onInputChanged, id]);
+    }, [inputState, onInputChange, id]);
 
     const textChangeHandler = text => {
-        const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const emailRegex = 
+        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         let isValid = true;
-        if (props.noSpace && text.trim().length === 0) {
-          isValid = false;
+        if (props.required && text.trim().length === 0) {
+        isValid = false;
         }
         if (props.email && !emailRegex.test(text.toLowerCase())) {
-          isValid = false;
+        isValid = false;
         }
         if (props.min != null && +text < props.min) {
         isValid = false;
@@ -57,12 +57,15 @@ const InputCard = props => {
         if (props.minLength != null && text.length < props.minLength) {
         isValid = false;
         }
+        if (props.conPass !== props.pass) {
+        isValid = false;
+        }
         dispatch({ type: INPUT_CHANGE, value: text, isValid: isValid });
     };
 
     const lostFocusHandler = () => {
-        dispatch ({type: INPUT_BLUR})
-    }
+        dispatch({ type : INPUT_BLUR });
+    };
 
     return (
         <View style={styles.inputCon}>
@@ -74,26 +77,35 @@ const InputCard = props => {
             onBlur={lostFocusHandler}
             />
             {!inputState.isValid && inputState.touched && (
-                <Text>{props.errorText}</Text>
+                <View style={styles.errorContainer}>
+                    <Text style={styles.errorText}>{props.errorText}</Text>
+                </View>
             )}
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
     inputCon: {
         width: 300,
         //alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 32,
+        marginTop: 25,
     },
     inputBox: {
         borderWidth: 2,
-        borderColor: '#ccc',
+        borderColor: '#b3b3b3',
         width: '100%',
         padding: 10,
         borderRadius: 25,
     },
+    errorContainer: {
+        marginVertical: 5
+    },
+    errorText: {
+        color: 'red',
+        fontSize: 13
+    }
 });
 
 export default InputCard;

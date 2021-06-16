@@ -1,99 +1,11 @@
-/* import React, { useCallback, useState, useReducer, useEffect } from 'react';
-import { StyleSheet, KeyboardAvoidingView, View, Image, Text, ScrollView, ActivityIndicator, Alert  } from 'react-native';
+import React from 'react';
+import { StyleSheet, KeyboardAvoidingView, View, Image, Text, ScrollView, ActivityIndicator, Button, TouchableOpacity  } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { NavigationContainer } from '@react-navigation/native';
-import InputCard from '../components/InputCard';
-import MyButton from '../components/MyButton';
-import { useDispatch, Provider } from 'react-redux';
-import * as authAction from '../store/actions/auth';
 
-const FORM_UPDATE = 'FORM_UPDATE';
-
-const formReducer = (state, action) => {
-  if(action.type === FORM_UPDATE) {
-    const updatedInfo = {
-      ...state.inputInfo,
-      [action.input]: action.value
-    };
-    const updatedValidities = {
-      ...state.inputValidities,
-      [action.input]: action.isValid
-    };
-    let updatedValidForm = true;
-    for(const key in updatedValidities) {
-      updatedValidForm = updatedValidForm && updatedValidities[key];
-    }
-    return {
-      validForm: updatedValidForm,
-      inputValidities: updatedValidities,
-      inputInfo: updatedInfo
-    };
-  }
-  return state;
-};
-
-<Provider formReducer={formReducer}>
-  <AuthScreen />
-</Provider>
+import SignInPage from '../small screen/SignIn';
+import SignUpPage from '../small screen/SignUp';
 
 const AuthScreen = props => {
-
-  const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState();
-  const [isLogin, setIsLogin] = useState(true);
-
-  const [formState, dispatchFormState] = useReducer(formReducer, {
-    inputInfo: {
-      email: '',
-      password: ''
-    },
-    inputValidities: {
-      email: false,
-      password: false
-    },
-    validForm: false
-  });
-
-  useEffect(() => {
-    if(error) {
-      Alert.alert('Thats an error', error, [{text: 'Okay'}]);
-    }
-  }, [error]);
-
-  const authHandler = async () => {
-    let action;
-    if(isLogin) {
-      action = authAction.login(
-        formState.inputInfo.email,
-        formState.inputInfo.password,
-      );} else {
-        action = authAction.register(
-          formState.inputInfo.email,
-          formState.inputInfo.password,
-        );
-      }
-      setError(null);
-      setIsLoading(true);
-      try{
-        await dispatch(action);
-        //props.navigation.navigate('Home')
-      } catch (err) {
-        setError(err.message);
-        setIsLoading(false);
-      }
-    };
-
-    const inputChangeHandler = useCallback(
-      (inputIdentify, inputValue, inputValidity) => {
-        dispatchFormState ({
-          type: FORM_UPDATE,
-          value: inputValue,
-          isValid: inputValidity,
-          input: inputIdentify,
-        });
-      }, [dispatchFormState]
-    );
 
   const Tab = createMaterialTopTabNavigator();
 
@@ -104,41 +16,7 @@ const AuthScreen = props => {
         behavior="padding"
         keyboardVerticalOffset={50}
         style={styles.screen}>
-          <ScrollView>
-            <InputCard
-            id="email"
-            placeholder='Email Address'
-            keyboardType='email-address'
-            errorText="Please enter a valid email address"
-            email
-            noSpace
-            onInputChange={inputChangeHandler}
-            initialValue=""
-            />
-            <InputCard 
-            id="password"
-            placeholder='Password'
-            keyboardType='default' 
-            secureTextEntry={true}
-            errorText="Please enter valid password"
-            noSpace
-            minLength={8}
-            onInputChange={inputChangeHandler}
-            initialValue=''
-            />
-            <View style={{marginTop:32}}>
-              {isLoading ? (
-                <ActivityIndicator size="small" color={'#d3d3d3'} />
-              ) : (
-                <MyButton onPress={()=>{
-                  setIsLogin(true);
-                  authHandler();
-                }}>
-                LOGIN
-                </MyButton>
-              )}
-            </View>
-          </ScrollView>
+          <SignInPage />
         </KeyboardAvoidingView>
       </View>
     );
@@ -147,8 +25,12 @@ const AuthScreen = props => {
   function Register() {
     return (
       <View style={styles.registerContainer}>
-        <Text>Ko</Text>
-        <MyButton onPress={() => {}} >REGISTER</MyButton>
+        <KeyboardAvoidingView
+        behavior="padding"
+        keyboardVerticalOffset={50}
+        style={styles.screen}>
+          <SignUpPage />
+        </KeyboardAvoidingView>
       </View>
     );
   };
@@ -161,12 +43,10 @@ const AuthScreen = props => {
           style = {styles.img}
           />
         </View>
-        <NavigationContainer>
-            <Tab.Navigator>
-              <Tab.Screen name="LOGIN" component={Login} />
-              <Tab.Screen name="REGISTER" component={Register} />
-            </Tab.Navigator>
-        </NavigationContainer>
+          <Tab.Navigator>
+            <Tab.Screen name="LOGIN" component={Login} />
+            <Tab.Screen name="REGISTER" component={Register} />
+          </Tab.Navigator>
       </View>
     );
 }
@@ -199,8 +79,6 @@ const styles = StyleSheet.create({
       //backgroundColor: '#A9BAFF',
       flex: 1,
       width: '100%',
-      //marginLeft: 16,
-      //marginTop: 16,
       justifyContent: 'center',
       alignItems: 'center',
     },
@@ -208,16 +86,16 @@ const styles = StyleSheet.create({
     registerContainer: {
       //backgroundColor: '#A9BADB',
       flex: 1,
+      width: '100%',
       justifyContent: 'center',
       alignItems: 'center',
     },
 
     screen: {
       flex: 1,
-      //justifyContent: 'center',
-      alignItems: 'center',
+      width: '100%',
     },
 
 });
 
-export default AuthScreen; */
+export default AuthScreen;
