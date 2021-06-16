@@ -12,12 +12,10 @@ const StartScreen = (props) => {
 
   useEffect(() => {
     const tryLogin = async () => {
-      if (didAutoLogin) {
-        props.navigation.navigate("Auth");
-      }
       const userData = await AsyncStorage.getItem("userData");
       if (userData == null) {
-        props.navigation.navigate("Auth");
+        //props.navigation.navigate("Auth");
+        dispatch(authActions.setDidTryAL());
         return;
       }
 
@@ -26,13 +24,14 @@ const StartScreen = (props) => {
       const expirationDate = new Date(expiryDate);
 
       if (expirationDate <= new Date() || !token || !userId) {
-        props.navigation.navigate("Auth");
+        dispatch(authActions.setDidTryAL());
+        // props.navigation.navigate("Auth");
         return;
       }
 
       //const expirationTime = expirationDate.getTime() - new Date().getTime();
 
-      navigation.navigate("Home");
+      // navigation.navigate("Home");
       dispatch(
         authActions.authenticate(userId, token, {
           /*, expirationTime*/

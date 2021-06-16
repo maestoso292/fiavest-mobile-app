@@ -12,7 +12,6 @@ import { useSelector } from "react-redux";
 const MainDrawer = createDrawerNavigator();
 const HomeStack = createStackNavigator();
 const AuthStack = createStackNavigator();
-const StartStack = createStackNavigator();
 
 export const HomeNavigator = () => {
   return (

@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer } from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
+import { Text, View, TextInput, StyleSheet } from 'react-native';
 
 const INPUT_CHANGE = 'INPUT_CHANGE';
 const INPUT_BLUR = 'INPUT_BLUR';
@@ -13,6 +13,7 @@ const inputReducer = (state, action) => {
                 isValid: action.isValid
             };
         case INPUT_BLUR:
+            console.log(state);
             return{
                 ...state,
                 touched: true

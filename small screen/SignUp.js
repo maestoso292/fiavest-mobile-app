@@ -12,7 +12,7 @@ import * as authActions from '../store/actions/auth';
 const FORM_UPDATE = 'FORM_UPDATE';
 
 const formReducer = (state, action) => {
-  if (action.type === FORM_INPUT_UPDATE) {
+  if (action.type === FORM_UPDATE) {
     const updatedValues = {
       ...state.inputValues,
       [action.input]: action.value
