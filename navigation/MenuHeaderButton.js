@@ -9,7 +9,7 @@ const MenuHeaderButton = () => {
 
   return (
     <TouchableOpacity
-      activeOpacity={0.6}
+      activeOpacity={0.3}
       onPress={() => {
         navigation.navigate("Menu", {current: route.name});
       }}

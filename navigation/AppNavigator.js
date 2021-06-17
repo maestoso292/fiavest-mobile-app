@@ -1,20 +1,49 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { NavigationContainer } from "@react-navigation/native";
+import {
+  getFocusedRouteNameFromRoute,
+  NavigationContainer,
+  useNavigation,
+} from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import AuthScreen from "../screens/AuthScreen";
 import HomeScreen from "../screens/HomeScreen";
 import StocksScreen from "../screens/StocksScreen";
+import StockDetailsScreen from "../screens/StockDetailsScreen";
 import NavigationMenu from "./NavigationMenu";
 import MenuHeaderButton from "./MenuHeaderButton";
 import { Routes } from "../constants/routes";
 
-const Drawer = createDrawerNavigator();
+const MainDrawer = createDrawerNavigator();
+const StockStack = createStackNavigator();
+
+const StockNavigator = () => {
+  return (
+    <StockStack.Navigator
+      screenOptions={{ headerShown: true, headerTitleAlign: "center" }}
+      initialRouteName={Routes.STOCKS_SEARCH}
+    >
+      <StockStack.Screen
+        name={Routes.STOCKS_SEARCH}
+        component={StocksScreen}
+        options={{
+          headerLeft: () => {
+            return <MenuHeaderButton />;
+          },
+        }}
+      />
+      <StockStack.Screen
+        name={Routes.STOCK_DETAILS}
+        component={StockDetailsScreen}
+      />
+    </StockStack.Navigator>
+  );
+};
 
 const MainNavigator = () => {
   return (
-    <Drawer.Navigator
+    <MainDrawer.Navigator
       backBehavior="initialRoute"
       screenOptions={{
         gestureEnabled: false,
@@ -25,13 +54,17 @@ const MainNavigator = () => {
         },
       }}
     >
-      <Drawer.Screen name={Routes.HOME} component={HomeScreen} />
-      <Drawer.Screen name={Routes.STOCKS} component={StocksScreen} />
-    </Drawer.Navigator>
+      <MainDrawer.Screen name={Routes.HOME} component={HomeScreen} />
+      <MainDrawer.Screen
+        name={Routes.STOCKS}
+        component={StockNavigator}
+        options={{ headerShown: false }}
+      />
+    </MainDrawer.Navigator>
   );
 };
 
-const Stack = createStackNavigator();
+const RootStack = createStackNavigator();
 
 const menuOptions = {
   cardStyle: { backgroundColor: "transparent" },
@@ -57,29 +90,29 @@ const AppNavigator = () => {
   const authToken = useSelector((state) => state.auth.token);
   return (
     <NavigationContainer>
-      <Stack.Navigator
+      <RootStack.Navigator
         screenOptions={{
           headerShown: false,
         }}
         mode="modal"
       >
         {authToken == null ? (
-          <Stack.Screen
+          <RootStack.Screen
             name="Auth"
             component={AuthScreen}
             option={{ headerShown: true }}
           />
         ) : (
           <>
-            <Stack.Screen name="Main" component={MainNavigator} />
-            <Stack.Screen
+            <RootStack.Screen name="Main" component={MainNavigator} />
+            <RootStack.Screen
               name="Menu"
               component={NavigationMenu}
               options={menuOptions}
             />
           </>
         )}
-      </Stack.Navigator>
+      </RootStack.Navigator>
     </NavigationContainer>
   );
 };

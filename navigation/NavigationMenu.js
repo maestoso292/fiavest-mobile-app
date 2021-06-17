@@ -39,7 +39,9 @@ const NavigationMenu = ({ navigation }) => {
           <MenuButton
             name={Routes.STOCKS}
             onPress={buttonPressHandler.bind(this, Routes.STOCKS)}
-            style={current == Routes.STOCKS ? styles.menuButtonHighlight : {}}
+            style={
+              current == Routes.STOCKS_SEARCH ? styles.menuButtonHighlight : {}
+            }
           >
             <FontAwesome5 name="coins" size={ICON_SIZE} />
           </MenuButton>
@@ -48,7 +50,9 @@ const NavigationMenu = ({ navigation }) => {
         <View style={styles.menuRow}>
           <MenuButton
             name={Routes.PORTFOLIO}
-            style={current == Routes.PORTFOLIO ? styles.menuButtonHighlight : {}}
+            style={
+              current == Routes.PORTFOLIO ? styles.menuButtonHighlight : {}
+            }
           >
             <Ionicons name="briefcase" size={ICON_SIZE} />
           </MenuButton>
@@ -63,7 +67,9 @@ const NavigationMenu = ({ navigation }) => {
         <View style={styles.menuRow}>
           <MenuButton
             name={Routes.CALCULATOR}
-            style={current == Routes.CALCULATOR ? styles.menuButtonHighlight : {}}
+            style={
+              current == Routes.CALCULATOR ? styles.menuButtonHighlight : {}
+            }
           >
             <Ionicons name="calculator" size={ICON_SIZE} />
           </MenuButton>
