@@ -11,6 +11,7 @@ const StartScreen = props => {
   useEffect(() => {
     const tryLogin = async () => {
       const userData = await AsyncStorage.getItem('userData');
+      console.log(userData);
       if (!userData) {
         dispatch(authActions.setDidAutoLogin());
         return;

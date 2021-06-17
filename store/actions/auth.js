@@ -5,7 +5,7 @@ export const LOGOUT = 'LOGOUT';
 export const DID_AUTO_LOGIN = 'DID_AUTO_LOGIN';
 
 export const setDidAutoLogin = () => {
-    return { type: DID_AUTO_LOGIN };
+    return (dispatch) => { dispatch({ type: DID_AUTO_LOGIN }) };
 };
 
 export const authenticate = (userId, token, expiryTime) => {
@@ -15,7 +15,6 @@ export const authenticate = (userId, token, expiryTime) => {
       type: AUTHENTICATE,
       userId: userId,
       token: token,
-      disTryAutoLogin: true,
     });
   };
 };
@@ -100,7 +99,7 @@ export const login = (email, password) => {
             new Date().getTime + parseInt(responseData.expiresIn) * 1000
         );
 
-        saveDataToLocal(responseData.token, responseData.localId, expirationDate);
+        saveDataToLocal(responseData.idToken, responseData.localId, expirationDate);
 
     };
 };
