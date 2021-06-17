@@ -221,3 +221,26 @@ const styles = StyleSheet.create({
 });
 
 export default AuthScreen; */
+
+// Temporary auth screen 
+import React from "react";
+import { View, Text, Button } from "react-native";
+import { useDispatch } from "react-redux";
+import * as authActions from "../store/actions/auth";
+
+const AuthScreen = () => {
+  const dispatch = useDispatch();
+
+  const authHandler = () => {
+    dispatch(authActions.login())
+  }
+
+  return (
+    <View style={{paddingTop: 60}}>
+      <Text>Auth Screen</Text>
+      <Button title="Login" onPress={authHandler}/>
+    </View>
+  );
+};
+
+export default AuthScreen;
