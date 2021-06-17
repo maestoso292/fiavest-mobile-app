@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "6745347667",
+    "firebase_url": "https://fiavest-tempo-default-rtdb.firebaseio.com",
+    "project_id": "fiavest-tempo",
+    "storage_bucket": "fiavest-tempo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:6745347667:android:7000f8f95c850771bd18a6",
+        "android_client_info": {
+          "package_name": "fiavestAndroid.expo.googlesignin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "6745347667-s0u7lni1jokke2lso81g2t62blrfih8i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGHV9Jzeu8ifrB-moMn_uu1KFrwFnBcAE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "6745347667-s0u7lni1jokke2lso81g2t62blrfih8i.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "6745347667-o1101gp7hd9j0d4gcfedi6ei7plmegsb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "fiavest.expo.googlesignin"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

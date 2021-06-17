@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Facebook from 'expo-facebook';
+import * as Google from 'expo-google-app-auth';
 import { firebase } from "@react-native-firebase/auth";
 
 export const AUTHENTICATE = "AUTHENTICATE";
@@ -25,29 +26,34 @@ export const authenticate = (userId, token, expiryTime) => {
 
 export const loginViaFacebook = async () => {
     try {
-      const { type, token } = 
-      await Facebook.logInWithReadPermissionsAsync('484772439271129', {permissions: ['public_profile']})
-
-      {/*if (type === 'success') {
-        const response = await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=id,name,email`);
-        if (!response.ok) {
-          const errorResData = await response.json();
-          console.log(errorResData)
-        }
-        props.navigation.navigate("Home");
-      }
-    }*/}
+      await Facebook.initializeAsync({
+          appId: '484772439271129'
+      });
+      const {type, token, expirationDate, permissions, declinedPermissions,} = 
+      await Facebook.logInWithReadPermissionsAsync({
+        permissions: ['public_profile'],
+      });
       if (type === 'success'){
-        const credential = firebase.auth.FacebookAuthProvider.credential(token)
+        const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
+        const responseData = await response.json();
+        console.log(responseData);
+        props.navigation.navigate('Home');
+        alert('Logged in!', `Hi ${(await response.json()).name}!`);
+      } else {
+        console.log('Cancel');
+      };
+    } catch ({errMessage}) {
+    console.log(`Facebook Login Error : ${errMessage}`);
+    };
+};
 
-        firebase.auth().signInWithCredential(credential).catch( errorMessage => {
-          console.log(errorMessage)
-        } )
-      }
-      }catch ({errMessage}) {
-      alert(`Facebook Login Error : ${errMessage}`);
+{/*export const loginViaGoogle = async () => {
+    const {type, accessToken, user} = await Google.logInAsync(config);
+
+    if(type === 'success'){
+        let userInfo = await fetch
     }
-  }
+}*/}
 
 //(email, password) add more info inside this bracket
 export const register = (email, password) => {

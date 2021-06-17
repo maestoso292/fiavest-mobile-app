@@ -17,9 +17,18 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "fiavest.expo.googlesignin",
+      "config" : {
+        "googleSignIn" : {
+          "reservedClientId": "com.googleusercontent.apps.6745347667-o1101gp7hd9j0d4gcfedi6ei7plmegsb"
+        }
+      },
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
+      "package": "fiavestAndroid.expo.googlesignin",
+      "googleServiceFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
