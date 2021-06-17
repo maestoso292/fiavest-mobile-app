@@ -16,7 +16,7 @@ class ImageSwiper extends Component {
   }
 
   componentDidMount = () => {
-    setInterval(() => {
+    this.timerID = setInterval(() => {
       this.setState(
         (prev) => ({
           selectedIndex:
@@ -35,6 +35,10 @@ class ImageSwiper extends Component {
     }, 3000);
   };
 
+  componentWillUnmount = () => {
+    clearInterval(this.timerID);
+  };
+
   setSelectedIndex = (event) => {
     const viewSize = event.nativeEvent.layoutMeasurement.width;
     const contentOffset = event.nativeEvent.contentOffset.x;
@@ -47,7 +51,7 @@ class ImageSwiper extends Component {
     const { images } = this.props;
     const { selectedIndex } = this.state;
     return (
-      <View style={styles.imageCon}>
+      <View style={styles.scrollContainer}>
         <ScrollView
           horizontal
           pagingEnabled
@@ -76,7 +80,7 @@ class ImageSwiper extends Component {
 }
 
 const styles = StyleSheet.create({
-  imageCon: {
+  scrollContainer: {
     height: "20%",
     width: "95%",
     marginTop: 12,
