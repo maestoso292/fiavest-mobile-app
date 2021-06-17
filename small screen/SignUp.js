@@ -205,9 +205,6 @@ const SignUpPage = () => {
                     </TouchableOpacity>
                 </View>
             </View>
-            {/* <View style={{marginTop:32}}>
-                <MyButton onPress={authHandler}>Register</MyButton>
-            </View> */}
             <View style={{marginTop:32}}>
               {isLoading ? (
                 <ActivityIndicator size="small" color={'#d3d3d3'} />
@@ -216,10 +213,6 @@ const SignUpPage = () => {
                 Register
                 </MyButton>
               )}
-              {/* <MyButton onPress={() => {}}>Sign In</MyButton>
-              <TouchableOpacity style={styles.forgetButton} onPress={() => alert('Forget')} >
-                <Text style={styles.forgetText}>Reset Password</Text>
-              </TouchableOpacity> */}
             </View>
             <View style={{marginTop: 30}} />
         </View>

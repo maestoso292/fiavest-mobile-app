@@ -100,6 +100,11 @@ const SignInPage = () => {
     [dispatchFormState]
   );
 
+  {/*logout = () => {
+    setLoggedinStatus(false);
+    setUserData(null);
+  } */}
+
   return (
     <View style={styles.signInMain}>
       <InputCard
@@ -132,10 +137,6 @@ const SignInPage = () => {
         ) : (
           <MyButton onPress={authHandler}>Login</MyButton>
         )}
-        {/*<MyButton onPress={() => {}}>Sign In</MyButton>
-              <TouchableOpacity style={styles.forgetButton} onPress={() => alert('Forget')} >
-                <Text style={styles.forgetText}>Reset Password</Text>
-            </TouchableOpacity> */}
       </View>
       <Text
         style={{ fontSize: 30, marginTop: 10, marginBottom: 5, color: "#ccc" }}
@@ -146,7 +147,7 @@ const SignInPage = () => {
       <View style={styles.others}>
         <CustomButton
           source={require("../assets/fb-icon.png")}
-          onPress={() => alert("Button clicked")}
+          onPress={() => dispatch(authActions.loginViaFacebook)}
         />
         <CustomButton
           source={require("../assets/google-icon.png")}

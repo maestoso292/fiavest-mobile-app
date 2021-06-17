@@ -73,7 +73,10 @@ const styles = StyleSheet.create({
 export default HomeScreen; */
 
 import React from 'react';
-import { StyleSheet, View, Text, ScrollView, FlatList } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, FlatList, Button } from 'react-native';
+
+import * as authActions from '../store/actions/auth';
+import { useDispatch } from 'react-redux';
 
 import { ImageSwiper } from '../components/AdSwiper';
 import ItemCard from '../components/ItemCard';
@@ -86,14 +89,13 @@ const images = [
 ];
 
 const HomeScreen = () => {
+
+    const dispatch = useDispatch();
+
     return (
         <View style={styles.container}>
-            <ImageSwiper images={images} />
-            <ItemCard 
-                imageURL="https://cdn-media-2.freecodecamp.org/w1280/5f9c9e5e740569d1a4ca3cbb.jpg"
-                title="Title"
-                details="Lorem ipsum dolor sit amet."
-            />
+            <Button title={'Sign Out'} />
+            onPress={() => {dispatch(authActions.logout())}}
         </View>
     )
 }

@@ -1,4 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Facebook from 'expo-facebook';
+import { firebase } from "@react-native-firebase/auth";
 
 export const AUTHENTICATE = "AUTHENTICATE";
 export const LOGOUT = "LOGOUT";
@@ -20,6 +22,32 @@ export const authenticate = (userId, token, expiryTime) => {
     });
   };
 };
+
+export const loginViaFacebook = async () => {
+    try {
+      const { type, token } = 
+      await Facebook.logInWithReadPermissionsAsync('484772439271129', {permissions: ['public_profile']})
+
+      {/*if (type === 'success') {
+        const response = await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=id,name,email`);
+        if (!response.ok) {
+          const errorResData = await response.json();
+          console.log(errorResData)
+        }
+        props.navigation.navigate("Home");
+      }
+    }*/}
+      if (type === 'success'){
+        const credential = firebase.auth.FacebookAuthProvider.credential(token)
+
+        firebase.auth().signInWithCredential(credential).catch( errorMessage => {
+          console.log(errorMessage)
+        } )
+      }
+      }catch ({errMessage}) {
+      alert(`Facebook Login Error : ${errMessage}`);
+    }
+  }
 
 //(email, password) add more info inside this bracket
 export const register = (email, password) => {
