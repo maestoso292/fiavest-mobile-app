@@ -2,16 +2,35 @@ import React, { useEffect } from "react";
 import { View, ActivityIndicator, StyleSheet } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch, useSelector } from "react-redux";
+import * as Facebook from "expo-facebook";
 
 import * as authActions from "../store/actions/auth";
 
-const StartScreen = props => {
+const StartScreen = (props) => {
   const dispatch = useDispatch();
 
+  // TODO tryLogin can probably be broken down into separate functions
   useEffect(() => {
     const tryLogin = async () => {
-      const userData = await AsyncStorage.getItem('userData');
-      console.log(userData);
+      // Facebook auto login
+      try {
+        await Facebook.initializeAsync({
+          appId: "484772439271129",
+        });
+        const userDataFB = await Facebook.getAuthenticationCredentialAsync();
+        if (userDataFB) {
+          // console.log(userDataFB);
+          // TODO Unsure how expiration date needs to be handled. For refresh token?
+          dispatch(authActions.authenticate(userDataFB.userId, userDataFB.token, userDataFB.expirationDate));
+          return;
+        }
+      } catch (err) {
+        console.log(err);
+      }
+
+      // Firebase auto login
+      const userData = await AsyncStorage.getItem("userData");
+      // console.log(userData);
       if (!userData) {
         dispatch(authActions.setDidAutoLogin());
         return;
@@ -22,14 +41,11 @@ const StartScreen = props => {
       const expirationDate = new Date(expiryDate);
 
       if (expirationDate <= new Date() || !token || !userId) {
-        //props.navigation.navigate("Auth");
         dispatch(authActions.setDidAutoLogin());
         return;
       }
 
-      dispatch(
-        authActions.authenticate(userId, token)
-      );
+      dispatch(authActions.authenticate(userId, token));
     };
 
     tryLogin().catch((e) => console.log(e));
