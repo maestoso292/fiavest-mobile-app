@@ -1,11 +1,13 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const AUTHENTICATE = 'AUTHENTICATE';
-export const LOGOUT = 'LOGOUT';
-export const DID_AUTO_LOGIN = 'DID_AUTO_LOGIN';
+export const AUTHENTICATE = "AUTHENTICATE";
+export const LOGOUT = "LOGOUT";
+export const DID_AUTO_LOGIN = "DID_AUTO_LOGIN";
 
 export const setDidAutoLogin = () => {
-    return (dispatch) => { dispatch({ type: DID_AUTO_LOGIN }) };
+  return (dispatch) => {
+    dispatch({ type: DID_AUTO_LOGIN });
+  };
 };
 
 export const authenticate = (userId, token, expiryTime) => {
@@ -21,87 +23,99 @@ export const authenticate = (userId, token, expiryTime) => {
 
 //(email, password) add more info inside this bracket
 export const register = (email, password) => {
-    return async dispatch => {
-        const response = await fetch(
-            'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAJDYVoRRinh626T1wLJh6MI6sCl7YZ5BM',
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        email: email,
-                        password: password,
-                        returnSecureToken: true
-                    })
-                }
-            );
-        
-        if(!response.ok){
-            const errorResData = await response.json();
-            const errorID = errorResData.error.message;
-            let message = 'Something wrong';
-            if (errorID === 'EMAIL_EXISTS') {
-                message = 'This email exist already!';
-            }
-            throw new Error(message);
-        }
+  return async (dispatch) => {
+    const response = await fetch(
+      "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAJDYVoRRinh626T1wLJh6MI6sCl7YZ5BM",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+          returnSecureToken: true,
+        }),
+      }
+    );
 
-        const responseData = await response.json(); 
+    if (!response.ok) {
+      const errorResData = await response.json();
+      const errorID = errorResData.error.message;
+      let message = "Something wrong";
+      if (errorID === "EMAIL_EXISTS") {
+        message = "This email exist already!";
+      }
+      throw new Error(message);
+    }
 
-        dispatch(authenticate(responseData.localId, responseData.idToken, parseInt(responseData.expiresIn)*1000))
+    const responseData = await response.json();
 
-        const expirationDate = new Date(
-            new Date().getTime + parseInt(responseData.expiresIn) * 1000
-        );
+    dispatch(
+      authenticate(
+        responseData.localId,
+        responseData.idToken,
+        parseInt(responseData.expiresIn) * 1000
+      )
+    );
 
-        saveDataToLocal(responseData.token, responseData.localId, expirationDate);
+    const expirationDate = new Date(
+      new Date().getTime() + parseInt(responseData.expiresIn) * 1000
+    );
 
-    };
+    saveDataToLocal(responseData.token, responseData.localId, expirationDate);
+  };
 };
 
 export const login = (email, password) => {
-    return async dispatch => {
-        const response = await fetch(
-            'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAJDYVoRRinh626T1wLJh6MI6sCl7YZ5BM',
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        email: email,
-                        password: password,
-                        returnSecureToken: true
-                    })
-                }
-            );
-        
-        if(!response.ok){
-            const errorResData = await response.json();
-            const errorID = errorResData.error.message;
-            let message = 'Something wrong';
-            if (errorID === 'EMAIL_NOT_FOUND') {
-                message = 'This email cant be found!';
-            } else if (errorID === 'USER_DISABLED') {
-                message = 'User disable';
-            } else if (errorID === 'INVALID_PASSWORD') {
-                message = 'Password Problem';
-            }
-            throw new Error(message);
-        }
+  return async (dispatch) => {
+    const response = await fetch(
+      "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAJDYVoRRinh626T1wLJh6MI6sCl7YZ5BM",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+          returnSecureToken: true,
+        }),
+      }
+    );
 
-        const responseData = await response.json(); 
+    if (!response.ok) {
+      const errorResData = await response.json();
+      const errorID = errorResData.error.message;
+      let message = "Something wrong";
+      if (errorID === "EMAIL_NOT_FOUND") {
+        message = "This email cant be found!";
+      } else if (errorID === "USER_DISABLED") {
+        message = "User disable";
+      } else if (errorID === "INVALID_PASSWORD") {
+        message = "Password Problem";
+      }
+      throw new Error(message);
+    }
 
-        dispatch(authenticate(responseData.localId, responseData.idToken, parseInt(responseData.expiresIn)*1000));
+    const responseData = await response.json();
 
-        const expirationDate = new Date(
-            new Date().getTime + parseInt(responseData.expiresIn) * 1000
-        );
+    dispatch(
+      authenticate(
+        responseData.localId,
+        responseData.idToken,
+        parseInt(responseData.expiresIn) * 1000
+      )
+      );
+      
 
-        saveDataToLocal(responseData.idToken, responseData.localId, expirationDate);
+    const expirationDate = new Date(
+      new Date().getTime() + parseInt(responseData.expiresIn) * 1000
+      );
 
-    };
+
+    saveDataToLocal(responseData.idToken, responseData.localId, expirationDate);
+  };
 };
 
 export const logout = () => {
@@ -109,7 +123,7 @@ export const logout = () => {
   return { type: LOGOUT };
 };
 
-const saveDataToLocal = (token, userId, expirationDate) => {
+const saveDataToLocal = async (token, userId, expirationDate) => {
   AsyncStorage.setItem(
     "userData",
     JSON.stringify({
@@ -117,5 +131,5 @@ const saveDataToLocal = (token, userId, expirationDate) => {
       userId: userId,
       expiryDate: expirationDate.toISOString(),
     })
-  );
+    ).catch((e) => console.log(e));
 };
