@@ -116,7 +116,9 @@ export const register = (email, password) => {
       new Date().getTime() + parseInt(responseData.expiresIn) * 1000
     );
 
-    saveDataToLocal(responseData.token, responseData.localId, expirationDate);
+    const miliSecondDate = expirationDate.setSeconds(new Date().getSeconds() + parseInt(responseData.expiresIn));
+
+    saveDataToLocal(responseData.token, responseData.localId, miliSecondDate);
   };
 };
 
@@ -157,7 +159,7 @@ export const login = (email, password) => {
       authenticate(
         responseData.localId,
         responseData.idToken,
-        parseInt(responseData.expiresIn) * 1000
+        parseInt(responseData.expiresIn)
       )
     );
 
@@ -165,7 +167,56 @@ export const login = (email, password) => {
       new Date().getTime() + parseInt(responseData.expiresIn) * 1000
     );
 
-    saveDataToLocal(responseData.idToken, responseData.localId, expirationDate);
+    //const currentTime = new Date( new Date().getTime());
+    //const currentMili = currentTime.setSeconds(new Date().getSeconds());
+    
+    const miliSecondDate = expirationDate.setSeconds(new Date().getSeconds() + parseInt(responseData.expiresIn));
+
+    //const diff = ((miliSecondFormat - currentMili) / 3600).toFixed(0);
+    
+    console.log(miliSecondDate);
+    //console.log(expirationDate);
+    //console.log(currentTime);
+    //console.log(diff);
+
+    saveDataToLocal(responseData.idToken, responseData.localId, miliSecondDate);
+  };
+};
+
+export const refreshToken = () => {
+  return async (dispatch) => {
+    const response = await fetch(
+      "https://securetoken.googleapis.com/v1/token?key=AIzaSyAJDYVoRRinh626T1wLJh6MI6sCl7YZ5BM",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: JSON.stringify({
+          grant_type: refresh_token,
+          refresh_token: refresh_token,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      const errorResData = await response.json();
+      const errorID = errorResData.error.message;
+      let message = "Something wrong";
+      if (errorID === "TOKEN_EXPIRED") {
+        message = "Token Expired";
+      } else if (errorID === "INVALID_REFRESH_TOKEN") {
+        message = "Refresh token invalid";
+      } else if (errorID === "INVALID_GRANT_TYPE") {
+        message = "Password Problem";
+      }
+      throw new Error(message);
+    }
+
+    const responseData = await response.json();
+
+    console.log(responseData);
+
   };
 };
 
@@ -180,13 +231,13 @@ export const logout = () => {
   return { type: LOGOUT };
 };
 
-const saveDataToLocal = async (token, userId, expirationDate) => {
+const saveDataToLocal = async (token, userId, miliSecondDate) => {
   AsyncStorage.setItem(
     "userData",
     JSON.stringify({
       token: token,
       userId: userId,
-      expiryDate: expirationDate.toISOString(),
+      expiryDate: miliSecondDate,
     })
   ).catch((e) => console.log(e));
 };
