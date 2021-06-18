@@ -116,9 +116,16 @@ export const register = (email, password) => {
       new Date().getTime() + parseInt(responseData.expiresIn) * 1000
     );
 
-    const miliSecondDate = expirationDate.setSeconds(new Date().getSeconds() + parseInt(responseData.expiresIn));
+    const miliSecondDate = expirationDate.setSeconds(
+      new Date().getSeconds() + parseInt(responseData.expiresIn)
+    );
 
-    saveDataToLocal(responseData.token, responseData.localId, miliSecondDate);
+    saveDataToLocal(
+      responseData.token,
+      responseData.localId,
+      miliSecondDate,
+      responseData.refreshToken
+    );
   };
 };
 
@@ -169,38 +176,47 @@ export const login = (email, password) => {
 
     //const currentTime = new Date( new Date().getTime());
     //const currentMili = currentTime.setSeconds(new Date().getSeconds());
-    
-    const miliSecondDate = expirationDate.setSeconds(new Date().getSeconds() + parseInt(responseData.expiresIn));
+
+    const miliSecondDate = expirationDate.setSeconds(
+      new Date().getSeconds() + parseInt(responseData.expiresIn)
+    );
 
     //const diff = ((miliSecondFormat - currentMili) / 3600).toFixed(0);
-    
+
     console.log(miliSecondDate);
     //console.log(expirationDate);
     //console.log(currentTime);
     //console.log(diff);
 
-    saveDataToLocal(responseData.idToken, responseData.localId, miliSecondDate);
+    saveDataToLocal(
+      responseData.idToken,
+      responseData.localId,
+      miliSecondDate,
+      responseData.refreshToken
+    );
   };
 };
 
-export const refreshToken = () => {
+export const refreshToken = (refreshToken) => {
   return async (dispatch) => {
     const response = await fetch(
       "https://securetoken.googleapis.com/v1/token?key=AIzaSyAJDYVoRRinh626T1wLJh6MI6sCl7YZ5BM",
       {
         method: "POST",
         headers: {
+          "Accept": "application/json",
           "Content-Type": "application/x-www-form-urlencoded",
         },
         body: JSON.stringify({
-          grant_type: refresh_token,
-          refresh_token: refresh_token,
+          grant_type: "refresh_token",
+          refresh_token: refreshToken,
         }),
       }
     );
 
     if (!response.ok) {
-      const errorResData = await response.json();
+      const errorResData = await response.text();
+      console.log(errorResData)
       const errorID = errorResData.error.message;
       let message = "Something wrong";
       if (errorID === "TOKEN_EXPIRED") {
@@ -216,7 +232,6 @@ export const refreshToken = () => {
     const responseData = await response.json();
 
     console.log(responseData);
-
   };
 };
 
@@ -224,20 +239,20 @@ export const logout = () => {
   AsyncStorage.removeItem("userData");
   try {
     Facebook.logOutAsync();
-  }
-  catch (err) {
+  } catch (err) {
     console.log(err);
   }
   return { type: LOGOUT };
 };
 
-const saveDataToLocal = async (token, userId, miliSecondDate) => {
+const saveDataToLocal = async (token, userId, miliSecondDate, refreshToken) => {
   AsyncStorage.setItem(
     "userData",
     JSON.stringify({
       token: token,
       userId: userId,
       expiryDate: miliSecondDate,
+      refreshToken: refreshToken,
     })
   ).catch((e) => console.log(e));
 };
