@@ -1,8 +1,9 @@
-import React, { useState, useReducer, useEffect, useCallback } from 'react';
+import React, { useState, useReducer, useEffect, useCallback, Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView, Alert, ActivityIndicator } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import CheckBox from '@react-native-community/checkbox';
 import { useDispatch } from 'react-redux';
+
 
 import CustomButton from '../components/CustomButton';
 import InputCard from '../components/InputCard';
@@ -56,7 +57,7 @@ const SignUpPage = () => {
           },
           formIsValid: false
     });
-    
+
     useEffect(() => {
       if (error) {
         Alert.alert('Error, please try again later', error, [{text : 'Okay'}]);
@@ -139,6 +140,7 @@ const SignUpPage = () => {
             initialValue=''
             />
             <InputCard
+            extraStyle={{height: 100}}
             id="address"
             placeholder='Address'
             keyboardType='default'
@@ -149,6 +151,19 @@ const SignUpPage = () => {
             onInputChange={inputChangeHandler}
             initialValue=''
             />
+            {/*<View style={styles.Picker}>
+              <PhoneInput 
+              ref={phoneInput}
+              defaultValue={phoneNum}
+              defaultCode="IN"
+              layout="first"
+              onChangeText={(text) => {setPhoneNum(text);}}
+              countryPickerProps={{withAlphaFilter:true}}
+              withDarkTheme
+              withShadow
+              autoFocus
+              />
+    </View> */}
             <View style={styles.Picker}>
                 <Text style={{color: '#000'}}>Brokerage Company : </Text>
                 <Picker

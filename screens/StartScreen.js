@@ -31,26 +31,26 @@ const StartScreen = (props) => {
       // Firebase auto login
       const userData = await AsyncStorage.getItem("userData");
       console.log(userData);
-      // if (!userData) {
-      //   dispatch(authActions.setDidAutoLogin());
-      //   return;
-      // }
-
-      const transformData = JSON.parse(userData);
-      const { token, userId, expiryDate, refreshToken } = transformData;
-      const expirationDate = new Date(expiryDate);
-
-      // Date.now() returns current time in milliseconds
-      const currentTime = Date.now();
-
-      const diff = ((expiryDate - currentTime) / 3600).toFixed(0);
-
-      console.log(`Difference: ${diff}`);
-
-      if (diff <= 1500) {
-        dispatch(authActions.refreshToken(refreshToken));
+      if (!userData) {
+        dispatch(authActions.setDidAutoLogin());
         return;
       }
+
+      const transformData = JSON.parse(userData);
+      const { token, userId, expiryDate } = transformData;
+      const expirationDate = new Date(expiryDate);
+      
+      const currentTime = new Date( new Date().getTime());
+      const currentMili = currentTime.setSeconds(new Date().getSeconds());
+
+      const diff = ((expiryDate - currentMili) / 3600).toFixed(0);
+
+      console.log(diff);
+
+      {/*if (diff <= 0) {
+        dispatch(authActions.refreshToken());
+        return;
+      }*/}
 
       if (expirationDate <= new Date() || !token || !userId) {
         dispatch(authActions.setDidAutoLogin());

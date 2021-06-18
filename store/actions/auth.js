@@ -64,15 +64,23 @@ export const loginViaFacebook = async (dispatch) => {
   }
 };
 
-{
-  /*export const loginViaGoogle = async () => {
-    const {type, accessToken, user} = await Google.logInAsync(config);
+export async function loginViaGoogle() {
+  try {
+    const result = await Google.logInAsync({
+      androidClientId: '950808968576-mnhc5gcaqt787o33ccukn1bfvch8pepe.apps.googleusercontent.com',
+      iosClientId: '950808968576-ufc28236nnhdh3ickcv8beugfd43do5m.apps.googleusercontent.com',
+      scopes: ['profile', 'email'],
+    });
 
-    if(type === 'success'){
-        let userInfo = await fetch
+    if (result.type === 'success') {
+      return result.accessToken;
+    } else {
+      return { cancel : true };
     }
-}*/
-}
+  }catch(e) {
+    return { error : true };
+  }
+};
 
 //(email, password) add more info inside this bracket
 export const register = (email, password) => {

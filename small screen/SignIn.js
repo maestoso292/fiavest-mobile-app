@@ -151,7 +151,7 @@ const SignInPage = () => {
         />
         <CustomButton
           source={require("../assets/google-icon.png")}
-          onPress={() => {}}
+          onPress={() => dispatch(authActions.loginViaGoogle)}
         />
       </View>
     </View>

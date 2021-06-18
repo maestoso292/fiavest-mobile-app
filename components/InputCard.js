@@ -64,7 +64,7 @@ const InputCard = props => {
     return (
         <View style={styles.inputCon}>
             <TextInput 
-            style={styles.inputBox}
+            style={[styles.inputBox, , props.extraStyle]}
             {...props}
             value={inputState.value}
             onChangeText={textChangeHandler}
