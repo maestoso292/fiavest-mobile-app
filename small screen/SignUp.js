@@ -1,9 +1,8 @@
-import React, { useState, useReducer, useEffect, useCallback, Component } from 'react';
+import React, { useState, useReducer, useEffect, useCallback, Component, FC } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView, Alert, ActivityIndicator } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import CheckBox from '@react-native-community/checkbox';
 import { useDispatch } from 'react-redux';
-
 
 import CustomButton from '../components/CustomButton';
 import InputCard from '../components/InputCard';
@@ -151,26 +150,23 @@ const SignUpPage = () => {
             onInputChange={inputChangeHandler}
             initialValue=''
             />
-            {/*<View style={styles.Picker}>
-              <PhoneInput 
-              ref={phoneInput}
-              defaultValue={phoneNum}
-              defaultCode="IN"
-              layout="first"
-              onChangeText={(text) => {setPhoneNum(text);}}
-              countryPickerProps={{withAlphaFilter:true}}
-              withDarkTheme
-              withShadow
-              autoFocus
-              />
-    </View> */}
+            <InputCard
+            id="phoneNum"
+            placeholder='Phone Number'
+            keyboardType='phone-pad'
+            errorText="Please enter a phone number"
+            required
+            minLength={8}
+            maxLength={10}
+            onInputChange={inputChangeHandler}
+            initialValue=''
+            />
             <View style={styles.Picker}>
                 <Text style={{color: '#000'}}>Brokerage Company : </Text>
                 <Picker
                 selectedValue={selectedBroking}
                 style = {{height: 30, width: 150}}
-                onValueChange={(itemValue, itemIndex) => setSelectedBroking(itemValue)}
-                >
+                onValueChange={(itemValue, itemIndex) => setSelectedBroking(itemValue)}>
                     <Picker.Item label="Malacca Securities Sdn Bhd" value="Malacca" />
                     <Picker.Item label="Test 2" value="test 2" />
                     <Picker.Item label="Test 3" value="test 3" />
