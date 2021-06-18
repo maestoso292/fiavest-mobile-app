@@ -104,14 +104,6 @@ export const register = (email, password) => {
 
     const responseData = await response.json();
 
-    dispatch(
-      authenticate(
-        responseData.localId,
-        responseData.idToken,
-        parseInt(responseData.expiresIn) * 1000
-      )
-    );
-
     const expirationDate = new Date(
       new Date().getTime() + parseInt(responseData.expiresIn) * 1000
     );
@@ -125,6 +117,14 @@ export const register = (email, password) => {
       responseData.localId,
       miliSecondDate,
       responseData.refreshToken
+    );
+
+    dispatch(
+      authenticate(
+        responseData.localId,
+        responseData.idToken,
+        parseInt(responseData.expiresIn) * 1000
+      )
     );
   };
 };
@@ -204,21 +204,17 @@ export const refreshToken = (refreshToken) => {
       {
         method: "POST",
         headers: {
-          "Accept": "application/json",
+          Accept: "application/json",
           "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: JSON.stringify({
-          grant_type: "refresh_token",
-          refresh_token: refreshToken,
-        }),
+        body: `grant_type=refresh_token&refresh_token=${refreshToken}`,
       }
     );
 
     if (!response.ok) {
-      const errorResData = await response.text();
-      console.log(errorResData)
+      const errorResData = await response.json();
       const errorID = errorResData.error.message;
-      let message = "Something wrong";
+      let message = `Something wrong: ${errorID}`;
       if (errorID === "TOKEN_EXPIRED") {
         message = "Token Expired";
       } else if (errorID === "INVALID_REFRESH_TOKEN") {
@@ -231,6 +227,17 @@ export const refreshToken = (refreshToken) => {
 
     const responseData = await response.json();
 
+    const expirationDate = new Date(
+      new Date().getTime() + parseInt(responseData.expiresIn) * 1000
+    );
+
+    const miliSecondDate = expirationDate.setSeconds(
+      new Date().getSeconds() + parseInt(responseData.expiresIn)
+    );
+
+    dispatch(
+      authenticate(responseData.userId, responseData.id_token, miliSecondDate)
+    );
     console.log(responseData);
   };
 };
