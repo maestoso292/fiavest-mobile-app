@@ -13,7 +13,7 @@ export const setDidAutoLogin = () => {
   };
 };
 
-export const authenticate = (userId, token, expiryTime) => {
+export const authenticate = (userId, token, expiryTime, method) => {
   return (dispatch) => {
     //dispatch(setLogoutTimer(expiryTime));
     dispatch({
@@ -55,6 +55,7 @@ export const loginViaFacebook = async (dispatch) => {
       );
       const responseData = await response.json();
       console.log(responseData);
+      saveDataToLocal(token, userId, expirationDate, null, "facebook");
       dispatch(authenticate(userId, token, expirationDate.toISOString()));
     } else {
       console.log("Cancel");
@@ -64,21 +65,30 @@ export const loginViaFacebook = async (dispatch) => {
   }
 };
 
-export async function loginViaGoogle() {
+export const loginViaGoogle = async (dispatch) => {
   try {
     const result = await Google.logInAsync({
-      androidClientId: '950808968576-mnhc5gcaqt787o33ccukn1bfvch8pepe.apps.googleusercontent.com',
-      iosClientId: '950808968576-ufc28236nnhdh3ickcv8beugfd43do5m.apps.googleusercontent.com',
-      scopes: ['profile', 'email'],
+      androidClientId:
+        "950808968576-mnhc5gcaqt787o33ccukn1bfvch8pepe.apps.googleusercontent.com",
+      iosClientId:
+        "950808968576-ufc28236nnhdh3ickcv8beugfd43do5m.apps.googleusercontent.com",
+      scopes: ["profile", "email"],
     });
-
-    if (result.type === 'success') {
-      return result.accessToken;
+    console.log(result);
+    if (result.type === "success") {
+      saveDataToLocal(
+        result.accessToken,
+        result.user.id,
+        "",
+        result.refreshToken,
+        "google"
+      );
+      dispatch(authenticate(result.idToken, result.accessToken, ""));
     } else {
-      return { cancel : true };
+      return { cancel: true };
     }
-  }catch(e) {
-    return { error : true };
+  } catch (e) {
+    return { error: true };
   }
 };
 
@@ -124,7 +134,8 @@ export const register = (email, password) => {
       responseData.token,
       responseData.localId,
       miliSecondDate,
-      responseData.refreshToken
+      responseData.refreshToken,
+      "email"
     );
 
     dispatch(
@@ -200,7 +211,8 @@ export const login = (email, password) => {
       responseData.idToken,
       responseData.localId,
       miliSecondDate,
-      responseData.refreshToken
+      responseData.refreshToken,
+      "email"
     );
   };
 };
@@ -244,7 +256,12 @@ export const refreshToken = (refreshToken) => {
     );
 
     dispatch(
-      authenticate(responseData.userId, responseData.id_token, miliSecondDate)
+      authenticate(
+        responseData.userId,
+        responseData.id_token,
+        miliSecondDate,
+        "email"
+      )
     );
     console.log(responseData);
   };
@@ -260,7 +277,7 @@ export const logout = () => {
   return { type: LOGOUT };
 };
 
-const saveDataToLocal = async (token, userId, miliSecondDate, refreshToken) => {
+const saveDataToLocal = async (token, userId, miliSecondDate, refreshToken,method) => {
   AsyncStorage.setItem(
     "userData",
     JSON.stringify({
@@ -268,6 +285,7 @@ const saveDataToLocal = async (token, userId, miliSecondDate, refreshToken) => {
       userId: userId,
       expiryDate: miliSecondDate,
       refreshToken: refreshToken,
+      method: method,
     })
   ).catch((e) => console.log(e));
 };
