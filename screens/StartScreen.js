@@ -47,7 +47,7 @@ const StartScreen = (props) => {
 
       console.log(`Difference: ${diff}`);
 
-      if (diff) {
+      if (diff <= 1500) {
         dispatch(authActions.refreshToken(refreshToken));
         return;
       }
