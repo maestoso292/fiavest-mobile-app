@@ -46,13 +46,25 @@ const SignUpPage = () => {
     const dispatch = useDispatch();
 
     const [formState, dispatchFormState] = useReducer(formReducer, {
-        inputValues: {
+      inputValues: {
+            username: '',
             email: '',
-            password: ''
+            password: '',
+            address: '',
+            phone: '',
+            brokingHouse: '',
+            term: '',
+            experience: '',
           },
           inputValidities: {
+            username: false,
             email: false,
             password: false,
+            address: false,
+            phone: false,
+            brokingHouse: false,
+            term: false,
+            experience: false,
           },
           formIsValid: false
     });
@@ -69,6 +81,12 @@ const SignUpPage = () => {
         action = authActions.register(
           formState.inputValues.email,
           formState.inputValues.password,
+          formState.inputValues.username,
+          formState.inputValues.address,
+          "phone",
+          selectedBroking,
+          selectedTerm,
+          selectedExperience,
         );
         setError(null);
         setIsLoading(true);
@@ -169,9 +187,9 @@ const SignUpPage = () => {
                 style = {{height: 30, width: 150}}
                 onValueChange={(itemValue, itemIndex) => setSelectedTerm(itemValue)}
                 >
-                    <Picker.Item label="Short Term" value="short" />
-                    <Picker.Item label="Medium Term" value="medium" />
-                    <Picker.Item label="Long Term" value="long" />
+                    <Picker.Item label="Short Term" value="Short Term" />
+                    <Picker.Item label="Medium Term" value="Medium Term" />
+                    <Picker.Item label="Long Term" value="Long Term" />
                 </Picker>
             </View>
             <View style={styles.term}>
@@ -186,10 +204,10 @@ const SignUpPage = () => {
                 style = {{height: 30, width: 150}}
                 onValueChange={(itemValue, itemIndex) => setSelectedExperience(itemValue)}
                 >
-                    <Picker.Item label="0 year" value="0" />
-                    <Picker.Item label="1 year" value="1" />
-                    <Picker.Item label="2 year" value="2" />
-                    <Picker.Item label="3 year" value="3" />
+                    <Picker.Item label="0 year" value="0 years" />
+                    <Picker.Item label="1 year" value="1 year" />
+                    <Picker.Item label="2 year" value="2 years" />
+                    <Picker.Item label="3 year" value="3 years" />
                 </Picker>
             </View>
             <View style={styles.TandC}>

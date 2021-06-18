@@ -75,7 +75,16 @@ export const loginViaFacebook = async (dispatch) => {
 }
 
 //(email, password) add more info inside this bracket
-export const register = (email, password) => {
+export const register = (
+  email,
+  password,
+  username,
+  address,
+  phone,
+  brokingHouse,
+  term,
+  experience,
+) => {
   return async (dispatch) => {
     const response = await fetch(
       "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAJDYVoRRinh626T1wLJh6MI6sCl7YZ5BM",
@@ -103,6 +112,19 @@ export const register = (email, password) => {
     }
 
     const responseData = await response.json();
+
+    dispatch(
+      writeUserDataToDB(
+        responseData.localId,
+        username,
+        email,
+        address,
+        phone,
+        brokingHouse,
+        term,
+        experience,
+      )
+    );
 
     dispatch(
       authenticate(
@@ -169,12 +191,43 @@ export const login = (email, password) => {
   };
 };
 
+export const writeUserDataToDB = (
+  uid,
+  username,
+  email,
+  address,
+  phone,
+  brokingHouse,
+  term,
+  experience,
+) => {
+  return async (dispatch) => {
+    const response = await fetch(
+      `https://fiavest-tempo-default-rtdb.firebaseio.com/users/${uid}.json`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          email,
+          address,
+          phone,
+          brokingHouse,
+          term,
+          experience,
+        }),
+      }
+    );
+  };
+};
+
 export const logout = () => {
   AsyncStorage.removeItem("userData");
   try {
     Facebook.logOutAsync();
-  }
-  catch (err) {
+  } catch (err) {
     console.log(err);
   }
   return { type: LOGOUT };
