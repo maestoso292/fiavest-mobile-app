@@ -80,8 +80,8 @@ const SignInPage = () => {
     setError(null);
     setIsLoading(true);
     try {
-      await dispatch(action);
-      props.navigation.navigate("Home");
+      dispatch(action);
+      //props.navigation.navigate("Home");
     } catch (err) {
       setError(err.message);
       setIsLoading(false);

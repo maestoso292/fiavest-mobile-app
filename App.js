@@ -6,7 +6,7 @@ import navReducer from "./store/reducers/navigation";
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import { Provider } from "react-redux";
 import authReducer from "./store/reducers/auth";
-import thunk from "redux-thunk";
+import ReduxThunk from "redux-thunk";
 
 
 const rootReducer = combineReducers({
@@ -14,7 +14,7 @@ const rootReducer = combineReducers({
   navigation: navReducer,
 });
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
+const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
 export default function App() {
   return (
@@ -23,5 +23,3 @@ export default function App() {
     </Provider>
   )
 }
-
-export default App;

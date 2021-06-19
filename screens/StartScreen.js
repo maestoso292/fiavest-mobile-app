@@ -12,7 +12,7 @@ const StartScreen = (props) => {
   // TODO tryLogin can probably be broken down into separate functions
   useEffect(() => {
     const tryLogin = async () => {
-      //await AsyncStorage.removeItem("userData");
+      // await AsyncStorage.removeItem("userData");
       const userData = await AsyncStorage.getItem("userData");
       console.log(userData);
       if (!userData) {
