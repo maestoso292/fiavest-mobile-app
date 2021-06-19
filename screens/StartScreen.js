@@ -12,23 +12,7 @@ const StartScreen = (props) => {
   // TODO tryLogin can probably be broken down into separate functions
   useEffect(() => {
     const tryLogin = async () => {
-      // Facebook auto login
-      try {
-        await Facebook.initializeAsync({
-          appId: "484772439271129",
-        });
-        const userDataFB = await Facebook.getAuthenticationCredentialAsync();
-        if (userDataFB) {
-          // console.log(userDataFB);
-          // TODO Unsure how expiration date needs to be handled. For refresh token?
-          dispatch(authActions.authenticate(userDataFB.userId, userDataFB.token, userDataFB.expirationDate));
-          return;
-        }
-      } catch (err) {
-        console.log(err);
-      }
-
-      // Firebase auto login
+      //await AsyncStorage.removeItem("userData");
       const userData = await AsyncStorage.getItem("userData");
       console.log(userData);
       if (!userData) {
@@ -37,27 +21,57 @@ const StartScreen = (props) => {
       }
 
       const transformData = JSON.parse(userData);
-      const { token, userId, expiryDate } = transformData;
-      const expirationDate = new Date(expiryDate);
-      
-      const currentTime = new Date( new Date().getTime());
-      const currentMili = currentTime.setSeconds(new Date().getSeconds());
+      const { token, userId, expiryDate, method } = transformData;
 
-      const diff = ((expiryDate - currentMili) / 3600).toFixed(0);
+      if (method == "facebook") {
+        // Facebook auto login
+        try {
+          await Facebook.initializeAsync({
+            appId: "484772439271129",
+          });
+          const userDataFB = await Facebook.getAuthenticationCredentialAsync();
+          if (userDataFB) {
+            // console.log(userDataFB);
+            // TODO Unsure how expiration date needs to be handled. For refresh token?
+            dispatch(
+              authActions.authenticate(
+                userDataFB.userId,
+                userDataFB.token,
+                userDataFB.expirationDate,
+                "facebook"
+              )
+            );
+            return;
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      } else if (method == "google") {
+        dispatch(authActions.loginViaGoogle());
+      } else {
+        // Firebase auto login
 
-      console.log(diff);
+        const expirationDate = new Date(expiryDate);
 
-      {/*if (diff <= 0) {
-        dispatch(authActions.refreshToken());
-        return;
-      }*/}
+        const currentTime = new Date(new Date().getTime());
+        const currentMili = currentTime.setSeconds(new Date().getSeconds());
 
-      if (expirationDate <= new Date() || !token || !userId) {
-        dispatch(authActions.setDidAutoLogin());
-        return;
+        const diff = ((expiryDate - currentMili) / 3600).toFixed(0);
+
+        console.log(diff);
+
+        if (diff <= 0) {
+          dispatch(authActions.refreshToken());
+          return;
+        }
+
+        if (expirationDate <= new Date() || !token || !userId) {
+          dispatch(authActions.setDidAutoLogin());
+          return;
+        }
+
+        dispatch(authActions.authenticate(userId, token, expiryDate, "email"));
       }
-
-      dispatch(authActions.authenticate(userId, token));
     };
 
     tryLogin().catch((e) => console.log(e));
