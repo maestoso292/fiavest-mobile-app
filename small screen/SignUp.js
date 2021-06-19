@@ -83,7 +83,7 @@ const SignUpPage = () => {
           formState.inputValues.password,
           formState.inputValues.username,
           formState.inputValues.address,
-          "phone",
+          formState.inputValues.phone,
           selectedBroking,
           selectedTerm,
           selectedExperience,
@@ -169,7 +169,7 @@ const SignUpPage = () => {
             initialValue=''
             />
             <InputCard
-            id="phoneNum"
+            id="phone"
             placeholder='Phone Number'
             keyboardType='phone-pad'
             errorText="Please enter a phone number"
