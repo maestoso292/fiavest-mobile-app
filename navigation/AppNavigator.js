@@ -1,12 +1,9 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import {
-  getFocusedRouteNameFromRoute,
-  NavigationContainer,
-  useNavigation,
-} from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import StartScreen from "../screens/StartScreen";
 import AuthScreen from "../screens/AuthScreen";
 import HomeScreen from "../screens/HomeScreen";
 import StocksScreen from "../screens/StocksScreen";
@@ -15,29 +12,45 @@ import NavigationMenu from "./NavigationMenu";
 import MenuHeaderButton from "./MenuHeaderButton";
 import { Routes } from "../constants/routes";
 
+const RootStack = createStackNavigator();
 const MainDrawer = createDrawerNavigator();
 const StockStack = createStackNavigator();
 
-const StockNavigator = () => {
+const AppNavigator = () => {
+  const authToken = useSelector((state) => state.auth.token);
+  const isAuth = useSelector((state) => !!state.auth.token);
+  const didAutoLogin = useSelector((state) => state.auth.didAutoLogin);
+
   return (
-    <StockStack.Navigator
-      screenOptions={{ headerShown: true, headerTitleAlign: "center" }}
-      initialRouteName={Routes.STOCKS_SEARCH}
-    >
-      <StockStack.Screen
-        name={Routes.STOCKS_SEARCH}
-        component={StocksScreen}
-        options={{
-          headerLeft: () => {
-            return <MenuHeaderButton />;
-          },
+    <NavigationContainer>
+      <RootStack.Navigator
+        screenOptions={{
+          headerShown: false,
         }}
-      />
-      <StockStack.Screen
-        name={Routes.STOCK_DETAILS}
-        component={StockDetailsScreen}
-      />
-    </StockStack.Navigator>
+        mode="modal"
+      >
+        {isAuth && (
+          <>
+            <RootStack.Screen name="Main" component={MainNavigator} />
+            <RootStack.Screen
+              name="Menu"
+              component={NavigationMenu}
+              options={menuOptions}
+            />
+          </>
+        )}
+        {!isAuth && didAutoLogin && (
+          <RootStack.Screen
+            name="Auth"
+            component={AuthScreen}
+            option={{ headerShown: true }}
+          />
+        )}
+        {!isAuth && !didAutoLogin && (
+          <RootStack.Screen name="Start" component={StartScreen} />
+        )}
+      </RootStack.Navigator>
+    </NavigationContainer>
   );
 };
 
@@ -64,7 +77,28 @@ const MainNavigator = () => {
   );
 };
 
-const RootStack = createStackNavigator();
+const StockNavigator = () => {
+  return (
+    <StockStack.Navigator
+      screenOptions={{ headerShown: true, headerTitleAlign: "center" }}
+      initialRouteName={Routes.STOCKS_SEARCH}
+    >
+      <StockStack.Screen
+        name={Routes.STOCKS_SEARCH}
+        component={StocksScreen}
+        options={{
+          headerLeft: () => {
+            return <MenuHeaderButton />;
+          },
+        }}
+      />
+      <StockStack.Screen
+        name={Routes.STOCK_DETAILS}
+        component={StockDetailsScreen}
+      />
+    </StockStack.Navigator>
+  );
+};
 
 const menuOptions = {
   cardStyle: { backgroundColor: "transparent" },
@@ -83,38 +117,6 @@ const menuOptions = {
       }),
     },
   }),
-};
-
-// TODO Merge with Victor's navigator for auth
-const AppNavigator = () => {
-  const authToken = useSelector((state) => state.auth.token);
-  return (
-    <NavigationContainer>
-      <RootStack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}
-        mode="modal"
-      >
-        {authToken == null ? (
-          <RootStack.Screen
-            name="Auth"
-            component={AuthScreen}
-            option={{ headerShown: true }}
-          />
-        ) : (
-          <>
-            <RootStack.Screen name="Main" component={MainNavigator} />
-            <RootStack.Screen
-              name="Menu"
-              component={NavigationMenu}
-              options={menuOptions}
-            />
-          </>
-        )}
-      </RootStack.Navigator>
-    </NavigationContainer>
-  );
 };
 
 export default AppNavigator;
