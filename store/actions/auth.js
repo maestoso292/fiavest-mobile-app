@@ -7,33 +7,27 @@ export const AUTHENTICATE = "AUTHENTICATE";
 export const LOGOUT = "LOGOUT";
 export const DID_AUTO_LOGIN = "DID_AUTO_LOGIN";
 
+export const LOGIN_METHODS = {
+  EMAIL: "email",
+  FACEBOOK: "facebook",
+  GOOGLE: "google",
+};
+
 export const setDidAutoLogin = () => {
   return (dispatch) => {
     dispatch({ type: DID_AUTO_LOGIN });
   };
 };
 
-export const authenticate = (userId, token, expiryTime, method) => {
+export const authenticate = (userId, token, expiryDate) => {
   return (dispatch) => {
     //dispatch(setLogoutTimer(expiryTime));
     dispatch({
       type: AUTHENTICATE,
       userId: userId,
       token: token,
-      expiryTime: expiryTime,
+      expiryDate: expiryDate,
     });
-  };
-};
-
-export const initFacebook = async (dispatch) => {
-  return async (dispatch) => {
-    try {
-      const response = await Facebook.initializeAsync({
-        appId: "484772439271129",
-      });
-    } catch (err) {
-      console.log(err);
-    }
   };
 };
 
@@ -53,15 +47,45 @@ export const loginViaFacebook = async (dispatch) => {
       const response = await fetch(
         `https://graph.facebook.com/me?access_token=${token}`
       );
-      const responseData = await response.json();
-      console.log(responseData);
-      saveDataToLocal(token, userId, expirationDate, null, "facebook");
-      dispatch(authenticate(userId, token, expirationDate.toISOString()));
+
+      saveDataToLocal(
+        token,
+        userId,
+        expirationDate.getMilliseconds(),
+        null,
+        LOGIN_METHODS.FACEBOOK
+      );
+      dispatch(
+        authenticate(
+          userId,
+          token,
+          expirationDate.getMilliseconds(),
+          LOGIN_METHODS.FACEBOOK
+        )
+      );
     } else {
       console.log("Cancel");
     }
   } catch (e) {
     console.log(`Facebook Login Error : ${e}`);
+  }
+};
+
+export const autoLoginViaFacebook = async (dispatch) => {
+  try {
+    const response = await Facebook.getAuthenticationCredentialAsync();
+
+    dispatch(
+      authenticate(
+        response.userId,
+        response.token,
+        response.expirationDate.getMilliseconds(),
+        LOGIN_METHODS.FACEBOOK
+      )
+    );
+  } catch (err) {
+    console.log(err);
+    dispatch(setDidAutoLogin);
   }
 };
 
@@ -74,25 +98,32 @@ export const loginViaGoogle = async (dispatch) => {
         "950808968576-ufc28236nnhdh3ickcv8beugfd43do5m.apps.googleusercontent.com",
       scopes: ["profile", "email"],
     });
-    console.log(result);
+
     if (result.type === "success") {
       saveDataToLocal(
         result.accessToken,
         result.user.id,
-        "",
+        0,
         result.refreshToken,
-        "google"
+        LOGIN_METHODS.GOOGLE
       );
-      dispatch(authenticate(result.idToken, result.accessToken, ""));
+      dispatch(
+        authenticate(
+          result.idToken,
+          result.accessToken,
+          0,
+          LOGIN_METHODS.GOOGLE
+        )
+      );
     } else {
       return { cancel: true };
     }
   } catch (e) {
-    return { error: true };
+    throw new Error("Login error. Please try again later.");
   }
 };
 
-// Might not be possible with Expo Go
+// TODO Might not be possible with Expo Go
 export const autoLoginViaGoogle = (refreshToken) => {
   return async (dispatch) => {
     const response = await fetch(
@@ -118,27 +149,31 @@ export const autoLoginViaGoogle = (refreshToken) => {
 
     const responseData = await response.json();
 
+    const expirationDate = new Date(
+      Date.now() + parseInt(responseData.expiresIn) * 1000
+    );
+
     saveDataToLocal(
       responseData.access_token,
       "",
-      parseInt(responseData.expires_in) * 1000,
+      expirationDate.getMilliseconds(),
       responseData.refresh_token,
-      "google"
+      LOGIN_METHODS.GOOGLE
     );
 
     dispatch(
       authenticate(
         "",
         responseData.access_token,
-        parseInt(responseData.expires_in) * 1000,
-        "google"
+        expirationDate.getMilliseconds(),
+        LOGIN_METHODS.GOOGLE
       )
     );
   };
 };
 
 //(email, password) add more info inside this bracket
-export const register = (
+export const registerViaEmail = (
   email,
   password,
   username,
@@ -169,7 +204,7 @@ export const register = (
       const errorID = errorResData.error.message;
       let message = "Something wrong";
       if (errorID === "EMAIL_EXISTS") {
-        message = "This email exist already!";
+        message = "This email is already in use by another account";
       }
       throw new Error(message);
     }
@@ -177,19 +212,17 @@ export const register = (
     const responseData = await response.json();
 
     const expirationDate = new Date(
-      new Date().getTime() + parseInt(responseData.expiresIn) * 1000
+      Date.now() + parseInt(responseData.expiresIn) * 1000
     );
 
-    const miliSecondDate = expirationDate.setSeconds(
-      new Date().getSeconds() + parseInt(responseData.expiresIn)
-    );
+    // console.log(`Expiration date of token: ${expirationDate}`);
 
     saveDataToLocal(
       responseData.token,
       responseData.localId,
-      miliSecondDate,
+      expirationDate,
       responseData.refreshToken,
-      "email"
+      LOGIN_METHODS.EMAIL
     );
 
     dispatch(
@@ -208,14 +241,15 @@ export const register = (
     dispatch(
       authenticate(
         responseData.localId,
-        responseData.idToken,
-        parseInt(responseData.expiresIn) * 1000
+        responseData.token,
+        expirationDate,
+        LOGIN_METHODS.EMAIL
       )
     );
   };
 };
 
-export const login = (email, password) => {
+export const loginViaEmail = (email, password) => {
   return async (dispatch) => {
     const response = await fetch(
       "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAJDYVoRRinh626T1wLJh6MI6sCl7YZ5BM",
@@ -235,56 +269,44 @@ export const login = (email, password) => {
     if (!response.ok) {
       const errorResData = await response.json();
       const errorID = errorResData.error.message;
-      let message = "Something wrong";
-      if (errorID === "EMAIL_NOT_FOUND") {
-        message = "This email cant be found!";
+      let message = `Something went wrong: ${errorID}`;
+      console.log(message);
+      if (errorID === "EMAIL_NOT_FOUND" || errorID === "INVALID_PASSWORD") {
+        message = "Invalid credentials";
       } else if (errorID === "USER_DISABLED") {
-        message = "User disable";
-      } else if (errorID === "INVALID_PASSWORD") {
-        message = "Password Problem";
+        message = "Account has been disabled. Please contact support.";
       }
       throw new Error(message);
     }
 
     const responseData = await response.json();
 
-    dispatch(
-      authenticate(
-        responseData.localId,
-        responseData.idToken,
-        parseInt(responseData.expiresIn) * 1000
-      )
-    );
-
     const expirationDate = new Date(
-      new Date().getTime() + parseInt(responseData.expiresIn) * 1000
+      Date.now() + parseInt(responseData.expiresIn) * 1000
     );
 
-    //const currentTime = new Date( new Date().getTime());
-    //const currentMili = currentTime.setSeconds(new Date().getSeconds());
-
-    const miliSecondDate = expirationDate.setSeconds(
-      new Date().getSeconds() + parseInt(responseData.expiresIn)
-    );
-
-    //const diff = ((miliSecondFormat - currentMili) / 3600).toFixed(0);
-
-    console.log(miliSecondDate);
-    //console.log(expirationDate);
-    //console.log(currentTime);
-    //console.log(diff);
+    // console.log(`Expiration date of token: ${expirationDate}`);
 
     saveDataToLocal(
       responseData.idToken,
       responseData.localId,
-      miliSecondDate,
+      expirationDate,
       responseData.refreshToken,
-      "email"
+      LOGIN_METHODS.EMAIL
+    );
+
+    dispatch(
+      authenticate(
+        responseData.localId,
+        responseData.idToken,
+        expirationDate,
+        LOGIN_METHODS.EMAIL
+      )
     );
   };
 };
 
-export const autoLoginViaEmail = (refreshToken) => {
+export const refreshTokenEmail = (refreshToken) => {
   return async (dispatch) => {
     const response = await fetch(
       "https://securetoken.googleapis.com/v1/token?key=AIzaSyAJDYVoRRinh626T1wLJh6MI6sCl7YZ5BM",
@@ -315,22 +337,27 @@ export const autoLoginViaEmail = (refreshToken) => {
     const responseData = await response.json();
 
     const expirationDate = new Date(
-      new Date().getTime() + parseInt(responseData.expiresIn) * 1000
+      Date.now() + parseInt(responseData.expires_in) * 1000
     );
 
-    const miliSecondDate = expirationDate.setSeconds(
-      new Date().getSeconds() + parseInt(responseData.expiresIn)
+    // console.log(`Expiration date of token: ${expirationDate}`);
+
+    saveDataToLocal(
+      responseData.id_token,
+      responseData.user_id,
+      expirationDate.getMilliseconds,
+      responseData.refresh_token,
+      LOGIN_METHODS.EMAIL
     );
 
     dispatch(
       authenticate(
-        responseData.userId,
+        responseData.user_id,
         responseData.id_token,
-        miliSecondDate,
-        "email"
+        expirationDate.getMilliseconds(),
+        LOGIN_METHODS.EMAIL
       )
     );
-    console.log(responseData);
   };
 };
 
@@ -366,6 +393,7 @@ export const writeUserDataToDB = (
   };
 };
 
+// TODO Proper logout required (Invalidating access tokens)
 export const logout = () => {
   AsyncStorage.removeItem("userData");
   try {
@@ -379,7 +407,7 @@ export const logout = () => {
 const saveDataToLocal = async (
   token,
   userId,
-  miliSecondDate,
+  expiryDate,
   refreshToken,
   method
 ) => {
@@ -388,7 +416,7 @@ const saveDataToLocal = async (
     JSON.stringify({
       token: token,
       userId: userId,
-      expiryDate: miliSecondDate,
+      expiryDate: expiryDate,
       refreshToken: refreshToken,
       method: method,
     })

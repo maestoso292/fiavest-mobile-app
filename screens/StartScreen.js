@@ -12,67 +12,51 @@ const StartScreen = (props) => {
   // TODO tryLogin can probably be broken down into separate functions
   useEffect(() => {
     const tryLogin = async () => {
+      try {
+        await Facebook.initializeAsync({
+          appId: "484772439271129",
+        });
+      } catch (err) {
+        console.log(err);
+      }
+
       // await AsyncStorage.removeItem("userData");
       const userData = await AsyncStorage.getItem("userData");
-      // console.log(userData);
+
       if (!userData) {
         dispatch(authActions.setDidAutoLogin());
         return;
       }
 
-      const transformData = JSON.parse(userData);
-      const { token, userId, expiryDate, refreshToken, method } = transformData;
+      const { token, userId, expiryDate, refreshToken, method } =
+        JSON.parse(userData);
 
-      if (method == "facebook") {
-        // Facebook auto login
-        try {
-          await Facebook.initializeAsync({
-            appId: "484772439271129",
-          });
-          const userDataFB = await Facebook.getAuthenticationCredentialAsync();
-          if (userDataFB) {
-            // console.log(userDataFB);
-            // TODO Unsure how expiration date needs to be handled. For refresh token?
+      switch (method) {
+        case authActions.LOGIN_METHODS.EMAIL:
+          // Refresh token 1 min early. Extra time just in case.
+          if (Date.now() <= expiryDate - 60000) {
             dispatch(
-              authActions.authenticate(
-                userDataFB.userId,
-                userDataFB.token,
-                userDataFB.expirationDate,
-                "facebook"
-              )
+              authActions.authenticate(userId, token, expiryDate, method)
             );
             return;
           }
-        } catch (err) {
-          console.log(err);
-        }
-      } else if (method == "google") {
-        // No fix for auto login as of now
-        // dispatch(authActions.autoLoginViaGoogle(transformData.refreshToken));
-        dispatch(authActions.setDidAutoLogin());
-      } else {
-        // Firebase auto login
-
-        const expirationDate = new Date(expiryDate);
-
-        const currentTime = new Date(new Date().getTime());
-        const currentMili = currentTime.setSeconds(new Date().getSeconds());
-
-        const diff = ((expiryDate - currentMili) / 3600).toFixed(0);
-
-        console.log(diff);
-
-        if (diff <= 0) {
-          dispatch(authActions.autoLoginViaEmail(refreshToken));
-          return;
-        }
-
-        if (expirationDate <= new Date() || !token || !userId) {
-          dispatch(authActions.setDidAutoLogin());
-          return;
-        }
-
-        dispatch(authActions.authenticate(userId, token, expiryDate, "email"));
+          // Refreshes token
+          dispatch(authActions.refreshTokenEmail(refreshToken)).catch((err) => {
+            console.log(err);
+            AsyncStorage.removeItem("userData");
+            dispatch(setDidAutoLogin());
+          });
+          break;
+        case authActions.LOGIN_METHODS.FACEBOOK:
+          dispatch(authActions.autoLoginViaFacebook);
+          break;
+        case authActions.LOGIN_METHODS.GOOGLE:
+          // No fix for auto login as of now. May require API_KEY for Google REST API
+          // dispatch(authActions.autoLoginViaGoogle(transformData.refreshToken));
+          dispatch(authActions.setDidAutoLogin);
+          break;
+        default:
+          console.log("This shouldn't be happening. Check user data stored");
       }
     };
 

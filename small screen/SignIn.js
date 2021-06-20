@@ -73,19 +73,16 @@ const SignInPage = () => {
     console.log(formState.inputValues.email);
     console.log(formState.inputValues.password);
     let action;
-    action = authActions.login(
+    action = authActions.loginViaEmail(
       formState.inputValues.email,
       formState.inputValues.password
     );
     setError(null);
     setIsLoading(true);
-    try {
-      dispatch(action);
-      //props.navigation.navigate("Home");
-    } catch (err) {
+    dispatch(action).catch((err) => {
       setError(err.message);
       setIsLoading(false);
-    }
+    });
   };
 
   const inputChangeHandler = useCallback(
@@ -99,11 +96,6 @@ const SignInPage = () => {
     },
     [dispatchFormState]
   );
-
-  {/*logout = () => {
-    setLoggedinStatus(false);
-    setUserData(null);
-  } */}
 
   return (
     <View style={styles.signInMain}>
@@ -151,7 +143,11 @@ const SignInPage = () => {
         />
         <CustomButton
           source={require("../assets/google-icon.png")}
-          onPress={() => dispatch(authActions.loginViaGoogle)}
+          onPress={() =>
+            dispatch(authActions.loginViaGoogle).catch((err) =>
+              console.log(err)
+            )
+          }
         />
       </View>
     </View>
