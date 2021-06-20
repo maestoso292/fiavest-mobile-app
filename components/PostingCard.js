@@ -22,34 +22,39 @@ const Posting = (props) => {
 
   return (
     <TouchComponent activeOpacity={0.75} useForeground>
-    <View style={styles.rootContainer}>
-      <View style={styles.imageContainer}>
-        <Image source={{ uri: props.source }} style={styles.image} />
+      <View style={styles.rootContainer}>
+        <View style={styles.imageContainer}>
+          <Image source={{ uri: props.source }} style={styles.image} />
+        </View>
+        <View style={styles.titleTextContainer}>
+          <Text style={styles.titleText}>{props.name}</Text>
+          <Text style={styles.bodyText}>{props.details}</Text>
+        </View>
+        {/* <View style={styles.bodyTextContainer}>
+          
+        </View> */}
       </View>
-      <View style={styles.textContainer}>
-        <Text style={styles.titleText}>{props.name}</Text>
-      </View>
-      </View>
-      </TouchComponent>
+    </TouchComponent>
   );
 };
 
 const styles = StyleSheet.create({
   rootContainer: {
     width: "100%",
-    height: 200,
+    height: 250,
     marginVertical: 5,
     alignItems: "center",
     borderColor: BORDER_PRIMARY,
     borderWidth: StyleSheet.hairlineWidth,
     shadowColor: "black",
     shadowOpacity: 1,
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 2, height: 2 },
     shadowRadius: 8,
-    elevation: 5,
+    elevation: 3,
+    overflow: "hidden",
   },
   imageContainer: {
-    flex: 4,
+    flex: 3,
     width: "100%",
     overflow: "hidden",
     resizeMode: "center",
@@ -58,20 +63,35 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
-  textContainer: {
-    flex: 1,
+  titleTextContainer: {
+    // height: 42,
+    flex: 2,
     width: "100%",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "flex-start",
     borderTopColor: BORDER_PRIMARY,
     borderTopWidth: StyleSheet.hairlineWidth,
-    padding: 10,
+    paddingHorizontal: 10,
+    paddingTop: 10,
     backgroundColor: POPUP_LIGHT,
   },
   titleText: {
     fontSize: 24,
     fontWeight: "bold",
     color: TEXT_PRIMARY_LIGHT,
+  },
+  bodyTextContainer: {
+    flex: 2,
+    width: "100%",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    paddingHorizontal: 10,
+    paddingBottom: 5,
+    backgroundColor: POPUP_LIGHT,
+  },
+  bodyText: {
+    fontSize: 14,
+    letterSpacing: 1
   },
 });
 

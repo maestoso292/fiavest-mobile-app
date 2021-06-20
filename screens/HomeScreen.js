@@ -8,31 +8,37 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { BACKGROUND_LIGHT, BORDER_PRIMARY } from "../constants/colors";
 
 const renderPosting = ({ item }) => {
-  return <Posting name={item.name} source={item.source} />;
+  return <Posting name={item.name} details={item.body} source={item.source} />;
 };
 
 // TODO Fetching data of company postings
 const fetchPostingData = () => {
+  const body =
+    "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.";
   const data = [
     {
       id: "id1",
       name: "Title",
+      body: body,
       source: "https://source.unsplash.com/1024x768/?nature",
     },
     {
       id: "id2",
       name: "Title",
+      body: body,
       source:
         "https://image.shutterstock.com/image-vector/sample-stamp-grunge-texture-vector-260nw-1389188336.jpg",
     },
     {
       id: "id3",
       name: "Title",
+      body: body,
       source: "https://source.unsplash.com/1024x768/?tree",
     },
     {
       id: "id4",
       name: "Title",
+      body: body,
       source:
         "https://image.shutterstock.com/image-vector/sample-stamp-grunge-texture-vector-260nw-1389188336.jpg",
     },

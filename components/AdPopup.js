@@ -6,6 +6,7 @@ import {
   Image,
   View,
 } from "react-native";
+import { BORDER_PRIMARY } from "../constants/colors";
 import Popup from "./Popup";
 
 const AdPopup = (props) => {
@@ -40,9 +41,12 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   buttonText: {
-    fontSize: 16,
+    fontSize: 18,
     textDecorationLine: "underline",
     color: "blue",
+    textShadowColor: BORDER_PRIMARY,
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 3,
   },
 });
 
