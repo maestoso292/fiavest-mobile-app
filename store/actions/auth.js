@@ -147,8 +147,6 @@ export const autoLoginViaGoogle = (refreshToken) => {
       throw new Error(message + errorID);
     }
 
-    const responseData = await response.json();
-
     const expirationDate = new Date(
       Date.now() + parseInt(responseData.expiresIn) * 1000
     );
@@ -206,6 +204,7 @@ export const registerViaEmail = (
       if (errorID === "EMAIL_EXISTS") {
         message = "This email is already in use by another account";
       }
+      console.log(message);
       throw new Error(message);
     }
 
@@ -218,7 +217,7 @@ export const registerViaEmail = (
     // console.log(`Expiration date of token: ${expirationDate}`);
 
     saveDataToLocal(
-      responseData.token,
+      responseData.idToken,
       responseData.localId,
       expirationDate,
       responseData.refreshToken,
@@ -241,7 +240,7 @@ export const registerViaEmail = (
     dispatch(
       authenticate(
         responseData.localId,
-        responseData.token,
+        responseData.idToken,
         expirationDate,
         LOGIN_METHODS.EMAIL
       )

@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Alert,
+  Keyboard,
 } from "react-native";
 import { useDispatch } from "react-redux";
 
@@ -70,8 +71,7 @@ const SignInPage = () => {
   }, [error]);
 
   const authHandler = async () => {
-    console.log(formState.inputValues.email);
-    console.log(formState.inputValues.password);
+    Keyboard.dismiss();
     let action;
     action = authActions.loginViaEmail(
       formState.inputValues.email,
