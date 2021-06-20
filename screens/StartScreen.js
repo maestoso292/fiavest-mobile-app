@@ -47,7 +47,10 @@ const StartScreen = (props) => {
           console.log(err);
         }
       } else if (method == "google") {
-        dispatch(authActions.loginViaGoogle());
+        // No fix for auto login as of now
+        // dispatch(authActions.autoLoginViaGoogle(userData.refreshToken));
+        dispatch(authActions.setDidAutoLogin());
+        return;
       } else {
         // Firebase auto login
 
@@ -61,7 +64,7 @@ const StartScreen = (props) => {
         console.log(diff);
 
         if (diff <= 0) {
-          dispatch(authActions.refreshToken());
+          dispatch(authActions.autoLoginViaEmail());
           return;
         }
 

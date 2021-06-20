@@ -92,6 +92,51 @@ export const loginViaGoogle = async (dispatch) => {
   }
 };
 
+// Might not be possible with Expo Go
+export const autoLoginViaGoogle = (refreshToken) => {
+  return async (dispatch) => {
+    const response = await fetch(
+      "https://securetoken.googleapis.com/v1/token",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: `grant_type=refresh_token&refresh_token=${refreshToken}`,
+      }
+    );
+
+    if (!response.ok) {
+      const errorResData = await response.json();
+      const errorID = errorResData.error.message;
+      let message = "Something wrong";
+      if (errorID === "EMAIL_EXISTS") {
+        message = "This email exist already!";
+      }
+      throw new Error(message + errorID);
+    }
+
+    const responseData = await response.json();
+
+    saveDataToLocal(
+      responseData.access_token,
+      "",
+      parseInt(responseData.expires_in) * 1000,
+      responseData.refresh_token,
+      "google"
+    );
+
+    dispatch(
+      authenticate(
+        "",
+        responseData.access_token,
+        parseInt(responseData.expires_in) * 1000,
+        "google"
+      )
+    );
+  };
+};
+
 //(email, password) add more info inside this bracket
 export const register = (
   email,
@@ -101,7 +146,7 @@ export const register = (
   phone,
   brokingHouse,
   term,
-  experience,
+  experience
 ) => {
   return async (dispatch) => {
     const response = await fetch(
@@ -156,7 +201,7 @@ export const register = (
         phone,
         brokingHouse,
         term,
-        experience,
+        experience
       )
     );
 
@@ -207,7 +252,7 @@ export const login = (email, password) => {
       authenticate(
         responseData.localId,
         responseData.idToken,
-        parseInt(responseData.expiresIn)
+        parseInt(responseData.expiresIn) * 1000
       )
     );
 
@@ -239,7 +284,7 @@ export const login = (email, password) => {
   };
 };
 
-export const refreshToken = (refreshToken) => {
+export const autoLoginViaEmail = (refreshToken) => {
   return async (dispatch) => {
     const response = await fetch(
       "https://securetoken.googleapis.com/v1/token?key=AIzaSyAJDYVoRRinh626T1wLJh6MI6sCl7YZ5BM",
@@ -297,7 +342,7 @@ export const writeUserDataToDB = (
   phone,
   brokingHouse,
   term,
-  experience,
+  experience
 ) => {
   return async (dispatch) => {
     const response = await fetch(
@@ -331,7 +376,13 @@ export const logout = () => {
   return { type: LOGOUT };
 };
 
-const saveDataToLocal = async (token, userId, miliSecondDate, refreshToken,method) => {
+const saveDataToLocal = async (
+  token,
+  userId,
+  miliSecondDate,
+  refreshToken,
+  method
+) => {
   AsyncStorage.setItem(
     "userData",
     JSON.stringify({
