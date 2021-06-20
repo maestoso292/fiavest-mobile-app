@@ -14,14 +14,14 @@ const StartScreen = (props) => {
     const tryLogin = async () => {
       // await AsyncStorage.removeItem("userData");
       const userData = await AsyncStorage.getItem("userData");
-      console.log(userData);
+      // console.log(userData);
       if (!userData) {
         dispatch(authActions.setDidAutoLogin());
         return;
       }
 
       const transformData = JSON.parse(userData);
-      const { token, userId, expiryDate, method } = transformData;
+      const { token, userId, expiryDate, refreshToken, method } = transformData;
 
       if (method == "facebook") {
         // Facebook auto login
@@ -48,9 +48,8 @@ const StartScreen = (props) => {
         }
       } else if (method == "google") {
         // No fix for auto login as of now
-        // dispatch(authActions.autoLoginViaGoogle(userData.refreshToken));
+        // dispatch(authActions.autoLoginViaGoogle(transformData.refreshToken));
         dispatch(authActions.setDidAutoLogin());
-        return;
       } else {
         // Firebase auto login
 
@@ -64,7 +63,7 @@ const StartScreen = (props) => {
         console.log(diff);
 
         if (diff <= 0) {
-          dispatch(authActions.autoLoginViaEmail());
+          dispatch(authActions.autoLoginViaEmail(refreshToken));
           return;
         }
 
