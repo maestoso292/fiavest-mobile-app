@@ -90,6 +90,7 @@ const NavigationMenu = ({ navigation }) => {
           </MenuButton>
           <MenuButton
             name={Routes.PROFILE}
+            onPress={buttonPressHandler.bind(this, Routes.PROFILE)}
             style={current == Routes.PROFILE ? styles.menuButtonHighlight : {}}
           >
             <Ionicons name="person-circle" size={ICON_SIZE} />
