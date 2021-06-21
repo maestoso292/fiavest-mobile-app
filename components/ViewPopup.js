@@ -3,26 +3,8 @@ import { View, Modal, StyleSheet, Animated } from "react-native";
 import { BORDER_PRIMARY, POPUP_LIGHT } from "../constants/colors";
 
 const ViewPopup = (props) => {
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  useEffect(() => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 300,
-      useNativeDriver: true,
-    }).start();
-    return () => {
-      Animated.timing(fadeAnim, {
-        toValue: 0,
-        duration: 200,
-        useNativeDriver: true,
-      }).start();
-    };
-  }, []);
-
   return (
-    <Animated.View
-      style={{ ...styles.container, ...props.style }}
-    >
+    <Animated.View style={{ ...styles.container, ...props.style }}>
       {props.children}
     </Animated.View>
   );

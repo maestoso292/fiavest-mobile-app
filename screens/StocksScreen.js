@@ -1,5 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import { View, StyleSheet, Button, Animated, FlatList, Text } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Button,
+  Animated,
+  FlatList,
+  Text,
+} from "react-native";
+
 import { BACKGROUND_LIGHT, POPUP_LIGHT } from "../constants/colors";
 import ViewPopup from "../components/ViewPopup";
 import FilterButton from "../components/stocks/FilterButton";
@@ -7,16 +15,20 @@ import StockEntry from "../components/stocks/StockEntry";
 
 const fetchStocks = () => {
   const data = [
-    { id: "0000", text: "Sample Text" },
-    { id: "0001", text: "Sample Text" },
-    { id: "0002", text: "Sample Text" },
-    { id: "0003", text: "Sample Text" },
+    { id: "0000", name: "Sample Text", price: "$100" },
+    { id: "0001", name: "Sample Text", price: "$100" },
+    { id: "0002", name: "Sample Text", price: "$100" },
+    { id: "0003", name: "Sample Text", price: "$100" },
+    { id: "0005", name: "Sample Text", price: "$100" },
+    { id: "0006", name: "Sample Text", price: "$100" },
+    { id: "0007", name: "Sample Text", price: "$100" },
+    { id: "0008", name: "Sample Text", price: "$100" },
   ];
   return data;
 };
 
 const renderStockEntry = ({ item }) => {
-  return <StockEntry text={item.text} />;
+  return <StockEntry id={item.id} name={item.name} price={item.price} />;
 };
 
 const StocksScreen = ({ navigation }) => {
@@ -24,7 +36,7 @@ const StocksScreen = ({ navigation }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   const fadeIn = () => {
-    console.log("Fade In: " + popupVisible);
+    console.log("Fade In: ");
     Animated.timing(fadeAnim, {
       toValue: 1,
       duration: 300,
@@ -33,7 +45,7 @@ const StocksScreen = ({ navigation }) => {
   };
 
   const fadeOut = () => {
-    console.log("Fade Out: " + popupVisible);
+    console.log("Fade Out: ");
     Animated.timing(fadeAnim, {
       toValue: 0,
       duration: 300,
@@ -41,20 +53,24 @@ const StocksScreen = ({ navigation }) => {
     }).start();
   };
 
+  const togglePopup = () => {
+    setPopupVisible((prev) => !prev);
+  };
+
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => {
-        return (
-          <FilterButton
-            onPress={() => setPopupVisible((prevValue) => !prevValue)}
-          />
-        );
+        return <FilterButton onPress={togglePopup} />;
       },
     });
   }, [navigation]);
 
   useEffect(() => {
-    popupVisible ? fadeIn() : fadeOut();
+    if (popupVisible) {
+      fadeIn();
+    } else {
+      fadeOut();
+    }
   }, [popupVisible]);
 
   const data = fetchStocks();
@@ -71,13 +87,22 @@ const StocksScreen = ({ navigation }) => {
         />
       </View>
 
-      <View style={styles.popupContainer}>
+      <View
+        style={styles.popupContainer}
+        pointerEvents={popupVisible ? "box-none" : "none"}
+      >
         <ViewPopup style={{ ...styles.popup, opacity: fadeAnim }}>
-          <View style={{flexDirection: "row", justifyContent: "space-evenly", paddingLeft: 50}}>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-evenly",
+              paddingLeft: 50,
+            }}
+          >
             <Text>Min</Text>
             <Text>Max</Text>
           </View>
-          <Button title="Save" onPress={() => setPopupVisible(false)} />
+          <Button title="Save" onPress={togglePopup} />
         </ViewPopup>
       </View>
     </View>
