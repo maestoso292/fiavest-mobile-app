@@ -4,10 +4,9 @@ import {
   Text,
   Image,
   StyleSheet,
-  TouchableOpacity,
-  Platform,
-  TouchableNativeFeedback,
 } from "react-native";
+
+import TouchableCustom from "./base/TouchableCustom";
 import {
   BORDER_PRIMARY,
   POPUP_LIGHT,
@@ -15,26 +14,21 @@ import {
 } from "../constants/colors";
 
 const PostingCard = (props) => {
-  let TouchComponent = TouchableOpacity;
-  if (Platform.OS === "android" && Platform.Version >= 21) {
-    TouchComponent = TouchableNativeFeedback;
-  }
-
   return (
-    <TouchComponent activeOpacity={0.75} useForeground>
-      <View style={styles.rootContainer}>
-        <View style={styles.imageContainer}>
-          <Image source={{ uri: props.source }} style={styles.image} />
-        </View>
-        <View style={styles.titleTextContainer}>
-          <Text style={styles.titleText}>{props.name}</Text>
-          <Text style={styles.bodyText}>{props.details}</Text>
-        </View>
-        {/* <View style={styles.bodyTextContainer}>
-          
-        </View> */}
+    <TouchableCustom
+      type="highlight"
+      useAndroid
+      containerStyle={styles.rootContainer}
+      onPress={() => {}}
+    >
+      <View style={styles.imageContainer}>
+        <Image source={{ uri: props.source }} style={styles.image} />
       </View>
-    </TouchComponent>
+      <View style={styles.titleTextContainer}>
+        <Text style={styles.titleText}>{props.name}</Text>
+        <Text style={styles.bodyText}>{props.details}</Text>
+      </View>
+    </TouchableCustom>
   );
 };
 
@@ -54,7 +48,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   imageContainer: {
-    flex: 3,
+    flex: 6,
     width: "100%",
     overflow: "hidden",
     resizeMode: "center",
@@ -64,8 +58,7 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   titleTextContainer: {
-    // height: 42,
-    flex: 2,
+    flex: 1,
     width: "100%",
     justifyContent: "flex-start",
     alignItems: "flex-start",
@@ -81,7 +74,7 @@ const styles = StyleSheet.create({
     color: TEXT_PRIMARY_LIGHT,
   },
   bodyTextContainer: {
-    flex: 2,
+    flex: 3,
     width: "100%",
     justifyContent: "flex-start",
     alignItems: "flex-start",
@@ -91,7 +84,7 @@ const styles = StyleSheet.create({
   },
   bodyText: {
     fontSize: 14,
-    letterSpacing: 1
+    letterSpacing: 1,
   },
 });
 
