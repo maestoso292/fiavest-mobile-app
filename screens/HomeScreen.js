@@ -3,8 +3,6 @@ import { View, Text, StyleSheet, FlatList } from "react-native";
 import Posting from "../components/PostingCard";
 import AdPopup from "../components/AdPopup";
 import { ImageSwiper } from "../components/AdSwiper";
-import ItemCard from "../components/ItemCard";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { BACKGROUND_LIGHT, BORDER_PRIMARY } from "../constants/colors";
 
 const renderPosting = ({ item }) => {
@@ -82,7 +80,9 @@ const HomeScreen = (props) => {
         source={fetchAdPopup()}
         onPress={closeAdPopup}
         animationType="fade"
-      />
+      >
+        <Text>ok</Text>
+      </AdPopup>
       <ImageSwiper images={fetchAdSlideshowData()} />
 
       <View style={styles.listContainer}>

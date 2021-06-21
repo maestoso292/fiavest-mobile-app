@@ -221,7 +221,6 @@ const SignUpPage = () => {
         </View>
         <View style={styles.term}>
           <TouchableOpacity
-            style={styles.termButton}
             onPress={() => alert("Forget")}
           >
             <Text style={styles.termText}>Term ?</Text>
@@ -258,7 +257,7 @@ const SignUpPage = () => {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{ marginTop: 32, marginBottom: 32 }}>
+        <View style={{ marginBottom: 32 }}>
           {isLoading ? (
             <ActivityIndicator size="small" color={"#d3d3d3"} />
           ) : (
@@ -291,11 +290,8 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
     //justifyContent: 'flex-start'
   },
-  termButton: {
-    //marginTop: 5,
-    alignSelf: "flex-start",
-  },
   term: {
+    marginTop: 10,
     flexDirection: "row",
     justifyContent: "flex-start",
     width: "70%",
@@ -304,8 +300,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    width: "70%",
-    marginTop: 50,
+    width: "60%",
+    marginTop: 40,
     marginBottom: 10,
   },
   termAndCondition: {

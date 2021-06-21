@@ -50,6 +50,7 @@ const NavigationMenu = ({ navigation }) => {
         <View style={styles.menuRow}>
           <MenuButton
             name={Routes.PORTFOLIO}
+            onPress={buttonPressHandler.bind(this, Routes.PORTFOLIO)}
             style={
               current == Routes.PORTFOLIO ? styles.menuButtonHighlight : {}
             }

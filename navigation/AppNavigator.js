@@ -12,6 +12,7 @@ import NavigationMenu from "./NavigationMenu";
 import MenuHeaderButton from "./MenuHeaderButton";
 import { Routes } from "../constants/routes";
 import ProfileScreen from "../screens/ProfileScreen";
+import PortfolioScreen from "../screens/PortfolioScreen";
 
 const RootStack = createStackNavigator();
 const MainDrawer = createDrawerNavigator();
@@ -75,6 +76,7 @@ const MainNavigator = () => {
         options={{ headerShown: false }}
       />
       <MainDrawer.Screen name={Routes.PROFILE} component={ProfileScreen} />
+      <MainDrawer.Screen name={Routes.PORTFOLIO} component={PortfolioScreen} />
     </MainDrawer.Navigator>
   );
 };
