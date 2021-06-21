@@ -14,7 +14,7 @@ import {
   TEXT_PRIMARY_LIGHT,
 } from "../constants/colors";
 
-const Posting = (props) => {
+const PostingCard = (props) => {
   let TouchComponent = TouchableOpacity;
   if (Platform.OS === "android" && Platform.Version >= 21) {
     TouchComponent = TouchableNativeFeedback;
@@ -95,4 +95,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Posting;
+export default PostingCard;

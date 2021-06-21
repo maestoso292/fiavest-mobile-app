@@ -7,18 +7,18 @@ import {
   View,
 } from "react-native";
 import { BORDER_PRIMARY } from "../constants/colors";
-import Popup from "./Popup";
+import ModalPopup from "./ModalPopup";
 
 const AdPopup = (props) => {
   return (
-    <Popup {...props} popupStyle={styles.popup} modalStyle={styles.modal}>
+    <ModalPopup {...props} popupStyle={styles.popup} modalStyle={styles.modal}>
       <Image source={{ uri: props.source, width: "100%", height: "100%" }} />
       <View style={styles.button}>
         <TouchableWithoutFeedback onPress={props.onPress}>
           <Text style={styles.buttonText}>Close</Text>
         </TouchableWithoutFeedback>
       </View>
-    </Popup>
+    </ModalPopup>
   );
 };
 
