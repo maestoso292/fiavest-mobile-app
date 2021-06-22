@@ -24,7 +24,7 @@ const PostingCard = (props) => {
       <View style={styles.imageContainer}>
         <Image source={{ uri: props.source }} style={styles.image} />
       </View>
-      <View style={styles.titleTextContainer}>
+      <View style={styles.textContainer}>
         <Text style={styles.titleText}>{props.name}</Text>
         <Text style={styles.bodyText}>{props.details}</Text>
       </View>
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   imageContainer: {
-    flex: 6,
+    flex: 3,
     width: "100%",
     overflow: "hidden",
     resizeMode: "center",
@@ -57,8 +57,8 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
-  titleTextContainer: {
-    flex: 1,
+  textContainer: {
+    flex: 2,
     width: "100%",
     justifyContent: "flex-start",
     alignItems: "flex-start",
@@ -72,15 +72,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     color: TEXT_PRIMARY_LIGHT,
-  },
-  bodyTextContainer: {
-    flex: 3,
-    width: "100%",
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-    paddingHorizontal: 10,
-    paddingBottom: 5,
-    backgroundColor: POPUP_LIGHT,
   },
   bodyText: {
     fontSize: 14,
