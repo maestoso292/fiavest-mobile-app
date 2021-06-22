@@ -4,7 +4,7 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 const Button2 = props => {
     return (
         <TouchableOpacity activeOpacity={0.5} onPress={props.onPress}>
-            <View style={styles.button}>
+            <View style={{...styles.button, ...props.extraStyle}}>
                 <Text style={styles.text}>
                     {props.children}
                 </Text>
