@@ -6,11 +6,13 @@ import {
   Animated,
   FlatList,
   Text,
+  Keyboard,
 } from "react-native";
 
 import { BACKGROUND_LIGHT, POPUP_LIGHT } from "../constants/colors";
 import ViewPopup from "../components/ViewPopup";
 import FilterButton from "../components/stocks/FilterButton";
+import FilterPopup from "../components/stocks/FilterPopup";
 import StockEntry from "../components/stocks/StockEntry";
 
 const fetchStocks = () => {
@@ -36,25 +38,31 @@ const StocksScreen = ({ navigation }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   const fadeIn = () => {
-    console.log("Fade In: ");
+    // console.log("Fade In: ");
     Animated.timing(fadeAnim, {
       toValue: 1,
-      duration: 300,
+      duration: 150,
       useNativeDriver: true,
     }).start();
   };
 
   const fadeOut = () => {
-    console.log("Fade Out: ");
+    // console.log("Fade Out: ");
     Animated.timing(fadeAnim, {
       toValue: 0,
-      duration: 300,
+      duration: 150,
       useNativeDriver: true,
     }).start();
   };
 
   const togglePopup = () => {
     setPopupVisible((prev) => !prev);
+  };
+
+  const submitHandler = (filters) => {
+    console.log(filters);
+    Keyboard.dismiss();
+    setPopupVisible(false);
   };
 
   useEffect(() => {
@@ -87,24 +95,11 @@ const StocksScreen = ({ navigation }) => {
         />
       </View>
 
-      <View
-        style={styles.popupContainer}
-        pointerEvents={popupVisible ? "box-none" : "none"}
-      >
-        <ViewPopup style={{ ...styles.popup, opacity: fadeAnim }}>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-evenly",
-              paddingLeft: 50,
-            }}
-          >
-            <Text>Min</Text>
-            <Text>Max</Text>
-          </View>
-          <Button title="Save" onPress={togglePopup} />
-        </ViewPopup>
-      </View>
+      <FilterPopup
+        visible={popupVisible}
+        popupStyle={{ opacity: fadeAnim }}
+        onSubmit={submitHandler}
+      />
     </View>
   );
 };
@@ -122,22 +117,6 @@ const styles = StyleSheet.create({
   },
   list: {
     flexGrow: 1,
-  },
-  popupContainer: {
-    position: "absolute",
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  popup: {
-    width: "70%",
-    height: "30%",
-    borderRadius: 25,
-    backgroundColor: POPUP_LIGHT,
-    overflow: "hidden",
   },
 });
 
