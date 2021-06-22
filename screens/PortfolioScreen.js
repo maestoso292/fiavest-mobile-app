@@ -12,25 +12,25 @@ const renderStock = ({ item }) => {
 const fetchStockData = () => {
     const data = [
         {
-            id: '1',
+            id: "1",
             name: '1155 MAYBANK',
             lots: '10',
             price: '81.8'
         },
         {
-            id: '2',
+            id: "2",
             name: '5099 AIRASIA',
             lots: '100',
             price: '92'
         },
         {
-            id: '3',
+            id: "3",
             name: '7079 TIGER',
             lots: '1000',
             price: '55'
         },
         {
-            id: '4',
+            id: "4",
             name: '0001 SCOMNET',
             lots: '100',
             price: '163'

@@ -61,7 +61,6 @@ const styles = StyleSheet.create({
     },
     popupCon: {
         width: '70%',
-        // TODO Adjust height of ad. Should it be dynamic according to ad?
         height: '45%',
         padding: 15,
         borderRadius: 10

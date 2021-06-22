@@ -59,6 +59,7 @@ const NavigationMenu = ({ navigation }) => {
           </MenuButton>
           <MenuButton
             name={Routes.EMA5}
+            onPress={buttonPressHandler.bind(this, Routes.EMA5)}
             style={current == Routes.EMA5 ? styles.menuButtonHighlight : {}}
           >
             <Entypo name="line-graph" size={ICON_SIZE} />
