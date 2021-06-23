@@ -5,6 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import TouchableCustom from "../base/TouchableCustom";
 import { BORDER_PRIMARY, POPUP_LIGHT } from "../../constants/colors";
 import { Routes } from "../../constants/routes";
+import { currencyFormatter } from "../../constants/formatter";
 
 const StockEntry = (props) => {
   const uri =
@@ -18,7 +19,6 @@ const StockEntry = (props) => {
       onPress={() => {
         navigation.navigate(Routes.STOCK_DETAILS, {
           id: props.id,
-          name: props.name,
         });
       }}
     >
@@ -33,7 +33,7 @@ const StockEntry = (props) => {
           <Text>{props.name}</Text>
         </View>
         <View style={styles.priceContainer}>
-          <Text>{props.price}</Text>
+          <Text>{currencyFormatter.format(props.price)}</Text>
         </View>
       </View>
     </TouchableCustom>
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     flex: 5,
   },
   priceContainer: {
-    flex: 1,
+    flex: 2,
   },
 });
 

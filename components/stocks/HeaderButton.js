@@ -3,24 +3,27 @@ import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import TouchableCustom from "../base/TouchableCustom";
 
-const FilterButton = (props) => {
+const HeaderButton = (props) => {
   return (
     <TouchableCustom
       type="opacity"
       activeOpacity={0.3}
       onPress={props.onPress}
-      contentStyle={{ ...styles.buttonContainer, ...props.style }}
+      containerStyle={{ ...styles.buttonContainer, ...props.containerStyle }}
+      contentStyle={{ ...styles.button, ...props.contentStyle }}
     >
-      <Ionicons name="options-outline" size={30} />
+      <Ionicons name={props.name} size={30} />
     </TouchableCustom>
   );
 };
 
 const styles = StyleSheet.create({
   buttonContainer: {
+    flex: 1,
+  },
+  button: {
     justifyContent: "center",
     alignItems: "center",
-    paddingRight: 10,
   },
 });
-export default FilterButton;
+export default HeaderButton;

@@ -11,21 +11,13 @@ import {
 
 import { BACKGROUND_LIGHT, POPUP_LIGHT } from "../constants/colors";
 import ViewPopup from "../components/ViewPopup";
-import FilterButton from "../components/stocks/FilterButton";
+import HeaderButton from "../components/stocks/HeaderButton";
 import FilterPopup from "../components/stocks/FilterPopup";
 import StockEntry from "../components/stocks/StockEntry";
+import { STOCKS_DATA } from "../data/dummy_stocks";
 
 const fetchStocks = () => {
-  const data = [
-    { id: "0000", name: "Sample Text", price: "$100" },
-    { id: "0001", name: "Sample Text", price: "$100" },
-    { id: "0002", name: "Sample Text", price: "$100" },
-    { id: "0003", name: "Sample Text", price: "$100" },
-    { id: "0005", name: "Sample Text", price: "$100" },
-    { id: "0006", name: "Sample Text", price: "$100" },
-    { id: "0007", name: "Sample Text", price: "$100" },
-    { id: "0008", name: "Sample Text", price: "$100" },
-  ];
+  const data = Object.values(STOCKS_DATA);
   return data;
 };
 
@@ -68,7 +60,13 @@ const StocksScreen = ({ navigation }) => {
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => {
-        return <FilterButton onPress={togglePopup} />;
+        return (
+          <HeaderButton
+            onPress={togglePopup}
+            name="options-outline"
+            containerStyle={{ paddingRight: 10 }}
+          />
+        );
       },
     });
   }, [navigation]);
