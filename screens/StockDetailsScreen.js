@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Text, View, StyleSheet, Image } from "react-native";
-import HeaderButton from "../components/stocks/HeaderButton";
+import HeaderButton from "../components/base/HeaderButton";
 import {
   BACKGROUND_LIGHT,
   BORDER_PRIMARY,

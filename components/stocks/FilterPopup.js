@@ -10,7 +10,7 @@ import {
   Dimensions,
 } from "react-native";
 import { POPUP_LIGHT } from "../../constants/colors";
-import ViewPopup from "../ViewPopup";
+import ViewPopup from "../base/ViewPopup";
 import FilterNumberInput from "./FilterNumberInput";
 
 const DEVICE_HEIGHT = Dimensions.get("window").height;

@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from "react";
-import { View, Modal, StyleSheet, Animated } from "react-native";
-import { BORDER_PRIMARY, POPUP_LIGHT } from "../constants/colors";
+import React from "react";
+import { StyleSheet, Animated } from "react-native";
+import { BORDER_PRIMARY, POPUP_LIGHT } from "../../constants/colors";
 
 const ViewPopup = (props) => {
   return (

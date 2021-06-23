@@ -2,16 +2,13 @@ import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   StyleSheet,
-  Button,
   Animated,
   FlatList,
-  Text,
   Keyboard,
 } from "react-native";
 
 import { BACKGROUND_LIGHT, POPUP_LIGHT } from "../constants/colors";
-import ViewPopup from "../components/ViewPopup";
-import HeaderButton from "../components/stocks/HeaderButton";
+import HeaderButton from "../components/base/HeaderButton";
 import FilterPopup from "../components/stocks/FilterPopup";
 import StockEntry from "../components/stocks/StockEntry";
 import { STOCKS_DATA } from "../data/dummy_stocks";

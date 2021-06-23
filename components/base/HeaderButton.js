@@ -1,7 +1,7 @@
 import React from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import TouchableCustom from "../base/TouchableCustom";
+import TouchableCustom from "./TouchableCustom";
 
 const HeaderButton = (props) => {
   return (
