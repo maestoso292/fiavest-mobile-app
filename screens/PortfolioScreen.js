@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, FlatList } from 'react-native';
+import { StyleSheet, View, Text, FlatList, KeyboardAvoidingView } from 'react-native';
 
 import Container from '../components/Portfolio-Conn';
 import Button2 from '../components/Button2';
@@ -79,7 +79,7 @@ const PortfolioScreen = props => {
                 contentContainerStyle={styles.list}
                 showsVerticalScrollIndicator={false}
                 data={stocks}
-                keyExtractor={(item) => {item.id}}
+                keyExtractor={(item) => item.id}
                 renderItem={renderStock}
                 />
             </View>
