@@ -1,12 +1,22 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { View, StyleSheet, Animated, FlatList, Keyboard } from "react-native";
 
-import { BACKGROUND_LIGHT, BORDER_PRIMARY, POPUP_LIGHT } from "../constants/colors";
+import {
+  BACKGROUND_LIGHT,
+  BORDER_PRIMARY,
+  POPUP_LIGHT,
+} from "../constants/colors";
 import HeaderButton from "../components/base/HeaderButton";
 import FilterPopup from "../components/stocks/FilterPopup";
 import StockEntry from "../components/stocks/StockEntry";
 import { STOCKS_DATA } from "../data/dummy_stocks";
-import { useRoute } from "@react-navigation/native";
+import { useFocusEffect, useRoute } from "@react-navigation/native";
 import SearchBar from "react-native-elements/dist/searchbar/SearchBar-ios";
 
 const fetchStocks = () => {
@@ -34,7 +44,7 @@ const StocksScreen = ({ navigation }) => {
       duration: 150,
       useNativeDriver: true,
     }).start();
-  }
+  };
 
   const togglePopup = () => {
     Keyboard.dismiss();
@@ -57,6 +67,13 @@ const StocksScreen = ({ navigation }) => {
     setSearch(query);
     setData(newData);
   };
+
+  // TODO Decide whether to do this onFocus or onBlur
+  useFocusEffect(useCallback(() => {
+    setPopupVisible(false);
+    setSearch(null);
+    setData(unfilteredData);
+  },[setPopupVisible, setSearch]));
 
   useEffect(() => {
     let endValue = popupVisible ? 1 : 0;
@@ -86,12 +103,6 @@ const StocksScreen = ({ navigation }) => {
         );
       },
     });
-
-    const unsubscribe = navigation.addListener("blur", () => {
-      setPopupVisible(false);
-    });
-
-    return unsubscribe;
   }, [navigation]);
 
   useEffect(() => {
@@ -100,11 +111,18 @@ const StocksScreen = ({ navigation }) => {
         return (
           <SearchBar
             placeholder="Search..."
+            onFocus={() => setPopupVisible(false)}
             onChangeText={searchFilter}
             autoCorrect={false}
             value={search}
             round
             cancelIcon={false}
+            cancelButtonProps={{
+              disabled: true,
+              buttonDisabledStyle: {
+                width: 0,
+              },
+            }}
             showCancel={false}
             inputContainerStyle={styles.searchBar}
             containerStyle={styles.searchBarContainer}
@@ -160,7 +178,7 @@ const styles = StyleSheet.create({
     marginBottom: 0,
     marginLeft: 0,
     marginRight: 0,
-    backgroundColor: POPUP_LIGHT
+    backgroundColor: POPUP_LIGHT,
   },
   listContainer: {
     flex: 1,
