@@ -27,6 +27,7 @@
       "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
+      "softwareKeyboardLayoutMode": "pan",
       "package": "fiavestAndroid.expo.googlesignin",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",

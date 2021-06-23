@@ -5,11 +5,11 @@ import { BORDER_PRIMARY } from "../constants/colors";
 const ModalPopup = (props) => {
   return (
     <Modal transparent {...props}>
-      <View style={{ ...styles.modal, ...props.modalStyle}}>
-        <View style={{ ...styles.container, ...props.popupStyle }}>
-          {props.children}
+        <View style={{ ...styles.modal, ...props.modalStyle }}>
+          <View style={{ ...styles.container, ...props.popupStyle }}>
+            {props.children}
+          </View>
         </View>
-      </View>
     </Modal>
   );
 };
@@ -17,6 +17,7 @@ const ModalPopup = (props) => {
 const styles = StyleSheet.create({
   modal: {
     flex: 1,
+    width: "100%",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -30,7 +31,6 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 3,
     width: 50,
-    height: 50,
   },
 });
 
