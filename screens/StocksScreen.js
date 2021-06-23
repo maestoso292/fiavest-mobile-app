@@ -1,17 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  View,
-  StyleSheet,
-  Animated,
-  FlatList,
-  Keyboard,
-} from "react-native";
+import { View, StyleSheet, Animated, FlatList, Keyboard } from "react-native";
 
 import { BACKGROUND_LIGHT, POPUP_LIGHT } from "../constants/colors";
 import HeaderButton from "../components/base/HeaderButton";
 import FilterPopup from "../components/stocks/FilterPopup";
 import StockEntry from "../components/stocks/StockEntry";
 import { STOCKS_DATA } from "../data/dummy_stocks";
+import { useRoute } from "@react-navigation/native";
 
 const fetchStocks = () => {
   const data = Object.values(STOCKS_DATA);
@@ -23,6 +18,8 @@ const renderStockEntry = ({ item }) => {
 };
 
 const StocksScreen = ({ navigation }) => {
+  const route = useRoute();
+
   const [popupVisible, setPopupVisible] = useState(false);
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -56,6 +53,17 @@ const StocksScreen = ({ navigation }) => {
 
   useEffect(() => {
     navigation.setOptions({
+      headerLeft: () => {
+        return (
+          <HeaderButton
+            name="menu-outline"
+            onPress={() => {
+              navigation.navigate("Menu", { current: route.name });
+            }}
+            containerStyle={{ paddingLeft: 10 }}
+          />
+        );
+      },
       headerRight: () => {
         return (
           <HeaderButton
