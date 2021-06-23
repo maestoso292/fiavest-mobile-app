@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
-import Posting from "../components/PostingCard";
+import PostingCard from "../components/PostingCard";
 import AdPopup from "../components/AdPopup";
 import { ImageSwiper } from "../components/AdSwiper";
 import { BACKGROUND_LIGHT, BORDER_PRIMARY } from "../constants/colors";
 
 const renderPosting = ({ item }) => {
-  return <Posting name={item.name} details={item.body} source={item.source} />;
+  return <PostingCard name={item.name} details={item.body} source={item.source} />;
 };
 
 // TODO Fetching data of company postings
@@ -73,7 +73,6 @@ const HomeScreen = (props) => {
   };
 
   return (
-    // TODO Header for the screen
     <View style={styles.screen}>
       <AdPopup
         visible={adVisible}

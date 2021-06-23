@@ -4,37 +4,31 @@ import {
   Text,
   Image,
   StyleSheet,
-  TouchableOpacity,
-  Platform,
-  TouchableNativeFeedback,
 } from "react-native";
+
+import TouchableCustom from "./base/TouchableCustom";
 import {
   BORDER_PRIMARY,
   POPUP_LIGHT,
   TEXT_PRIMARY_LIGHT,
 } from "../constants/colors";
 
-const Posting = (props) => {
-  let TouchComponent = TouchableOpacity;
-  if (Platform.OS === "android" && Platform.Version >= 21) {
-    TouchComponent = TouchableNativeFeedback;
-  }
-
+const PostingCard = (props) => {
   return (
-    <TouchComponent activeOpacity={0.75} useForeground>
-      <View style={styles.rootContainer}>
-        <View style={styles.imageContainer}>
-          <Image source={{ uri: props.source }} style={styles.image} />
-        </View>
-        <View style={styles.titleTextContainer}>
-          <Text style={styles.titleText}>{props.name}</Text>
-          <Text style={styles.bodyText}>{props.details}</Text>
-        </View>
-        {/* <View style={styles.bodyTextContainer}>
-          
-        </View> */}
+    <TouchableCustom
+      type="highlight"
+      useAndroid
+      containerStyle={styles.rootContainer}
+      onPress={() => {}}
+    >
+      <View style={styles.imageContainer}>
+        <Image source={{ uri: props.source }} style={styles.image} />
       </View>
-    </TouchComponent>
+      <View style={styles.textContainer}>
+        <Text style={styles.titleText}>{props.name}</Text>
+        <Text style={styles.bodyText}>{props.details}</Text>
+      </View>
+    </TouchableCustom>
   );
 };
 
@@ -63,8 +57,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
-  titleTextContainer: {
-    // height: 42,
+  textContainer: {
     flex: 2,
     width: "100%",
     justifyContent: "flex-start",
@@ -80,19 +73,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: TEXT_PRIMARY_LIGHT,
   },
-  bodyTextContainer: {
-    flex: 2,
-    width: "100%",
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-    paddingHorizontal: 10,
-    paddingBottom: 5,
-    backgroundColor: POPUP_LIGHT,
-  },
   bodyText: {
     fontSize: 14,
-    letterSpacing: 1
+    letterSpacing: 1,
   },
 });
 
-export default Posting;
+export default PostingCard;

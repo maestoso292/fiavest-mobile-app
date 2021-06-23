@@ -15,6 +15,7 @@ import {
 } from "@expo/vector-icons";
 import { BORDER_PRIMARY, POPUP_LIGHT } from "../constants/colors";
 import { Routes } from "../constants/routes";
+import TouchableCustom from "../components/base/TouchableCustom";
 
 const ICON_SIZE = 36;
 
@@ -26,7 +27,7 @@ const NavigationMenu = ({ navigation }) => {
   const route = useRoute();
   const { current } = route.params;
   return (
-    <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
+    <TouchableCustom onPress={() => navigation.goBack()}>
       <View style={styles.menu}>
         <View style={styles.menuRow}>
           <MenuButton
@@ -98,7 +99,7 @@ const NavigationMenu = ({ navigation }) => {
           </MenuButton>
         </View>
       </View>
-    </TouchableWithoutFeedback>
+    </TouchableCustom>
   );
 };
 

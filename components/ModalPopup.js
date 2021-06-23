@@ -2,7 +2,7 @@ import React from "react";
 import { View, Modal, StyleSheet } from "react-native";
 import { BORDER_PRIMARY } from "../constants/colors";
 
-const Popup = (props) => {
+const ModalPopup = (props) => {
   return (
     <Modal transparent {...props}>
       <View style={{ ...styles.modal, ...props.modalStyle}}>
@@ -26,12 +26,12 @@ const styles = StyleSheet.create({
     borderWidth: StyleSheet.hairlineWidth,
     shadowColor: "black",
     shadowOpacity: 0.26,
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 2, height: 2 },
     shadowRadius: 8,
-    elevation: 5,
-    width: 90,
+    elevation: 3,
+    width: 50,
     height: 50,
   },
 });
 
-export default Popup;
+export default ModalPopup;

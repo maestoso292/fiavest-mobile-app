@@ -1,24 +1,33 @@
 import React from "react";
-import { View, TouchableOpacity } from "react-native";
+import { StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { getFocusedRouteNameFromRoute, useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+
+import TouchableCustom from "../components/base/TouchableCustom";
 
 const MenuHeaderButton = () => {
   const navigation = useNavigation();
   const route = useRoute();
 
   return (
-    <TouchableOpacity
+    <TouchableCustom
       activeOpacity={0.3}
       onPress={() => {
-        navigation.navigate("Menu", {current: route.name});
+        navigation.navigate("Menu", { current: route.name });
       }}
+      contentStyle={styles.button}
     >
-      <View style={{ paddingLeft: 14 }}>
-        <Ionicons name="menu-outline" size={30} />
-      </View>
-    </TouchableOpacity>
+      <Ionicons name="menu-outline" size={30} />
+    </TouchableCustom>
   );
 };
+
+const styles = StyleSheet.create({
+  button: {
+    justifyContent: "center",
+    alignItems: "center",
+    paddingLeft: 10,
+  },
+});
 
 export default MenuHeaderButton;
