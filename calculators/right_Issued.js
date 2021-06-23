@@ -4,7 +4,7 @@ import { StyleSheet, View, Text, TextInput } from 'react-native';
 import TypeCalculator from '../components/CalculatorType';
 import Button2 from '../components/Button2';
 
-const BrokerageCalculator = (props) => {
+const RightIssuedCalculator = (props) => {
 
     const [totalAmount, setTotalAmount] = useState(0.00)
     const [isCalculate, setIsCalculate] = useState(true)
@@ -26,9 +26,9 @@ const BrokerageCalculator = (props) => {
     }
 
     const ReCalculateHandler = () => {
+        setIsEdit(true)
         setTotalAmount(0.00)
         setIsCalculate(true)
-        setIsEdit(true)
         setValue1(null)
         setValue2(null)
     }
@@ -36,10 +36,10 @@ const BrokerageCalculator = (props) => {
     return (
         <TypeCalculator
         {...props}
-        title="Brokerage Fee Calculator"
+        title="Right Issued Calculator"
         >
             <View style={styles.container}>
-                <Text>test 1 : </Text>
+                <Text>First number : </Text>
                 <TextInput 
                 style={styles.input} 
                 keyboardType="numeric" 
@@ -49,7 +49,7 @@ const BrokerageCalculator = (props) => {
                 />
             </View>
             <View style={styles.container}>
-                <Text>test 2 : </Text>
+                <Text>Second number : </Text>
                 <TextInput 
                 style={styles.input} 
                 keyboardType="numeric" 
@@ -66,7 +66,7 @@ const BrokerageCalculator = (props) => {
             ) : (
                 <View>
                 <View style={styles.container}>
-                    <Text>total : </Text>
+                    <Text>Total : </Text>
                     <Text style={{fontWeight: 'bold'}}>{totalAmount}</Text>
                 </View>
                 <View style={styles.buttonCon}>
@@ -96,4 +96,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default BrokerageCalculator;
+export default RightIssuedCalculator;
