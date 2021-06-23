@@ -10,11 +10,17 @@ import StocksScreen from "../screens/StocksScreen";
 import StockDetailsScreen from "../screens/StockDetailsScreen";
 import NavigationMenu from "./NavigationMenu";
 import MenuHeaderButton from "./MenuHeaderButton";
+import PrintHeaderButton from "./PrintHeaderButton";
 import { Routes } from "../constants/routes";
+
 import ProfileScreen from "../screens/ProfileScreen";
 import PortfolioScreen from "../screens/PortfolioScreen";
 import EMA5Screen from "../screens/EMA5Sceen";
 import CalculatorScreen from "../screens/CalculatorsScreen";
+import NewsScreen from "../screens/NewsScreen";
+import HistoryScreen from "../screens/HistoryScreen";
+
+import { AntDesign } from '@expo/vector-icons'
 
 const RootStack = createStackNavigator();
 const MainDrawer = createDrawerNavigator();
@@ -81,6 +87,16 @@ const MainNavigator = () => {
       <MainDrawer.Screen name={Routes.PORTFOLIO} component={PortfolioScreen} />
       <MainDrawer.Screen name={Routes.EMA5} component={EMA5Screen} />
       <MainDrawer.Screen name={Routes.CALCULATOR} component={CalculatorScreen} />
+      <MainDrawer.Screen name={Routes.NEWS} component={NewsScreen} />
+      <MainDrawer.Screen 
+      name={Routes.HISTORY}
+      component={HistoryScreen}
+      options={{
+        headerRight: () => {
+          return <PrintHeaderButton />
+        }
+      }}
+      />
     </MainDrawer.Navigator>
   );
 };
