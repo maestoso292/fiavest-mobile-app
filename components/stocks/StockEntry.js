@@ -1,20 +1,29 @@
 import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 import TouchableCustom from "../base/TouchableCustom";
 import { BORDER_PRIMARY, POPUP_LIGHT } from "../../constants/colors";
+import { Routes } from "../../constants/routes";
 
 const StockEntry = (props) => {
-  const uri = "https://assets.cmcmarkets.com/images/fibonacci_swing_trade_example_chart_small.png";
+  const uri =
+    "https://assets.cmcmarkets.com/images/fibonacci_swing_trade_example_chart_small.png";
+  const navigation = useNavigation();
   return (
     <TouchableCustom
       type="highlight"
       useAndroid
       containerStyle={styles.rootContainer}
-      onPress={()=>{}}
+      onPress={() => {
+        navigation.navigate(Routes.STOCK_DETAILS, {
+          id: props.id,
+          name: props.name,
+        });
+      }}
     >
       <View style={styles.imageContainer}>
-        <Image source={{ uri: uri}} style={styles.image} />
+        <Image source={{ uri: uri }} style={styles.image} />
       </View>
       <View style={styles.textContainer}>
         <View style={styles.idContainer}>
@@ -54,7 +63,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: "100%",
-    height: "100%"
+    height: "100%",
   },
   textContainer: {
     flex: 1,
