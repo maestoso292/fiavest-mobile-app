@@ -3,7 +3,6 @@ import { StyleSheet, View, Text, TextInput } from 'react-native';
 import Popup from './Popup';
 import Button2 from './Button2';
 import { Picker } from "@react-native-picker/picker";
-import { set } from 'react-native-reanimated';
 
 const SellPopUp = (props) => {
 
