@@ -53,7 +53,7 @@ const ProfileScreen = ({ navigation }) => {
         <TouchableCustom
           useAndroid
           type="highlight"
-          // containerStyle={styles.buttonContainer}
+          onPress={() => dispatch(authActions.logout())}
           contentStyle={styles.buttonContent}
         >
           <Text style={styles.buttonText}>LOGOUT</Text>
