@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Pressable } from 'react-native';
 import { AntDesign } from "@expo/vector-icons";
+import { BACKGROUND_LIGHT } from '../constants/colors';
 
 const TypeCalculator = props => {
 
@@ -50,6 +51,7 @@ const styles = StyleSheet.create({
         height: 50,
         width: '100%',
         borderWidth: 1,
+        borderRadius: 10,
         paddingHorizontal: 10,
     },
     insideCon: {
@@ -59,7 +61,10 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderLeftWidth: 1,
         borderRightWidth: 1,
-        padding: 10
+        borderBottomLeftRadius: 5,
+        borderBottomRightRadius: 5,
+        padding: 10,
+        backgroundColor: BACKGROUND_LIGHT
     },
 });
 

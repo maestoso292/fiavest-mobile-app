@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     input: {
-        width: 100,
+        width: 130,
         borderBottomWidth: 1,
     },
     buttonCon: {
