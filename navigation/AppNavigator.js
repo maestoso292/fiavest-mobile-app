@@ -13,6 +13,7 @@ import MenuHeaderButton from "./MenuHeaderButton";
 import { Routes } from "../constants/routes";
 import ProfileScreen from "../screens/ProfileScreen";
 import PortfolioScreen from "../screens/PortfolioScreen";
+import EMA5Screen from "../screens/EMA5Sceen";
 
 const RootStack = createStackNavigator();
 const MainDrawer = createDrawerNavigator();
@@ -77,6 +78,7 @@ const MainNavigator = () => {
       />
       <MainDrawer.Screen name={Routes.PROFILE} component={ProfileScreen} />
       <MainDrawer.Screen name={Routes.PORTFOLIO} component={PortfolioScreen} />
+      <MainDrawer.Screen name={Routes.EMA5} component={EMA5Screen} />
     </MainDrawer.Navigator>
   );
 };
