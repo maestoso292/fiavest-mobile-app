@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { View, StyleSheet, Animated, FlatList, Keyboard } from "react-native";
+import { View, Text, StyleSheet, Animated, FlatList, Keyboard } from "react-native";
 
 import {
   BACKGROUND_LIGHT,
@@ -18,6 +18,7 @@ import StockEntry from "../components/stocks/StockEntry";
 import { STOCKS_DATA } from "../data/dummy_stocks";
 import { useFocusEffect, useRoute } from "@react-navigation/native";
 import SearchBar from "react-native-elements/dist/searchbar/SearchBar-ios";
+import { fade } from "../animations/popup-anims";
 
 const fetchStocks = () => {
   const data = Object.values(STOCKS_DATA);
@@ -37,14 +38,6 @@ const StocksScreen = ({ navigation }) => {
   const unfilteredData = fetchStocks();
   const [data, setData] = useState(unfilteredData);
   const [search, setSearch] = useState();
-
-  const fade = (endValue) => {
-    Animated.timing(fadeAnim, {
-      toValue: endValue,
-      duration: 150,
-      useNativeDriver: true,
-    }).start();
-  };
 
   const togglePopup = () => {
     Keyboard.dismiss();
@@ -77,7 +70,7 @@ const StocksScreen = ({ navigation }) => {
 
   useEffect(() => {
     let endValue = popupVisible ? 1 : 0;
-    fade(endValue);
+    fade(fadeAnim, endValue).start();
   }, [popupVisible]);
 
   useEffect(() => {

@@ -1,5 +1,12 @@
-import React, { useState } from "react";
-import { StyleSheet, View, Text, FlatList } from "react-native";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  FlatList,
+  Animated,
+  Keyboard,
+} from "react-native";
 import "intl";
 import "intl/locale-data/jsonp/en";
 
@@ -11,6 +18,8 @@ import {
   BORDER_PRIMARY,
   POPUP_LIGHT,
 } from "../constants/colors";
+import { useFocusEffect } from "@react-navigation/native";
+import { fade } from "../animations/popup-anims";
 
 const renderStock = ({ item }) => {
   return (
@@ -23,33 +32,33 @@ const renderStock = ({ item }) => {
 };
 
 const fetchStockData = () => {
-    const data = [
-        {
-            id: "1",
-            name: '1155 MAYBANK',
-            lots: '10',
-            price: '81.8'
-        },
-        {
-            id: "2",
-            name: '5099 AIRASIA',
-            lots: '100',
-            price: '92'
-        },
-        {
-            id: "3",
-            name: '7079 TIGER',
-            lots: '1000',
-            price: '55'
-        },
-        {
-            id: "4",
-            name: '0001 SCOMNET',
-            lots: '100',
-            price: '163'
-        },
-    ];
-    return data;
+  const data = [
+    {
+      id: "1",
+      name: "1155 MAYBANK",
+      lots: "10",
+      price: "81.8",
+    },
+    {
+      id: "2",
+      name: "5099 AIRASIA",
+      lots: "100",
+      price: "92",
+    },
+    {
+      id: "3",
+      name: "7079 TIGER",
+      lots: "1000",
+      price: "55",
+    },
+    {
+      id: "4",
+      name: "0001 SCOMNET",
+      lots: "100",
+      price: "163",
+    },
+  ];
+  return data;
 };
 
 const formatter = new Intl.NumberFormat("en", {
@@ -62,7 +71,21 @@ const PortfolioScreen = (props) => {
   const [totalAmount, setTotalAmount] = useState(100.65);
   const [popupVisible, setPopupVisible] = useState(false);
 
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    let endValue = popupVisible ? 1 : 0;
+    fade(fadeAnim, endValue).start();
+  }, [popupVisible]);
+
+  useFocusEffect(
+    useCallback(() => {
+      setPopupVisible(false);
+    }, [setPopupVisible])
+  );
+
   const closePopup = () => {
+    Keyboard.dismiss();
     setPopupVisible(false);
   };
 
@@ -72,45 +95,47 @@ const PortfolioScreen = (props) => {
 
   return (
     <View style={styles.screen}>
+      <View style={{ ...styles.screen, padding: 10 }}>
+        <View style={styles.header}>
+          <View style={{ ...styles.headerItem, flex: 4 }}>
+            <Text>ID & Name</Text>
+          </View>
+          <View style={{ ...styles.headerItem, flex: 2 }}>
+            <Text>Lot (x100)</Text>
+          </View>
+          <View style={{ ...styles.headerItem, flex: 3 }}>
+            <Text>Price (RM)</Text>
+          </View>
+          <View style={{ ...styles.headerItem, flex: 1, borderEndWidth: 0 }}>
+            <Text>Sell</Text>
+          </View>
+        </View>
+        <View style={styles.listContainer}>
+          <FlatList
+            contentContainerStyle={styles.list}
+            showsVerticalScrollIndicator={false}
+            data={stocks}
+            keyExtractor={(item) => item.id}
+            renderItem={renderStock}
+          />
+        </View>
+        <View style={styles.totalContainer}>
+          <View>
+            <Text style={{ fontSize: 20 }}>
+              Total : RM{" "}
+              <Text style={{ fontWeight: "bold" }}>
+                {formatter.format(totalAmount).replace(/[^0123456789.,]/g, "")}
+              </Text>
+            </Text>
+          </View>
+          <Button2 onPress={openPopup}>SELL</Button2>
+        </View>
+      </View>
       <SellPopUp
         visible={popupVisible}
         onClose={closePopup}
-        animationType="fade"
+        popupStyle={{ opacity: fadeAnim }}
       />
-      <View style={styles.header}>
-        <View style={{ ...styles.headerItem, flex: 4 }}>
-          <Text>ID & Name</Text>
-        </View>
-        <View style={{ ...styles.headerItem, flex: 2 }}>
-          <Text>Lot (x100)</Text>
-        </View>
-        <View style={{ ...styles.headerItem, flex: 3 }}>
-          <Text>Price (RM)</Text>
-        </View>
-        <View style={{ ...styles.headerItem, flex: 1, borderEndWidth: 0 }}>
-          <Text>Sell</Text>
-        </View>
-      </View>
-      <View style={styles.listContainer}>
-        <FlatList
-          contentContainerStyle={styles.list}
-          showsVerticalScrollIndicator={false}
-          data={stocks}
-          keyExtractor={(item) => item.id}
-          renderItem={renderStock}
-        />
-      </View>
-      <View style={styles.totalContainer}>
-        <View>
-          <Text style={{ fontSize: 20 }}>
-            Total : RM{" "}
-            <Text style={{ fontWeight: "bold" }}>
-              {formatter.format(totalAmount).replace(/[^0123456789.,]/g, "")}
-            </Text>
-          </Text>
-        </View>
-        <Button2 onPress={openPopup}>SELL</Button2>
-      </View>
     </View>
   );
 };
@@ -118,8 +143,9 @@ const PortfolioScreen = (props) => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    padding: 10,
     backgroundColor: BACKGROUND_LIGHT,
+    justifyContent: "center",
+    alignItems: "center",
   },
   header: {
     borderWidth: StyleSheet.hairlineWidth,

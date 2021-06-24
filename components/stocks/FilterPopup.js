@@ -5,8 +5,6 @@ import {
   Text,
   StyleSheet,
   Button,
-  KeyboardAvoidingView,
-  ScrollView,
   Dimensions,
 } from "react-native";
 import { POPUP_LIGHT } from "../../constants/colors";
@@ -17,7 +15,7 @@ const DEVICE_HEIGHT = Dimensions.get("window").height;
 
 const FILTER_MIN_UPDATE = "FILTER_MIN_UPDATE";
 const FILTER_MAX_UPDATE = "FILTER_MAX_UPDATE";
-const FILTER_RESET = "FILTER_RESET"
+const FILTER_RESET = "FILTER_RESET";
 
 const initialFilterState = {
   min: {
@@ -128,19 +126,13 @@ const InputRow = (props) => {
       <View style={styles.column2}>
         <FilterNumberInput
           id={props.id}
-          onInputChange={props.onInputChange.bind(
-            this,
-            (type = FILTER_MIN_UPDATE)
-          )}
+          onInputChange={props.onInputChange.bind(this, FILTER_MIN_UPDATE)}
         />
       </View>
       <View style={styles.column2}>
         <FilterNumberInput
           id={props.id}
-          onInputChange={props.onInputChange.bind(
-            this,
-            (type = FILTER_MAX_UPDATE)
-          )}
+          onInputChange={props.onInputChange.bind(this, FILTER_MAX_UPDATE)}
         />
       </View>
     </View>
