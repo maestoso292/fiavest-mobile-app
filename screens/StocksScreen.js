@@ -1,31 +1,26 @@
-import React, { useEffect, useRef, useState } from "react";
-import {
-  View,
-  StyleSheet,
-  Button,
-  Animated,
-  FlatList,
-  Text,
-  Keyboard,
-} from "react-native";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
+import { View, StyleSheet, Animated, FlatList, Keyboard } from "react-native";
 
-import { BACKGROUND_LIGHT, POPUP_LIGHT } from "../constants/colors";
-import ViewPopup from "../components/ViewPopup";
-import FilterButton from "../components/stocks/FilterButton";
+import {
+  BACKGROUND_LIGHT,
+  BORDER_PRIMARY,
+  POPUP_LIGHT,
+} from "../constants/colors";
+import HeaderButton from "../components/base/HeaderButton";
 import FilterPopup from "../components/stocks/FilterPopup";
 import StockEntry from "../components/stocks/StockEntry";
+import { STOCKS_DATA } from "../data/dummy_stocks";
+import { useFocusEffect, useRoute } from "@react-navigation/native";
+import SearchBar from "react-native-elements/dist/searchbar/SearchBar-ios";
 
 const fetchStocks = () => {
-  const data = [
-    { id: "0000", name: "Sample Text", price: "$100" },
-    { id: "0001", name: "Sample Text", price: "$100" },
-    { id: "0002", name: "Sample Text", price: "$100" },
-    { id: "0003", name: "Sample Text", price: "$100" },
-    { id: "0005", name: "Sample Text", price: "$100" },
-    { id: "0006", name: "Sample Text", price: "$100" },
-    { id: "0007", name: "Sample Text", price: "$100" },
-    { id: "0008", name: "Sample Text", price: "$100" },
-  ];
+  const data = Object.values(STOCKS_DATA);
   return data;
 };
 
@@ -34,28 +29,25 @@ const renderStockEntry = ({ item }) => {
 };
 
 const StocksScreen = ({ navigation }) => {
+  const route = useRoute();
+
   const [popupVisible, setPopupVisible] = useState(false);
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
-  const fadeIn = () => {
-    // console.log("Fade In: ");
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 150,
-      useNativeDriver: true,
-    }).start();
-  };
+  const unfilteredData = fetchStocks();
+  const [data, setData] = useState(unfilteredData);
+  const [search, setSearch] = useState();
 
-  const fadeOut = () => {
-    // console.log("Fade Out: ");
+  const fade = (endValue) => {
     Animated.timing(fadeAnim, {
-      toValue: 0,
+      toValue: endValue,
       duration: 150,
       useNativeDriver: true,
     }).start();
   };
 
   const togglePopup = () => {
+    Keyboard.dismiss();
     setPopupVisible((prev) => !prev);
   };
 
@@ -65,23 +57,80 @@ const StocksScreen = ({ navigation }) => {
     setPopupVisible(false);
   };
 
+  const searchFilter = (query) => {
+    const newData = unfilteredData.filter((item) => {
+      const itemData = `${item.id.toUpperCase()} ${item.name.toUpperCase()}`;
+      const queryData = query.toUpperCase();
+
+      return itemData.indexOf(queryData) > -1;
+    });
+    setSearch(query);
+    setData(newData);
+  };
+
+  // TODO Decide whether to do this onFocus or onBlur
+  useFocusEffect(useCallback(() => {
+    setPopupVisible(false);
+    setSearch(null);
+    setData(unfilteredData);
+  },[setPopupVisible, setSearch]));
+
+  useEffect(() => {
+    let endValue = popupVisible ? 1 : 0;
+    fade(endValue);
+  }, [popupVisible]);
+
   useEffect(() => {
     navigation.setOptions({
+      headerLeft: () => {
+        return (
+          <HeaderButton
+            name="menu-outline"
+            onPress={() => {
+              navigation.navigate("Menu", { current: route.name });
+            }}
+            containerStyle={{ paddingLeft: 10 }}
+          />
+        );
+      },
       headerRight: () => {
-        return <FilterButton onPress={togglePopup} />;
+        return (
+          <HeaderButton
+            onPress={togglePopup}
+            name="options-outline"
+            containerStyle={{ paddingRight: 10 }}
+          />
+        );
       },
     });
   }, [navigation]);
 
   useEffect(() => {
-    if (popupVisible) {
-      fadeIn();
-    } else {
-      fadeOut();
-    }
-  }, [popupVisible]);
-
-  const data = fetchStocks();
+    navigation.setOptions({
+      headerTitle: () => {
+        return (
+          <SearchBar
+            placeholder="Search..."
+            onFocus={() => setPopupVisible(false)}
+            onChangeText={searchFilter}
+            autoCorrect={false}
+            value={search}
+            round
+            cancelIcon={false}
+            cancelButtonProps={{
+              disabled: true,
+              buttonDisabledStyle: {
+                width: 0,
+              },
+            }}
+            showCancel={false}
+            inputContainerStyle={styles.searchBar}
+            containerStyle={styles.searchBarContainer}
+          />
+        );
+      },
+    });
+  }, [navigation, search]);
 
   return (
     <View style={styles.screen}>
@@ -110,6 +159,26 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: BACKGROUND_LIGHT,
+  },
+  searchBarContainer: {
+    flex: 1,
+    alignSelf: "baseline",
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 0,
+    paddingRight: 0,
+  },
+  searchBar: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: BORDER_PRIMARY,
+    borderBottomWidth: 1,
+    borderRadius: 25,
+    marginTop: 0,
+    marginBottom: 0,
+    marginLeft: 0,
+    marginRight: 0,
+    backgroundColor: POPUP_LIGHT,
   },
   listContainer: {
     flex: 1,

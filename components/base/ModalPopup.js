@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Modal, StyleSheet } from "react-native";
-import { BORDER_PRIMARY } from "../constants/colors";
+import { BORDER_PRIMARY } from "../../constants/colors";
 
 const ModalPopup = (props) => {
   return (

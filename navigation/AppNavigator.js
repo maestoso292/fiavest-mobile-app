@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, useRoute } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import StartScreen from "../screens/StartScreen";
@@ -9,7 +9,7 @@ import HomeScreen from "../screens/HomeScreen";
 import StocksScreen from "../screens/StocksScreen";
 import StockDetailsScreen from "../screens/StockDetailsScreen";
 import NavigationMenu from "./NavigationMenu";
-import MenuHeaderButton from "./MenuHeaderButton";
+import HeaderButton from "../components/base/HeaderButton";
 import { Routes } from "../constants/routes";
 import ProfileScreen from "../screens/ProfileScreen";
 import PortfolioScreen from "../screens/PortfolioScreen";
@@ -57,7 +57,7 @@ const AppNavigator = () => {
   );
 };
 
-const MainNavigator = () => {
+const MainNavigator = ({ navigation }) => {
   return (
     <MainDrawer.Navigator
       backBehavior="initialRoute"
@@ -66,7 +66,16 @@ const MainNavigator = () => {
         headerShown: true,
         headerTitleAlign: "center",
         headerLeft: () => {
-          return <MenuHeaderButton />;
+          const route = useRoute();
+          return (
+            <HeaderButton
+              name="menu-outline"
+              onPress={() => {
+                navigation.navigate("Menu", { current: route.name });
+              }}
+              containerStyle={{ paddingLeft: 10 }}
+            />
+          );
         },
       }}
     >
@@ -83,21 +92,13 @@ const MainNavigator = () => {
   );
 };
 
-const StockNavigator = () => {
+const StockNavigator = ({ navigation }) => {
   return (
     <StockStack.Navigator
       screenOptions={{ headerShown: true, headerTitleAlign: "center" }}
       initialRouteName={Routes.STOCKS_SEARCH}
     >
-      <StockStack.Screen
-        name={Routes.STOCKS_SEARCH}
-        component={StocksScreen}
-        options={{
-          headerLeft: () => {
-            return <MenuHeaderButton />;
-          },
-        }}
-      />
+      <StockStack.Screen name={Routes.STOCKS_SEARCH} component={StocksScreen} />
       <StockStack.Screen
         name={Routes.STOCK_DETAILS}
         component={StockDetailsScreen}
