@@ -6,7 +6,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
 } from "react-native";
-import ModalPopup from "./ModalPopup";
+import ModalPopup from "./base/ModalPopup";
 import Button2 from "./Button2";
 import { Picker } from "@react-native-picker/picker";
 

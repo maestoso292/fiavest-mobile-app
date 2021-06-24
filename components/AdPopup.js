@@ -9,7 +9,12 @@ const AdPopup = (props) => {
     <ModalPopup {...props} popupStyle={styles.popup} modalStyle={styles.modal}>
       <Image source={{ uri: props.source, width: "100%", height: "100%" }} />
       <View style={styles.button}>
-        <TouchableCustom onPress={props.onPress}>
+        <TouchableCustom
+          onPress={props.onPress}
+          containerStyle={styles.button}
+          touchableStyle={{ width: "100%", height: "100%" }}
+          contentStyle={{ width: "100%", height: "100%" }}
+        >
           <Text style={styles.buttonText}>Close</Text>
         </TouchableCustom>
       </View>

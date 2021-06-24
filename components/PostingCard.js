@@ -19,6 +19,7 @@ const PostingCard = (props) => {
       type="highlight"
       useAndroid
       containerStyle={styles.rootContainer}
+      contentStyle={{ width: "100%", height: "100%" }}
       onPress={() => {}}
     >
       <View style={styles.imageContainer}>

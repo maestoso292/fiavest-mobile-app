@@ -27,7 +27,11 @@ const NavigationMenu = ({ navigation }) => {
   const route = useRoute();
   const { current } = route.params;
   return (
-    <TouchableCustom onPress={() => navigation.goBack()}>
+    <TouchableCustom
+      onPress={() => navigation.goBack()}
+      containerStyle={styles.screen}
+      contentStyle={styles.screen}
+    >
       <View style={styles.menu}>
         <View style={styles.menuRow}>
           <MenuButton
@@ -118,6 +122,10 @@ const MenuButton = (props) => {
 };
 
 const styles = StyleSheet.create({
+  screen: {
+    width: "100%",
+    height: "100%",
+  },
   menu: {
     flex: 1,
     justifyContent: "space-around",

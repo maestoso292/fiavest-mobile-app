@@ -49,16 +49,10 @@ const TouchableCustom = (props) => {
 
 const styles = StyleSheet.create({
   touchableContainer: {
-    width: "100%",
-    height: "100%",
   },
   touchable: {
-    width: "100%",
-    height: "100%",
   },
   content: {
-    width: "100%",
-    height: "100%",
   }
 });
 
