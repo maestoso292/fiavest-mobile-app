@@ -1,6 +1,6 @@
 import React, { Component, createRef } from "react";
 import { StyleSheet, View, ScrollView, Image, Dimensions } from "react-native";
-import { BORDER_PRIMARY } from "../constants/colors";
+import { BORDER_PRIMARY } from "../../constants/colors";
 
 const DEVICE_WIDTH = Dimensions.get("window").width;
 

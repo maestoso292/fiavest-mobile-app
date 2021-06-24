@@ -1,61 +1,25 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
-import PostingCard from "../components/PostingCard";
-import AdPopup from "../components/AdPopup";
-import { ImageSwiper } from "../components/AdSwiper";
-import { BACKGROUND_LIGHT, BORDER_PRIMARY } from "../constants/colors";
+import PostingCard from "../components/home/PostingEntry";
+import AdPopup from "../components/home/AdPopup";
+import { ImageSwiper } from "../components/home/AdSwiper";
+import { BACKGROUND_LIGHT } from "../constants/colors";
+import { AD_SLIDESHOW_DATA, POSTING_DATA } from "../data/dummy_postings";
 
 const renderPosting = ({ item }) => {
-  return <PostingCard name={item.name} details={item.body} source={item.source} />;
+  return (
+    <PostingCard name={item.title} details={item.body} source={item.imgSrc} />
+  );
 };
 
 // TODO Fetching data of company postings
 const fetchPostingData = () => {
-  const body =
-    "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.";
-  const data = [
-    {
-      id: "id1",
-      name: "Title",
-      body: body,
-      source: "https://source.unsplash.com/1024x768/?nature",
-    },
-    {
-      id: "id2",
-      name: "Title",
-      body: body,
-      source:
-        "https://image.shutterstock.com/image-vector/sample-stamp-grunge-texture-vector-260nw-1389188336.jpg",
-    },
-    {
-      id: "id3",
-      name: "Title",
-      body: body,
-      source: "https://source.unsplash.com/1024x768/?tree",
-    },
-    {
-      id: "id4",
-      name: "Title",
-      body: body,
-      source:
-        "https://image.shutterstock.com/image-vector/sample-stamp-grunge-texture-vector-260nw-1389188336.jpg",
-    },
-  ];
-  return data;
+  return POSTING_DATA;
 };
 
 // TODO Fetching ads (Company ads? Playstore ads?)
 const fetchAdSlideshowData = () => {
-  return [
-    "https://source.unsplash.com/1024x768/?nature",
-    "https://source.unsplash.com/1024x768/?water",
-    "https://source.unsplash.com/1024x768/?girl",
-    "https://source.unsplash.com/1024x768/?tree",
-    "https://cdn.business2community.com/wp-content/uploads/2013/09/best-press-release-example.jpg",
-    "https://en.pimg.jp/054/313/779/1/54313779.jpg",
-    "https://secureservercdn.net/160.153.138.163/t55.c04.myftpupload.com/wp-content/uploads/2016/01/IB-Examples.jpg",
-    "https://image.shutterstock.com/image-illustration/server-room-center-exchanging-cyber-260nw-784596430.jpg",
-  ];
+  return AD_SLIDESHOW_DATA;
 };
 
 // TODO Fetching ad popup (Company ad?)

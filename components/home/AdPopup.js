@@ -1,8 +1,8 @@
 import React from "react";
 import { Text, StyleSheet, Image, View } from "react-native";
-import { BORDER_PRIMARY } from "../constants/colors";
-import ModalPopup from "./base/ModalPopup";
-import TouchableCustom from "./base/TouchableCustom";
+import { BORDER_PRIMARY } from "../../constants/colors";
+import ModalPopup from "../base/ModalPopup";
+import TouchableCustom from "../base/TouchableCustom";
 
 const AdPopup = (props) => {
   return (

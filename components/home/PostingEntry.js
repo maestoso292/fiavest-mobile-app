@@ -1,35 +1,34 @@
 import React from "react";
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-} from "react-native";
+import { View, Text, Image, StyleSheet } from "react-native";
 
-import TouchableCustom from "./base/TouchableCustom";
+import TouchableCustom from "../base/TouchableCustom";
 import {
   BORDER_PRIMARY,
   POPUP_LIGHT,
   TEXT_PRIMARY_LIGHT,
-} from "../constants/colors";
+} from "../../constants/colors";
+
+import CardBase from "../base/CardBase";
 
 const PostingCard = (props) => {
   return (
-    <TouchableCustom
-      type="highlight"
-      useAndroid
-      containerStyle={styles.rootContainer}
-      contentStyle={{ width: "100%", height: "100%" }}
-      onPress={() => {}}
-    >
-      <View style={styles.imageContainer}>
-        <Image source={{ uri: props.source }} style={styles.image} />
-      </View>
-      <View style={styles.textContainer}>
-        <Text style={styles.titleText}>{props.name}</Text>
-        <Text style={styles.bodyText}>{props.details}</Text>
-      </View>
-    </TouchableCustom>
+    <CardBase style={styles.rootContainer}>
+      <TouchableCustom
+        type="highlight"
+        useAndroid
+        containerStyle={{width: "100%", flex: 1}}
+        contentStyle={{ width: "100%", flex: 1}}
+        onPress={() => {}}
+      >
+        <View style={styles.imageContainer}>
+          <Image source={{ uri: props.source }} style={styles.image} />
+        </View>
+        <View style={styles.textContainer}>
+          <Text style={styles.titleText}>{props.name}</Text>
+          <Text style={styles.bodyText}>{props.details}</Text>
+        </View>
+      </TouchableCustom>
+    </CardBase>
   );
 };
 
@@ -39,14 +38,6 @@ const styles = StyleSheet.create({
     height: 250,
     marginVertical: 5,
     alignItems: "center",
-    borderColor: BORDER_PRIMARY,
-    borderWidth: StyleSheet.hairlineWidth,
-    shadowColor: "black",
-    shadowOpacity: 1,
-    shadowOffset: { width: 2, height: 2 },
-    shadowRadius: 8,
-    elevation: 3,
-    overflow: "hidden",
   },
   imageContainer: {
     flex: 3,
