@@ -1,6 +1,8 @@
-import React, { useEffect } from "react";
-import { Text, View, StyleSheet, Image } from "react-native";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { Text, View, StyleSheet, Image, Animated } from "react-native";
 import HeaderButton from "../components/base/HeaderButton";
+import CartPopup from "../components/stock-details/CartPopup";
+
 import {
   BACKGROUND_LIGHT,
   BORDER_PRIMARY,
@@ -9,11 +11,38 @@ import {
 
 import { STOCKS_DATA } from "../data/dummy_stocks";
 import { currencyFormatter } from "../constants/formatter";
+import { fade } from "../animations/popup-anims";
+import AlertPopup from "../components/stock-details/AlertPopup";
 
 const StockDetailsScreen = ({ navigation, route }) => {
-  const { id } = route.params;
+  const [cartPopupVisible, setCartPopupVisible] = useState(false);
+  const [alertPopupVisible, setAlertPopupVisible] = useState(false);
 
+  const cartFadeValue = useRef(new Animated.Value(0)).current;
+  const alertFadeValue = useRef(new Animated.Value(0)).current;
+
+  const { id } = route.params;
   const stockData = STOCKS_DATA[id];
+
+  const toggleCartPopup = () => {
+    setAlertPopupVisible(false);
+    setCartPopupVisible((prev) => !prev);
+  };
+
+  const toggleAlertPopup = () => {
+    setCartPopupVisible(false);
+    setAlertPopupVisible((prev) => !prev);
+  };
+
+  useEffect(() => {
+    let endValue = cartPopupVisible ? 1 : 0;
+    fade(cartFadeValue, endValue).start();
+  }, [cartPopupVisible, fade]);
+
+  useEffect(() => {
+    let endValue = alertPopupVisible ? 1 : 0;
+    fade(alertFadeValue, endValue).start();
+  }, [alertPopupVisible, fade]);
 
   useEffect(() => {
     navigation.setOptions({
@@ -26,12 +55,12 @@ const StockDetailsScreen = ({ navigation, route }) => {
             }}
           >
             <HeaderButton
-              onPress={() => {}}
+              onPress={toggleAlertPopup}
               name="notifications-outline"
               containerStyle={styles.headerRight}
             />
             <HeaderButton
-              onPress={() => {}}
+              onPress={toggleCartPopup}
               name="cart-outline"
               containerStyle={styles.headerRight}
             />
@@ -39,18 +68,31 @@ const StockDetailsScreen = ({ navigation, route }) => {
         );
       },
     });
-  }, [navigation]);
+  }, [navigation, id, stockData.name]);
 
   return (
     <View style={styles.screen}>
       <View style={styles.imageContainer}>
         <Image source={{ uri: stockData.chartSrc }} style={styles.image} />
       </View>
-      {/* TODO Proper stock details */}
       <View style={styles.detailsContainer}>
-        <Text style={{fontSize: 20}}>Current Price: {currencyFormatter.format(stockData.price)}</Text>
-        <Text>{ stockData.details}</Text>
+        <Text style={{ fontSize: 20 }}>
+          Current Price: {currencyFormatter.format(stockData.price)}
+        </Text>
+        <Text>{stockData.details}</Text>
       </View>
+      <CartPopup
+        visible={cartPopupVisible}
+        popupStyle={{ opacity: cartFadeValue }}
+        // To be a screen overlay, elevation must be higher than elevation of other components
+        containerStyle={{ elevation: 3, zIndex: 3 }}
+      />
+      <AlertPopup
+        visible={alertPopupVisible}
+        popupStyle={{ opacity: alertFadeValue }}
+        // To be a screen overlay, elevation must be higher than elevation of other components
+        containerStyle={{ elevation: 3, zIndex: 3 }}
+      />
     </View>
   );
 };
