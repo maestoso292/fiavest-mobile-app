@@ -1,5 +1,13 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Text, View, StyleSheet, Image, Animated } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Image,
+  Animated,
+  KeyboardAvoidingView,
+  Keyboard,
+} from "react-native";
 import HeaderButton from "../components/base/HeaderButton";
 import CartPopup from "../components/stock-details/CartPopup";
 
@@ -13,6 +21,7 @@ import { STOCKS_DATA } from "../data/dummy_stocks";
 import { currencyFormatter } from "../constants/formatter";
 import { fade } from "../animations/popup-anims";
 import AlertPopup from "../components/stock-details/AlertPopup";
+import FilterPopup from "../components/stocks/FilterPopup";
 
 const StockDetailsScreen = ({ navigation, route }) => {
   const [cartPopupVisible, setCartPopupVisible] = useState(false);
@@ -25,13 +34,20 @@ const StockDetailsScreen = ({ navigation, route }) => {
   const stockData = STOCKS_DATA[id];
 
   const toggleCartPopup = () => {
+    Keyboard.dismiss();
     setAlertPopupVisible(false);
     setCartPopupVisible((prev) => !prev);
   };
 
   const toggleAlertPopup = () => {
+    Keyboard.dismiss();
     setCartPopupVisible(false);
     setAlertPopupVisible((prev) => !prev);
+  };
+
+  const alertSubmitHandler = (priceTarget, volumeTarget) => {
+    console.log(`Price: ${priceTarget} --- Volume: ${volumeTarget}`);
+    toggleAlertPopup();
   };
 
   useEffect(() => {
@@ -71,7 +87,7 @@ const StockDetailsScreen = ({ navigation, route }) => {
   }, [navigation, id, stockData.name]);
 
   return (
-    <View style={styles.screen}>
+    <View style={styles.screen} behavior="height">
       <View style={styles.imageContainer}>
         <Image source={{ uri: stockData.chartSrc }} style={styles.image} />
       </View>
@@ -85,13 +101,15 @@ const StockDetailsScreen = ({ navigation, route }) => {
         visible={cartPopupVisible}
         popupStyle={{ opacity: cartFadeValue }}
         // To be a screen overlay, elevation must be higher than elevation of other components
-        containerStyle={{ elevation: 3, zIndex: 3 }}
+        containerStyle={{ elevation: 2, zIndex: 2 }}
       />
       <AlertPopup
         visible={alertPopupVisible}
         popupStyle={{ opacity: alertFadeValue }}
-        // To be a screen overlay, elevation must be higher than elevation of other components
-        containerStyle={{ elevation: 3, zIndex: 3 }}
+        // To be a screen overlay, elevation must be >= elevation of other components
+        containerStyle={{ elevation: 2, zIndex: 2 }}
+        onCancel={toggleAlertPopup}
+        onSubmit={alertSubmitHandler}
       />
     </View>
   );
@@ -128,14 +146,12 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     padding: 10,
     width: "100%",
-    flex: 1,
     backgroundColor: POPUP_LIGHT,
     borderColor: BORDER_PRIMARY,
     borderWidth: StyleSheet.hairlineWidth,
     shadowColor: "black",
     shadowOpacity: 0.5,
     shadowOffset: { width: 0, height: 2 },
-    elevation: 2,
     overflow: "scroll",
   },
 });
