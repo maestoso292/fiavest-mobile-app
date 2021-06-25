@@ -3,34 +3,50 @@ import { StyleSheet, View, Text, TextInput } from 'react-native';
 
 import TypeCalculator from '../components/CalculatorType';
 import Button2 from '../components/Button2';
+import InputCon from '../components/CalculatorInput';
+import OutputCon from '../components/CalculateOutput';
+import ButtonCon from '../components/CalculatorButton';
 
 const BonusIssuedCalculator = (props) => {
 
-    const [totalAmount, setTotalAmount] = useState(0.00)
     const [isCalculate, setIsCalculate] = useState(true)
     const [isEdit, setIsEdit] = useState(true)
-    const [value1, setValue1] = useState()
-    const [value2, setValue2] = useState()
+
+    const [StockPrice, setStockPrice] = useState(0)
+    const [HoldingUnits, setHoldingUnits] = useState(0)
+    const [Bonus1, setBonus1] = useState(0)
+    const [Bonus2, setBonus2] = useState(0)
+
+    const [NewUnits, setNewUnits] = useState(0)
+    const [EstimatePrice, setEstimatePrice] = useState(0)
 
     const CalculateHandler = () => {
         setIsEdit(false)
-        const parseValue1 = parseFloat(value1)
-        const parseValue2 = parseFloat(value2)
-        const total = parseValue1 + parseValue2
-        if (isNaN(total)) {
-            setTotalAmount(0.00)
-        } else {
-            setTotalAmount(total)
-        }
+
+        const HU = (parseFloat(HoldingUnits))
+        const SP = (parseFloat(StockPrice))
+        const parseNU = (((HU * parseFloat(Bonus1)) / parseFloat(Bonus2)) + HU)
+        const parseEst = ((SP * HU) / parseNU)
+
+        setNewUnits(parseNU.toFixed())
+        setEstimatePrice(parseEst.toFixed(2))
+
         setIsCalculate(!isCalculate)
     }
 
     const ReCalculateHandler = () => {
         setIsEdit(true)
-        setTotalAmount(0.00)
         setIsCalculate(true)
-        setValue1(null)
-        setValue2(null)
+
+        setNewUnits(0)
+        setEstimatePrice(0)
+    }
+
+    const ClearHandler = () => {
+        setStockPrice(0)
+        setHoldingUnits(0)
+        setBonus1(0)
+        setBonus2(0)
     }
 
     return (
@@ -38,37 +54,56 @@ const BonusIssuedCalculator = (props) => {
         {...props}
         title="Bonus Issued Calculator"
         >
-            <View style={styles.container}>
-                <Text>First number : </Text>
-                <TextInput 
-                style={styles.input} 
-                keyboardType="numeric" 
-                value={value1} 
-                onChangeText={(value) => setValue1(value)}
-                editable={isEdit}
-                />
-            </View>
+            <InputCon 
+            title="Stock Price"
+            value={StockPrice}
+            onChangeText={(value) => setStockPrice(value)}
+            editable={isEdit}
+            />
+            <InputCon 
+            title="Holding Units"
+            value={HoldingUnits}
+            onChangeText={(value) => setHoldingUnits(value)}
+            editable={isEdit}
+            />
             <View style={styles.container}>
                 <Text>Second number : </Text>
-                <TextInput 
-                style={styles.input} 
-                keyboardType="numeric" 
-                value={value2} 
-                onChangeText={(value) => setValue2(value)}
-                editable={isEdit}
-                />
+                <View style={styles.forCon}>
+                    <TextInput
+                    style={styles.input}
+                    textAlign={'center'}
+                    keyboardType="numeric" 
+                    value={Bonus1} 
+                    onChangeText={(value) => setBonus1(value)}
+                    editable={isEdit}
+                    />
+                    <Text>FOR</Text>
+                    <TextInput
+                    style={styles.input}
+                    textAlign={'center'}
+                    keyboardType="numeric" 
+                    value={Bonus2} 
+                    onChangeText={(value) => setBonus2(value)}
+                    editable={isEdit}
+                    />
+                </View>
             </View>
             <View style={{borderBottomWidth: StyleSheet.hairlineWidth, borderColor: 'black', marginBottom: 10}}/>
             {isCalculate ? (
-                <View style={styles.buttonCon}>
-                    <Button2 onPress={CalculateHandler} >Calculate</Button2>
-                </View>
+                <ButtonCon 
+                onCalculate={CalculateHandler}
+                onClear={ClearHandler}
+                />
             ) : (
                 <View>
-                <View style={styles.container}>
-                    <Text>Total : </Text>
-                    <Text style={{fontWeight: 'bold'}}>{totalAmount}</Text>
-                </View>
+                <OutputCon 
+                title="New Units"
+                value={NewUnits}
+                />
+                <OutputCon 
+                title="Estimate Price"
+                value={EstimatePrice}
+                />
                 <View style={styles.buttonCon}>
                     <Button2 onPress={ReCalculateHandler} extraStyle={{width: 120}}>Recalculate</Button2>
                 </View>
@@ -87,12 +122,18 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     input: {
-        width: 130,
+        width: '35%',
         borderBottomWidth: 1,
     },
     buttonCon: {
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    forCon: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: 130,
     }
 });
 

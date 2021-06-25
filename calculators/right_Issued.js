@@ -3,34 +3,54 @@ import { StyleSheet, View, Text, TextInput } from 'react-native';
 
 import TypeCalculator from '../components/CalculatorType';
 import Button2 from '../components/Button2';
+import InputCon from '../components/CalculatorInput';
+import OutputCon from '../components/CalculateOutput';
+import ButtonCon from '../components/CalculatorButton';
 
 const RightIssuedCalculator = (props) => {
 
-    const [totalAmount, setTotalAmount] = useState(0.00)
     const [isCalculate, setIsCalculate] = useState(true)
     const [isEdit, setIsEdit] = useState(true)
-    const [value1, setValue1] = useState()
-    const [value2, setValue2] = useState()
+
+    const [NewShare, setNewShare] = useState(0)
+    const [OldShare, setOldShare] = useState(0)
+    const [IssuePrice, setIssuePrice] = useState(0)
+    const [MarketPrice, setMarketPrice] = useState(0)
+
+    const [ExRightsPrice, setExRightsPrice] = useState(0)
 
     const CalculateHandler = () => {
+
         setIsEdit(false)
-        const parseValue1 = parseFloat(value1)
-        const parseValue2 = parseFloat(value2)
-        const total = parseValue1 + parseValue2
-        if (isNaN(total)) {
-            setTotalAmount(0.00)
+
+        const parseRightsPrice = (
+            ((parseFloat(NewShare) * parseFloat(IssuePrice)) + ((parseFloat(OldShare)) * parseFloat(MarketPrice))) /
+            (parseFloat(NewShare) + parseFloat(OldShare))
+        )
+
+        if (parseRightsPrice > 0) {
+            setExRightsPrice(parseRightsPrice.toFixed(2))
         } else {
-            setTotalAmount(total)
+            setExRightsPrice("0.00")
         }
+
         setIsCalculate(!isCalculate)
     }
 
-    const ReCalculateHandler = () => {
+    const RecalculateHandler = () => {
+
         setIsEdit(true)
-        setTotalAmount(0.00)
         setIsCalculate(true)
-        setValue1(null)
-        setValue2(null)
+
+        setExRightsPrice(0)
+
+    }
+
+    const ClearHandler = () => {
+        setNewShare(0)
+        setOldShare(0)
+        setIssuePrice(0)
+        setMarketPrice(0)
     }
 
     return (
@@ -38,39 +58,44 @@ const RightIssuedCalculator = (props) => {
         {...props}
         title="Right Issued Calculator"
         >
-            <View style={styles.container}>
-                <Text>First number : </Text>
-                <TextInput 
-                style={styles.input} 
-                keyboardType="numeric" 
-                value={value1} 
-                onChangeText={(value) => setValue1(value)}
-                editable={isEdit}
-                />
-            </View>
-            <View style={styles.container}>
-                <Text>Second number : </Text>
-                <TextInput 
-                style={styles.input} 
-                keyboardType="numeric" 
-                value={value2} 
-                onChangeText={(value) => setValue2(value)}
-                editable={isEdit}
-                />
-            </View>
+            <InputCon 
+            title="Old Shares"
+            value={OldShare}
+            onChangeText={(value) => setOldShare(value)}
+            editable={isEdit}
+            />
+            <InputCon 
+            title="Market Price"
+            value={MarketPrice}
+            onChangeText={(value) => setMarketPrice(value)}
+            editable={isEdit}
+            />
+            <InputCon 
+            title="New Shares"
+            value={NewShare}
+            onChangeText={(value) => setNewShare(value)}
+            editable={isEdit}
+            />
+            <InputCon 
+            title="Issue Price"
+            value={IssuePrice}
+            onChangeText={(value) => setIssuePrice(value)}
+            editable={isEdit}
+            />
             <View style={{borderBottomWidth: StyleSheet.hairlineWidth, borderColor: 'black', marginBottom: 10}}/>
             {isCalculate ? (
-                <View style={styles.buttonCon}>
-                    <Button2 onPress={CalculateHandler} >Calculate</Button2>
-                </View>
+                <ButtonCon 
+                onCalculate={CalculateHandler}
+                onClear={ClearHandler}
+                />
             ) : (
                 <View>
-                <View style={styles.container}>
-                    <Text>Total : </Text>
-                    <Text style={{fontWeight: 'bold'}}>{totalAmount}</Text>
-                </View>
+                <OutputCon 
+                title="Theoretical Ex-rights Price"
+                value={ExRightsPrice}
+                />
                 <View style={styles.buttonCon}>
-                    <Button2 onPress={ReCalculateHandler} extraStyle={{width: 120}}>Recalculate</Button2>
+                    <Button2 onPress={RecalculateHandler}>Reset</Button2>
                 </View>
             </View>
             )}
