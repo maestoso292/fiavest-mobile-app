@@ -10,7 +10,6 @@ import StocksScreen from "../screens/StocksScreen";
 import StockDetailsScreen from "../screens/StockDetailsScreen";
 import NavigationMenu from "./NavigationMenu";
 import MenuHeaderButton from "./MenuHeaderButton";
-import PrintHeaderButton from "./PrintHeaderButton";
 import { Routes } from "../constants/routes";
 
 import ProfileScreen from "../screens/ProfileScreen";
@@ -91,11 +90,6 @@ const MainNavigator = () => {
       <MainDrawer.Screen 
       name={Routes.HISTORY}
       component={HistoryScreen}
-      options={{
-        headerRight: () => {
-          return <PrintHeaderButton />
-        }
-      }}
       />
     </MainDrawer.Navigator>
   );
