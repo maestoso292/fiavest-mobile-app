@@ -74,6 +74,7 @@ const NavigationMenu = ({ navigation }) => {
         <View style={styles.menuRow}>
           <MenuButton
             name={Routes.CALCULATOR}
+            onPress={buttonPressHandler.bind(this, Routes.CALCULATOR)}
             style={
               current == Routes.CALCULATOR ? styles.menuButtonHighlight : {}
             }
