@@ -12,10 +12,10 @@ const BonusIssuedCalculator = (props) => {
     const [isCalculate, setIsCalculate] = useState(true)
     const [isEdit, setIsEdit] = useState(true)
 
-    const [StockPrice, setStockPrice] = useState(0)
-    const [HoldingUnits, setHoldingUnits] = useState(0)
-    const [Bonus1, setBonus1] = useState(0)
-    const [Bonus2, setBonus2] = useState(0)
+    const [StockPrice, setStockPrice] = useState()
+    const [HoldingUnits, setHoldingUnits] = useState()
+    const [Bonus1, setBonus1] = useState()
+    const [Bonus2, setBonus2] = useState()
 
     const [NewUnits, setNewUnits] = useState(0)
     const [EstimatePrice, setEstimatePrice] = useState(0)
@@ -43,10 +43,10 @@ const BonusIssuedCalculator = (props) => {
     }
 
     const ClearHandler = () => {
-        setStockPrice(0)
-        setHoldingUnits(0)
-        setBonus1(0)
-        setBonus2(0)
+        setStockPrice()
+        setHoldingUnits()
+        setBonus1()
+        setBonus2()
     }
 
     return (
@@ -67,7 +67,7 @@ const BonusIssuedCalculator = (props) => {
             editable={isEdit}
             />
             <View style={styles.container}>
-                <Text>Second number : </Text>
+                <Text>Bonus Ratio</Text>
                 <View style={styles.forCon}>
                     <TextInput
                     style={styles.input}
@@ -105,7 +105,7 @@ const BonusIssuedCalculator = (props) => {
                 value={EstimatePrice}
                 />
                 <View style={styles.buttonCon}>
-                    <Button2 onPress={ReCalculateHandler} extraStyle={{width: 120}}>Recalculate</Button2>
+                    <Button2 onPress={RecalculateHandler} extraStyle={{width: 120}}>Recalculate</Button2>
                 </View>
             </View>
             )}

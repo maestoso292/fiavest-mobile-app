@@ -20,12 +20,12 @@ const BrokerageCalculator = (props) => {
     const [isPick, setIsPick] = useState(true)
 
     //Important component
-    const [MarketValue, setMarketValue] = useState(0)
-    const [MinBrokerage, setMinBrokerage] = useState(0)
-    const [PricePurchased, setPricePurchased] = useState(0)
-    const [BrokeragePercent, setBrokeragePercent] = useState(null)
-    const [PriceSold, setPriceSold] = useState(0)
-    const [ShareHeld, setShareHeld] = useState(0)
+    const [MarketValue, setMarketValue] = useState()
+    const [MinBrokerage, setMinBrokerage] = useState()
+    const [PricePurchased, setPricePurchased] = useState()
+    const [BrokeragePercent, setBrokeragePercent] = useState()
+    const [PriceSold, setPriceSold] = useState()
+    const [ShareHeld, setShareHeld] = useState()
     const [Brokerage, setBrokerage] = useState('mplus')
 
     //Result
@@ -124,12 +124,12 @@ const BrokerageCalculator = (props) => {
     }
 
     const ClearHandler = () => {
-        setMarketValue(0)
-        setMinBrokerage(0)
-        setBrokeragePercent(0)
-        setPricePurchased(0)
-        setPriceSold(0)
-        setShareHeld(0)
+        setMarketValue()
+        setMinBrokerage()
+        setBrokeragePercent()
+        setPricePurchased()
+        setPriceSold()
+        setShareHeld()
     }
 
     const PickerValueHandler = value => {
@@ -304,7 +304,7 @@ const BrokerageCalculator = (props) => {
                     value={netProfit}
                     />
                     <View style={styles.buttonCon}>
-                        <Button2 onPress={RecalculateHandler} extraStyle={{width: 120}}>Reset</Button2>
+                        <Button2 onPress={RecalculateHandler} extraStyle={{width: 120}}>Recalculate</Button2>
                     </View>
                 </View>
             )}

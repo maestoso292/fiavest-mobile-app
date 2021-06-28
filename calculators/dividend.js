@@ -14,12 +14,12 @@ const DividendCalculator = (props) => {
     const [isEdit, setIsEdit] = useState(true)
     const [isPick, setIsPick] = useState(true)
 
-    const [BuyPrice, setBuyPrice] = useState(0)
-    const [CurrentStockPrice, setCurrentStockPrice] = useState(0)
-    const [HoldingUnits, setHoldingUnits] = useState(0)
-    const [DividendPerShare, setDividendPerShare] = useState(0)
+    const [BuyPrice, setBuyPrice] = useState()
+    const [CurrentStockPrice, setCurrentStockPrice] = useState()
+    const [HoldingUnits, setHoldingUnits] = useState()
+    const [DividendPerShare, setDividendPerShare] = useState()
     const [type, setType] = useState('cent')
-    const [incomeTax, setIncomeTax] = useState(0)
+    const [incomeTax, setIncomeTax] = useState()
 
     const [GrossDividend, setGrossDividend] = useState(0)
     const [Tax, setTax] = useState(0)
@@ -93,11 +93,11 @@ const DividendCalculator = (props) => {
 
     const ClearHandler = () => {
 
-        setBuyPrice(0)
-        setCurrentStockPrice(0)
-        setHoldingUnits(0)
-        setDividendPerShare(0)
-        setIncomeTax(0)
+        setBuyPrice()
+        setCurrentStockPrice()
+        setHoldingUnits()
+        setDividendPerShare()
+        setIncomeTax()
 
     }
 
@@ -189,7 +189,7 @@ const DividendCalculator = (props) => {
                 value={ROI}
                 />
                 <View style={styles.buttonCon}>
-                    <Button2 onPress={RecalculateHandler} extraStyle={{width: 120}}>Reset</Button2>
+                    <Button2 onPress={RecalculateHandler} extraStyle={{width: 120}}>Recalculate</Button2>
                 </View>
             </View>
             )}

@@ -12,11 +12,11 @@ const ProfitAndLostCalculator = (props) => {
     const [isCalculate, setIsCalculate] = useState(true)
     const [isEdit, setIsEdit] = useState(true)
 
-    const [PricePurchased, setPricePurchased] = useState(0)
-    const [PriceSold, setPriceSold] = useState(0)
-    const [ShareHeld, setShareHeld] = useState(0)
-    const [BrokeragePercent, setBrokeragePercent] = useState(null)
-    const [MinBrokerage, setMinBrokerage] = useState(0)
+    const [PricePurchased, setPricePurchased] = useState()
+    const [PriceSold, setPriceSold] = useState()
+    const [ShareHeld, setShareHeld] = useState()
+    const [BrokeragePercent, setBrokeragePercent] = useState()
+    const [MinBrokerage, setMinBrokerage] = useState()
 
 
     const [totalGrossProfit, setTotalGrossProfit] = useState(0)
@@ -98,11 +98,11 @@ const ProfitAndLostCalculator = (props) => {
     }
 
     const ClearHandler = () => {
-        setMinBrokerage(0)
-        setBrokeragePercent(0)
-        setPricePurchased(0)
-        setPriceSold(0)
-        setShareHeld(0)
+        setMinBrokerage()
+        setBrokeragePercent()
+        setPricePurchased()
+        setPriceSold()
+        setShareHeld()
     }
 
     return (

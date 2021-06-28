@@ -12,10 +12,10 @@ const RightIssuedCalculator = (props) => {
     const [isCalculate, setIsCalculate] = useState(true)
     const [isEdit, setIsEdit] = useState(true)
 
-    const [NewShare, setNewShare] = useState(0)
-    const [OldShare, setOldShare] = useState(0)
-    const [IssuePrice, setIssuePrice] = useState(0)
-    const [MarketPrice, setMarketPrice] = useState(0)
+    const [NewShare, setNewShare] = useState()
+    const [OldShare, setOldShare] = useState()
+    const [IssuePrice, setIssuePrice] = useState()
+    const [MarketPrice, setMarketPrice] = useState()
 
     const [ExRightsPrice, setExRightsPrice] = useState(0)
 
@@ -47,10 +47,10 @@ const RightIssuedCalculator = (props) => {
     }
 
     const ClearHandler = () => {
-        setNewShare(0)
-        setOldShare(0)
-        setIssuePrice(0)
-        setMarketPrice(0)
+        setNewShare()
+        setOldShare()
+        setIssuePrice()
+        setMarketPrice()
     }
 
     return (
@@ -95,7 +95,7 @@ const RightIssuedCalculator = (props) => {
                 value={ExRightsPrice}
                 />
                 <View style={styles.buttonCon}>
-                    <Button2 onPress={RecalculateHandler}>Reset</Button2>
+                    <Button2 onPress={RecalculateHandler} extraStyle={{width: 120}}>Recalculate</Button2>
                 </View>
             </View>
             )}
