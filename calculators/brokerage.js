@@ -135,11 +135,13 @@ const BrokerageCalculator = (props) => {
 
     const PickerValueHandler = value => {
         if (value === 'pbb' || value === 'uob' || value === 'alliance') {
-            setDisable(!disable)
+            setDisable(false)
         } else {
+            
             setDisable(true)
         }
         setBrokerage(value)
+        setIsIntraday(false)
     }
 
     const AmountHandler = () => {

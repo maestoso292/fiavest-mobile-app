@@ -42,7 +42,6 @@ const styles = StyleSheet.create({
         //alignItems: 'center',
         marginVertical: 10,
         width: '100%',
-        backgroundColor: '#F5FFFA'
     },
     
     container: {

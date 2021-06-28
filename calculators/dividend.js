@@ -37,7 +37,7 @@ const DividendCalculator = (props) => {
         setIsPick(false)
         
         const parseEst = ((parseFloat(CurrentStockPrice) - (parseFloat(DividendPerShare) / 100)))
-        const parseYield = ((parseFloat(CurrentStockPrice) / (parseFloat(DividendPerShare) / 100)))
+        
         const parseBuyAmount = ((parseFloat(BuyPrice)) * parseFloat(HoldingUnits))
 
         if (type === 'cent') {
@@ -47,6 +47,7 @@ const DividendCalculator = (props) => {
             const parseCG = ((parseEst - (parseFloat(BuyPrice))) * (parseFloat(HoldingUnits)))
             const parseTG = (parseCG + parseND)
             const parseROI = ((parseTG/parseBuyAmount) * 100)
+            const parseYield = (((parseGD) / ((parseFloat(CurrentStockPrice)) * (parseFloat(HoldingUnits)))) * 100)
             
             setGrossDividend(parseGD.toFixed(2))
             setTax(parseTax.toFixed(2))
@@ -54,6 +55,7 @@ const DividendCalculator = (props) => {
             setCapitalGain(parseCG.toFixed(2))
             setTotalGain(parseTG.toFixed(2))
             isNaN(parseROI) === true ? setROI("0.000") : setROI(parseROI.toFixed(3))
+            isNaN(parseYield) === true ? setDividendYield(0) : setDividendYield(parseYield.toFixed())
         } else if (type === 'percent') {
             const parseGD = ((parseFloat(CurrentStockPrice) * (parseFloat(HoldingUnits))) * (parseFloat(DividendPerShare) / 100))
             const parseTax = (parseGD * (incomeTax / 100))
@@ -61,6 +63,7 @@ const DividendCalculator = (props) => {
             const parseCG = ((parseEst - (parseFloat(BuyPrice))) * (parseFloat(HoldingUnits)))
             const parseTG = (parseCG + parseND)
             const parseROI = ((parseTG/parseBuyAmount) * 100)
+            const parseYield = ((parseGD) / ((parseFloat(CurrentStockPrice)) * (parseFloat(HoldingUnits))))
             
             setGrossDividend(parseGD.toFixed(2))
             setTax(parseTax.toFixed(2))
@@ -68,9 +71,8 @@ const DividendCalculator = (props) => {
             setCapitalGain(parseCG.toFixed(2))
             setTotalGain(parseTG.toFixed(2))
             isNaN(parseROI) === true ? setROI("0.000") : setROI(parseROI.toFixed(3))
+            isNaN(parseYield) === true ? setDividendYield(0) : setDividendYield(parseYield.toFixed())
         }
-
-        isNaN(parseYield) === true ? setDividendYield(0) : setDividendYield(parseYield.toFixed())
 
         setEstimatePrice(parseEst.toFixed(3))
 
@@ -126,7 +128,7 @@ const DividendCalculator = (props) => {
             editable={isEdit}
             />
             <InputCon 
-            title="Divendend Per Share"
+            title="Dividend Per Share"
             value={DividendPerShare}
             onChangeText={(value) => setDividendPerShare(value)}
             editable={isEdit}

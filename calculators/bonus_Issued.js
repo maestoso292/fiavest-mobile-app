@@ -35,7 +35,7 @@ const BonusIssuedCalculator = (props) => {
         setIsCalculate(!isCalculate)
     }
 
-    const ReCalculateHandler = () => {
+    const RecalculateHandler = () => {
         setIsEdit(true)
         setIsCalculate(true)
 
