@@ -92,6 +92,7 @@ const NavigationMenu = ({ navigation }) => {
         <View style={styles.menuRow}>
           <MenuButton
             name={Routes.HISTORY}
+            onPress={buttonPressHandler.bind(this, Routes.HISTORY)}
             style={current == Routes.HISTORY ? styles.menuButtonHighlight : {}}
           >
             <MaterialIcons name="history" size={ICON_SIZE} />

@@ -9,6 +9,7 @@ import {
 
 import { STOCKS_DATA } from "../data/dummy_stocks";
 import { currencyFormatter } from "../constants/formatter";
+import Divider from "../components/Divider";
 
 const StockDetailsScreen = ({ navigation, route }) => {
   const { id } = route.params;
@@ -48,7 +49,8 @@ const StockDetailsScreen = ({ navigation, route }) => {
       </View>
       {/* TODO Proper stock details */}
       <View style={styles.detailsContainer}>
-        <Text style={{fontSize: 20}}>Current Price: {currencyFormatter.format(stockData.price)}</Text>
+        <Text style={{fontSize: 20}}>Current Price : {currencyFormatter.format(stockData.price)}</Text>
+        <Divider />
         <Text>{ stockData.details}</Text>
       </View>
     </View>

@@ -7,6 +7,7 @@ import Button2 from '../components/Button2';
 import OutputCon from '../components/CalculateOutput';
 import InputCon from '../components/CalculatorInput';
 import ButtonCon from '../components/CalculatorButton';
+import Divider from '../components/Divider';
 
 const DividendCalculator = (props) => {
 
@@ -148,7 +149,7 @@ const DividendCalculator = (props) => {
             onChangeText={(value) => setIncomeTax(value)}
             editable={isEdit}
             />
-            <View style={{borderBottomWidth: StyleSheet.hairlineWidth, borderColor: 'black', marginBottom: 10}}/>
+            <Divider />
             {isCalculate ? (
                 <ButtonCon 
                 onCalculate={CalculateHandler}

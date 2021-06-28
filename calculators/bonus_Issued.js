@@ -6,6 +6,7 @@ import Button2 from '../components/Button2';
 import InputCon from '../components/CalculatorInput';
 import OutputCon from '../components/CalculateOutput';
 import ButtonCon from '../components/CalculatorButton';
+import Divider from '../components/Divider';
 
 const BonusIssuedCalculator = (props) => {
 
@@ -88,7 +89,7 @@ const BonusIssuedCalculator = (props) => {
                     />
                 </View>
             </View>
-            <View style={{borderBottomWidth: StyleSheet.hairlineWidth, borderColor: 'black', marginBottom: 10}}/>
+            <Divider />
             {isCalculate ? (
                 <ButtonCon 
                 onCalculate={CalculateHandler}

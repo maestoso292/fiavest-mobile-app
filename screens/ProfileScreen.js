@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
   fieldContainer: {
     flex: 1,
     padding: 10,
+    justifyContent: 'center'
   },
   dataContainer: {
     flex: 2,

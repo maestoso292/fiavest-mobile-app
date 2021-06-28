@@ -179,6 +179,7 @@ const styles = StyleSheet.create({
   },
   list: {
     flexGrow: 1,
+    marginVertical: 5
   },
 });
 

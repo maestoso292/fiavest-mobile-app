@@ -26,7 +26,7 @@ const SellPopUp = (props) => {
     >
       <ViewPopup style={{ ...styles.popup, ...props.popupStyle }}>
         <View style={styles.pickerContainer}>
-          <Text>Brokerage : </Text>
+          <Text style={{fontWeight: 'bold'}}>Brokerage : </Text>
           <Picker
             selectedValue={brokerage}
             style={styles.picker}
@@ -39,15 +39,15 @@ const SellPopUp = (props) => {
           </Picker>
         </View>
         <View style={styles.inputContainer}>
-          <Text>Lot (x100) : </Text>
+          <Text style={{fontWeight: 'bold'}}>Lot (x100) : </Text>
           <TextInput style={styles.input} />
         </View>
         <View style={styles.inputContainer}>
-          <Text>Total (RM) : </Text>
+          <Text style={{fontWeight: 'bold'}}>Total (RM) : </Text>
           <TextInput style={styles.input} />
         </View>
         <View style={styles.pickerContainer}>
-          <Text>Brokerage : </Text>
+          <Text style={{fontWeight: 'bold'}}>Brokerage : </Text>
           <Picker
             selectedValue={payment}
             style={styles.picker}
@@ -77,8 +77,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   popup: {
-    width: "80%",
-    height: "40%",
+    width: "85%",
+    height: "55%",
     borderRadius: 30,
     backgroundColor: POPUP_LIGHT,
     overflow: "hidden",
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     marginTop: 15,
   },
   pickerContainer: {
