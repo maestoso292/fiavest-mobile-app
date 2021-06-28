@@ -50,6 +50,13 @@ const StockDetailsScreen = ({ navigation, route }) => {
     toggleAlertPopup();
   };
 
+  const cartSubmitHandler = (broker, lot, total, payment) => {
+    console.log(
+      `Broker: ${broker} --- Lot: ${lot} --- Total: ${total} --- Payment: ${payment}`
+    );
+    toggleCartPopup();
+  };
+
   useEffect(() => {
     let endValue = cartPopupVisible ? 1 : 0;
     fade(cartFadeValue, endValue).start();
@@ -102,6 +109,8 @@ const StockDetailsScreen = ({ navigation, route }) => {
         popupStyle={{ opacity: cartFadeValue }}
         // To be a screen overlay, elevation must be higher than elevation of other components
         containerStyle={{ elevation: 2, zIndex: 2 }}
+        onSubmit={cartSubmitHandler}
+
       />
       <AlertPopup
         visible={alertPopupVisible}

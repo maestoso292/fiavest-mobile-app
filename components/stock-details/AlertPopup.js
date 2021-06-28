@@ -107,7 +107,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   popup: {
-    backgroundColor: "blue",
     borderRadius: 30,
     backgroundColor: POPUP_LIGHT,
     overflow: "hidden",
