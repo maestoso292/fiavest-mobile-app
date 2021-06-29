@@ -8,8 +8,10 @@ import {
   KeyboardAvoidingView,
   Keyboard,
 } from "react-native";
+
 import HeaderButton from "../components/base/HeaderButton";
 import CartPopup from "../components/stock-details/CartPopup";
+import AlertPopup from "../components/stock-details/AlertPopup";
 
 import {
   BACKGROUND_LIGHT,
@@ -20,12 +22,16 @@ import {
 import { STOCKS_DATA } from "../data/dummy_stocks";
 import { currencyFormatter } from "../constants/formatter";
 import { fade } from "../animations/popup-anims";
-import AlertPopup from "../components/stock-details/AlertPopup";
-import FilterPopup from "../components/stocks/FilterPopup";
+import { useDispatch, useSelector } from "react-redux";
+import { enableAlert } from "../store/actions/alert";
 
 const StockDetailsScreen = ({ navigation, route }) => {
+  const dispatch = useDispatch();
+
   const [cartPopupVisible, setCartPopupVisible] = useState(false);
   const [alertPopupVisible, setAlertPopupVisible] = useState(false);
+
+  const alerts = useSelector((state) => state.alert.alertEnabledStocks);
 
   const cartFadeValue = useRef(new Animated.Value(0)).current;
   const alertFadeValue = useRef(new Animated.Value(0)).current;
@@ -47,6 +53,7 @@ const StockDetailsScreen = ({ navigation, route }) => {
 
   const alertSubmitHandler = (priceTarget, volumeTarget) => {
     console.log(`Price: ${priceTarget} --- Volume: ${volumeTarget}`);
+    dispatch(enableAlert(id, priceTarget, volumeTarget));
     toggleAlertPopup();
   };
 
@@ -110,7 +117,6 @@ const StockDetailsScreen = ({ navigation, route }) => {
         // To be a screen overlay, elevation must be higher than elevation of other components
         containerStyle={{ elevation: 2, zIndex: 2 }}
         onSubmit={cartSubmitHandler}
-
       />
       <AlertPopup
         visible={alertPopupVisible}

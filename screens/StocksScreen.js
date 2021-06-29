@@ -5,7 +5,14 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { View, Text, StyleSheet, Animated, FlatList, Keyboard } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Animated,
+  FlatList,
+  Keyboard,
+} from "react-native";
 
 import {
   BACKGROUND_LIGHT,
@@ -19,6 +26,7 @@ import { STOCKS_DATA } from "../data/dummy_stocks";
 import { useFocusEffect, useRoute } from "@react-navigation/native";
 import SearchBar from "react-native-elements/dist/searchbar/SearchBar-ios";
 import { fade } from "../animations/popup-anims";
+import { useSelector } from "react-redux";
 
 const fetchStocks = () => {
   const data = Object.values(STOCKS_DATA);
@@ -50,6 +58,13 @@ const StocksScreen = ({ navigation }) => {
     setPopupVisible(false);
   };
 
+  const alerts = useSelector((state) => state.alert.alertEnabledStocks);
+
+  useEffect(() => {
+    console.log("IN STORE");
+    console.log(alerts);
+  });
+
   const searchFilter = (query) => {
     const newData = unfilteredData.filter((item) => {
       const itemData = `${item.id.toUpperCase()} ${item.name.toUpperCase()}`;
@@ -62,11 +77,13 @@ const StocksScreen = ({ navigation }) => {
   };
 
   // TODO Decide whether to do this onFocus or onBlur
-  useFocusEffect(useCallback(() => {
-    setPopupVisible(false);
-    setSearch(null);
-    setData(unfilteredData);
-  },[setPopupVisible, setSearch]));
+  useFocusEffect(
+    useCallback(() => {
+      setPopupVisible(false);
+      setSearch(null);
+      setData(unfilteredData);
+    }, [setPopupVisible, setSearch])
+  );
 
   useEffect(() => {
     let endValue = popupVisible ? 1 : 0;
