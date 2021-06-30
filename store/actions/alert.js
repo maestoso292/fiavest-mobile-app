@@ -8,7 +8,7 @@ export const SET_ALERT = "SET_ALERT";
 export const enableAlert = (stockId, priceTarget, volumeTarget) => {
   return async (dispatch) => {
     // AsyncStorage.removeItem("alerts");
-    const result = await dispatch({
+    const result = dispatch({
       type: ENABLE_ALERT,
       stockId: stockId,
       priceTarget: priceTarget,
@@ -31,18 +31,25 @@ export const enableAlert = (stockId, priceTarget, volumeTarget) => {
       volumeTarget: volumeTarget,
     };
 
-    await AsyncStorage.setItem("alerts", JSON.stringify(alerts));
-
-    const updated = await AsyncStorage.getItem("alerts");
-    console.log("IN LOCAL");
-    console.log(JSON.parse(updated));
+    AsyncStorage.setItem("alerts", JSON.stringify(alerts));
   };
 };
 
 export const disableAlert = (stockId) => {
   return async (dispatch) => {
-    const response = await dispatch({ type: DISABLE_ALERT, value: stockId });
-    console.log(response);
+    const response = dispatch({ type: DISABLE_ALERT, stockId: stockId });
+    const alertsData = await AsyncStorage.getItem("alerts");
+    let alerts;
+    if (!alertsData) {
+      throw new Error(
+        `Alert data not found. Unable to disable specified alert for ${stockId}`
+      );
+    } else {
+      alerts = JSON.parse(alertsData);
+    }
+
+    delete alerts[stockId];
+    AsyncStorage.setItem("alerts", JSON.stringify(alerts));
   };
 };
 

@@ -27,6 +27,7 @@ import { useFocusEffect, useRoute } from "@react-navigation/native";
 import SearchBar from "react-native-elements/dist/searchbar/SearchBar-ios";
 import { fade } from "../animations/popup-anims";
 import { useSelector } from "react-redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const fetchStocks = () => {
   const data = Object.values(STOCKS_DATA);
@@ -60,10 +61,11 @@ const StocksScreen = ({ navigation }) => {
 
   const alerts = useSelector((state) => state.alert.alertEnabledStocks);
 
+  // TODO Temporary debug statement. Remove at a later date.
   useEffect(() => {
     console.log("IN STORE");
     console.log(alerts);
-  });
+  }, [alerts]);
 
   const searchFilter = (query) => {
     const newData = unfilteredData.filter((item) => {

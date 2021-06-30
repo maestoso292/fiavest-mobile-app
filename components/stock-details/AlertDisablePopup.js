@@ -13,24 +13,13 @@ import ViewPopup from "../base/ViewPopup";
 import TouchableCustom from "../base/TouchableCustom";
 import { BORDER_PRIMARY, POPUP_LIGHT } from "../../constants/colors";
 
-const AlertPopup = (props) => {
-  // TODO Convert to reducer?
-  const [priceTarget, setPriceTarget] = useState();
-  const [volumeTarget, setVolumeTarget] = useState();
-
-  const resetFields = () => {
-    setPriceTarget(null);
-    setVolumeTarget(null);
-  };
-
+const AlertDisablePopup = (props) => {
   const cancelHandler = () => {
-    resetFields();
     props.onCancel();
   };
 
-  const submitHandler = (priceTarget, volumeTarget) => {
-    resetFields();
-    props.onSubmit(priceTarget, volumeTarget);
+  const submitHandler = () => {
+    props.onSubmit();
   };
 
   return (
@@ -45,28 +34,26 @@ const AlertPopup = (props) => {
       behavior={Platform.select({ ios: "height", android: null })}
     >
       <ViewPopup style={{ ...styles.popup, ...props.popupStyle }}>
-        <View style={styles.header}>
-          <Text style={styles.headerContent}>REMINDER</Text>
+        <View
+          style={{
+            ...styles.inputContainer,
+            width: "65%",
+            flexDirection: "column",
+            alignItems: "center",
+            paddingHorizontal: 40,
+          }}
+        >
+          <Text style={styles.inputText}>
+            Are you sure you want to turn off the alert of
+          </Text>
+          <Text style={styles.inputText}>
+            <Text style={{ fontWeight: "bold" }}>
+              {props.stockId} {props.stockName}
+            </Text>
+            ?
+          </Text>
         </View>
-        <View style={styles.inputContainer}>
-          <Text style={styles.inputText}>When price hit:</Text>
-          <Text style={{ ...styles.inputText, marginLeft: 10 }}>MYR</Text>
-          <TextInput
-            style={styles.input}
-            value={priceTarget}
-            onChangeText={setPriceTarget}
-            keyboardType="number-pad"
-          />
-        </View>
-        <View style={styles.inputContainer}>
-          <Text style={styles.inputText}>When volume hit:</Text>
-          <TextInput
-            style={styles.input}
-            value={volumeTarget}
-            onChangeText={setVolumeTarget}
-            keyboardType="number-pad"
-          />
-        </View>
+
         <View
           style={{
             ...styles.inputContainer,
@@ -87,9 +74,9 @@ const AlertPopup = (props) => {
             useAndroid
             containerStyle={styles.buttonContainer}
             contentStyle={styles.buttonContent}
-            onPress={() => submitHandler(priceTarget, volumeTarget)}
+            onPress={submitHandler}
           >
-            <Text style={{ color: "blue" }}>Set</Text>
+            <Text style={{ color: "blue" }}>Confirm</Text>
           </TouchableCustom>
         </View>
       </ViewPopup>
@@ -111,17 +98,6 @@ const styles = StyleSheet.create({
     backgroundColor: POPUP_LIGHT,
     overflow: "hidden",
   },
-  header: {
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: BORDER_PRIMARY,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 10,
-  },
-  headerContent: {
-    fontSize: 20,
-    letterSpacing: 1,
-  },
   inputContainer: {
     flexDirection: "row",
     alignItems: "flex-end",
@@ -129,7 +105,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   inputText: {
-    fontWeight: "bold",
+    textAlign: "center",
   },
   input: {
     flex: 1,
@@ -154,4 +130,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AlertPopup;
+export default AlertDisablePopup;

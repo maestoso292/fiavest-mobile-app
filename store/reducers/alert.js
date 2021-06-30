@@ -14,6 +14,7 @@ const alertReducer = (state = initialState, action) => {
       };
       return state;
     case DISABLE_ALERT:
+      delete state.alertEnabledStocks[action.stockId];
       return state;
     case SET_ALERT:
       return { alertEnabledStocks: action.alerts };

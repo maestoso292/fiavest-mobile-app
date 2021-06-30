@@ -34,6 +34,9 @@ const AppNavigator = () => {
     const fetchAlerts = async () => {
       const alertsData = await AsyncStorage.getItem("alerts");
       const alertsParsed = alertsData ? JSON.parse(alertsData) : {};
+      // TODO Temporary debug statement. Remove at a later date.
+      console.log("IN LOCAL ON LOAD");
+      console.log(alertsParsed);
       dispatch({ type: SET_ALERT, alerts: alertsParsed });
     };
     if (isAuth) {
