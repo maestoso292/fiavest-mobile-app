@@ -1,5 +1,5 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { NavigationContainer, useRoute } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
@@ -16,6 +16,8 @@ import PortfolioScreen from "../screens/PortfolioScreen";
 import EMA5Screen from "../screens/EMA5Sceen";
 import CalculatorScreen from "../screens/CalculatorsScreen";
 import HistoryScreen from "../screens/HistoryScreen";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { SET_ALERT } from "../store/actions/alert";
 
 const RootStack = createStackNavigator();
 const MainDrawer = createDrawerNavigator();
@@ -25,6 +27,24 @@ const AppNavigator = () => {
   const authToken = useSelector((state) => state.auth.token);
   const isAuth = useSelector((state) => !!state.auth.token);
   const didAutoLogin = useSelector((state) => state.auth.didAutoLogin);
+
+  const alerts = useSelector((state) => state.alert.alertEnabledStocks);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchAlerts = async () => {
+      const alertsData = await AsyncStorage.getItem("alerts");
+      const alertsParsed = alertsData ? JSON.parse(alertsData) : {};
+      // TODO Temporary debug statement. Remove at a later date.
+      console.log("IN LOCAL ON LOAD");
+      console.log(alertsParsed);
+      dispatch({ type: SET_ALERT, alerts: alertsParsed });
+    };
+    if (isAuth) {
+      fetchAlerts();
+    }
+  }, [isAuth]);
 
   return (
     <NavigationContainer>

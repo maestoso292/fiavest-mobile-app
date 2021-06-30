@@ -8,8 +8,10 @@ import {
   KeyboardAvoidingView,
   Keyboard,
 } from "react-native";
+
 import HeaderButton from "../components/base/HeaderButton";
 import CartPopup from "../components/stock-details/CartPopup";
+import AlertEnablePopup from "../components/stock-details/AlertEnablePopup";
 
 import {
   BACKGROUND_LIGHT,
@@ -21,34 +23,61 @@ import { STOCKS_DATA } from "../data/dummy_stocks";
 import { currencyFormatter } from "../constants/formatter";
 import Divider from "../components/Divider";
 import { fade } from "../animations/popup-anims";
-import AlertPopup from "../components/stock-details/AlertPopup";
-import FilterPopup from "../components/stocks/FilterPopup";
+import { useDispatch, useSelector } from "react-redux";
+import { disableAlert, enableAlert } from "../store/actions/alert";
+import AlertDisablePopup from "../components/stock-details/AlertDisablePopup";
+
+const fadeAnim = (state, value, endValue) => {};
 
 const StockDetailsScreen = ({ navigation, route }) => {
-  const [cartPopupVisible, setCartPopupVisible] = useState(false);
-  const [alertPopupVisible, setAlertPopupVisible] = useState(false);
+  const dispatch = useDispatch();
+
+  const [cartVisible, setCartVisible] = useState(false);
+  const [alertEnableVisible, setAlertEnableVisible] = useState(false);
+  const [alertDisableVisible, setDisableVisible] = useState(false);
 
   const cartFadeValue = useRef(new Animated.Value(0)).current;
-  const alertFadeValue = useRef(new Animated.Value(0)).current;
+  const alertEnableFadeValue = useRef(new Animated.Value(0)).current;
+  const alertDisableFadeValue = useRef(new Animated.Value(0)).current;
 
   const { id } = route.params;
   const stockData = STOCKS_DATA[id];
+  const alert = useSelector((state) => state.alert.alertEnabledStocks[id]);
+
+  const toggleAlertEnablePopup = () => {
+    Keyboard.dismiss();
+    setDisableVisible(false);
+    setCartVisible(false);
+    setAlertEnableVisible((prev) => !prev);
+  };
+
+  const toggleAlertDisablePopup = () => {
+    Keyboard.dismiss();
+    setAlertEnableVisible(false);
+    setCartVisible(false);
+    setDisableVisible((prev) => !prev);
+  };
 
   const toggleCartPopup = () => {
     Keyboard.dismiss();
-    setAlertPopupVisible(false);
-    setCartPopupVisible((prev) => !prev);
+    setAlertEnableVisible(false);
+    setDisableVisible(false);
+    setCartVisible((prev) => !prev);
   };
 
-  const toggleAlertPopup = () => {
-    Keyboard.dismiss();
-    setCartPopupVisible(false);
-    setAlertPopupVisible((prev) => !prev);
-  };
-
-  const alertSubmitHandler = (priceTarget, volumeTarget) => {
+  const alertEnableSubmitHandler = (priceTarget, volumeTarget) => {
     console.log(`Price: ${priceTarget} --- Volume: ${volumeTarget}`);
-    toggleAlertPopup();
+    dispatch(enableAlert(id, priceTarget, volumeTarget));
+    toggleAlertEnablePopup();
+  };
+
+  const alertDisableSubmitHandler = () => {
+    try {
+      dispatch(disableAlert(id));
+    } catch (err) {
+      console.log(err);
+    }
+    toggleAlertDisablePopup();
   };
 
   const cartSubmitHandler = (broker, lot, total, payment) => {
@@ -59,14 +88,25 @@ const StockDetailsScreen = ({ navigation, route }) => {
   };
 
   useEffect(() => {
-    let endValue = cartPopupVisible ? 1 : 0;
+    let endValue = cartVisible ? 1 : 0;
     fade(cartFadeValue, endValue).start();
-  }, [cartPopupVisible, fade]);
+  }, [cartVisible, fade]);
 
   useEffect(() => {
-    let endValue = alertPopupVisible ? 1 : 0;
-    fade(alertFadeValue, endValue).start();
-  }, [alertPopupVisible, fade]);
+    let endValue = alertEnableVisible ? 1 : 0;
+    fade(alertEnableFadeValue, endValue).start();
+  }, [alertEnableVisible, fade]);
+
+  useEffect(() => {
+    let endValue = alertDisableVisible ? 1 : 0;
+    fade(alertDisableFadeValue, endValue).start();
+  }, [alertDisableVisible, fade]);
+
+  // TODO Temporary debug statement. Remove at a later date.
+  useEffect(() => {
+    console.log(`ALERT FOR ${id}`);
+    console.log(alert);
+  }, [alert]);
 
   useEffect(() => {
     navigation.setOptions({
@@ -78,11 +118,20 @@ const StockDetailsScreen = ({ navigation, route }) => {
               flexDirection: "row",
             }}
           >
-            <HeaderButton
-              onPress={toggleAlertPopup}
-              name="notifications-outline"
-              containerStyle={styles.headerRight}
-            />
+            {alert && (
+              <HeaderButton
+                onPress={toggleAlertDisablePopup}
+                name="notifications-off-outline"
+                containerStyle={styles.headerRight}
+              />
+            )}
+            {!alert && (
+              <HeaderButton
+                onPress={toggleAlertEnablePopup}
+                name="notifications-outline"
+                containerStyle={styles.headerRight}
+              />
+            )}
             <HeaderButton
               onPress={toggleCartPopup}
               name="cart-outline"
@@ -92,7 +141,7 @@ const StockDetailsScreen = ({ navigation, route }) => {
         );
       },
     });
-  }, [navigation, id, stockData.name]);
+  }, [navigation, id, alert, stockData.name]);
 
   return (
     <View style={styles.screen} behavior="height">
@@ -106,20 +155,29 @@ const StockDetailsScreen = ({ navigation, route }) => {
         <Text>{stockData.details}</Text>
       </View>
       <CartPopup
-        visible={cartPopupVisible}
+        visible={cartVisible}
         popupStyle={{ opacity: cartFadeValue }}
         // To be a screen overlay, elevation must be higher than elevation of other components
         containerStyle={{ elevation: 2, zIndex: 2 }}
         onSubmit={cartSubmitHandler}
-
       />
-      <AlertPopup
-        visible={alertPopupVisible}
-        popupStyle={{ opacity: alertFadeValue }}
+      <AlertEnablePopup
+        visible={alertEnableVisible}
+        popupStyle={{ opacity: alertEnableFadeValue }}
         // To be a screen overlay, elevation must be >= elevation of other components
         containerStyle={{ elevation: 2, zIndex: 2 }}
-        onCancel={toggleAlertPopup}
-        onSubmit={alertSubmitHandler}
+        onCancel={toggleAlertEnablePopup}
+        onSubmit={alertEnableSubmitHandler}
+      />
+      <AlertDisablePopup
+        visible={alertDisableVisible}
+        popupStyle={{ opacity: alertDisableFadeValue }}
+        // To be a screen overlay, elevation must be >= elevation of other components
+        containerStyle={{ elevation: 2, zIndex: 2 }}
+        onCancel={toggleAlertDisablePopup}
+        onSubmit={alertDisableSubmitHandler}
+        stockId={id}
+        stockName={stockData.name}
       />
     </View>
   );
