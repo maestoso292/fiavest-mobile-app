@@ -83,6 +83,7 @@ const NavigationMenu = ({ navigation }) => {
           </MenuButton>
           <MenuButton
             name={Routes.NEWS}
+            onPress={buttonPressHandler.bind(this, Routes.NEWS)}
             style={current == Routes.NEWS ? styles.menuButtonHighlight : {}}
           >
             <Ionicons name="newspaper" size={ICON_SIZE} />

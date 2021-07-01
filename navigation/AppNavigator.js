@@ -11,6 +11,7 @@ import StockDetailsScreen from "../screens/StockDetailsScreen";
 import NavigationMenu from "./NavigationMenu";
 import HeaderButton from "../components/base/HeaderButton";
 import { Routes } from "../constants/routes";
+
 import ProfileScreen from "../screens/ProfileScreen";
 import PortfolioScreen from "../screens/PortfolioScreen";
 import EMA5Screen from "../screens/EMA5Sceen";
@@ -18,6 +19,8 @@ import CalculatorScreen from "../screens/CalculatorsScreen";
 import HistoryScreen from "../screens/HistoryScreen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SET_ALERT } from "../store/actions/alert";
+import NewsScreen from "../screens/NewsScreen";
+import { AntDesign } from '@expo/vector-icons'
 
 const RootStack = createStackNavigator();
 const MainDrawer = createDrawerNavigator();
@@ -111,8 +114,11 @@ const MainNavigator = ({ navigation }) => {
       <MainDrawer.Screen name={Routes.PORTFOLIO} component={PortfolioScreen} />
       <MainDrawer.Screen name={Routes.EMA5} component={EMA5Screen} />
       <MainDrawer.Screen name={Routes.CALCULATOR} component={CalculatorScreen} />
-      {/*<MainDrawer.Screen name={Routes.NEWS} component={NewsScreen} />*/}
-      <MainDrawer.Screen name={Routes.HISTORY} component={HistoryScreen} />
+      <MainDrawer.Screen name={Routes.NEWS} component={NewsScreen} />
+      <MainDrawer.Screen 
+      name={Routes.HISTORY}
+      component={HistoryScreen}
+      />
     </MainDrawer.Navigator>
   );
 };

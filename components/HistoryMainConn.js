@@ -8,6 +8,9 @@ const HistoryCon = (props) => {
             <View style={styles.textCon}>
                 <Text style={{fontWeight: 'bold', fontSize: 20}}>{props.title}</Text>
             </View>
+            <View>
+                {props.children}
+            </View>
         </View>
     )
 };
@@ -22,13 +25,14 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.26,
         shadowOffset: { width: 2, height: 2 },
         shadowRadius: 8,
-        elevation: 3,
+        elevation: 2,
     },
     textCon: {
         width: '100%',
         height: 30,
         //borderWidth: 1,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 });
 
