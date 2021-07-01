@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import CheckBox from "@react-native-community/checkbox";
-import { BACKGROUND_LIGHT, BORDER_PRIMARY, POPUP_LIGHT } from '../constants/colors';
+import { BACKGROUND_LIGHT, BORDER_PRIMARY, POPUP_LIGHT } from '../../constants/colors';
 
 const Container = props => {
 

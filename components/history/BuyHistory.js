@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, FlatList } from 'react-native';
 
-import { HISTORY_DATA } from '../components/dummy_history';
-import HistoryCon from '../components/HistoryMainConn';
-import HistoryContainer from '../components/History-Conn';
+import { HISTORY_DATA } from '../../data/dummy_history';
+import HistoryCon from './HistoryMainConn';
+import HistoryContainer from './History-Conn';
 
 const fetchHistory = () => {
     const data = Object.values(HISTORY_DATA);
@@ -20,13 +20,13 @@ const HistoryRender = ({ item }) => {
     );
 };
 
-const SellHistory = props => {
+const BuyHistory = props => {
 
     const [histories] = useState(fetchHistory())
 
     return (
         <HistoryCon
-        title="Sell History"
+        title="Buy History"
         >
             <View style={styles.listContainer}>
                 <FlatList 
@@ -51,4 +51,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default SellHistory;
+export default BuyHistory;

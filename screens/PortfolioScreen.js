@@ -10,9 +10,9 @@ import {
 import "intl";
 import "intl/locale-data/jsonp/en";
 
-import Container from "../components/Portfolio-Conn";
+import Container from "../components/portfolio/Portfolio-Conn";
 import Button2 from "../components/Button2";
-import SellPopUp from "../components/SellPopUp";
+import SellPopUp from "../components/portfolio/SellPopUp";
 import {
   BACKGROUND_LIGHT,
   BORDER_PRIMARY,

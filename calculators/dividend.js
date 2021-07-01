@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 
-import TypeCalculator from '../components/CalculatorType';
+import TypeCalculator from '../components/calculator/CalculatorType';
 import Button2 from '../components/Button2';
-import OutputCon from '../components/CalculateOutput';
-import InputCon from '../components/CalculatorInput';
-import ButtonCon from '../components/CalculatorButton';
+import OutputCon from '../components/calculator/CalculateOutput';
+import InputCon from '../components/calculator/CalculatorInput';
+import ButtonCon from '../components/calculator/CalculatorButton';
 import Divider from '../components/Divider';
 
 const DividendCalculator = (props) => {

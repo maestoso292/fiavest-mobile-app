@@ -1,4 +1,4 @@
-class History {
+class HistoryEntry {
     constructor(id, date, name, total) {
         this.id = id;
         this.date = date;
@@ -7,4 +7,4 @@ class History {
     }
 }
 
-export default History;
+export default HistoryEntry;

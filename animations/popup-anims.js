@@ -1,10 +1,12 @@
 import React from "react";
 import { Animated } from "react-native";
 
-export const fade = (state, endValue) => {
+const DEFAULT_DURATION = 150;
+
+export const fade = (state, endValue, duration = DEFAULT_DURATION) => {
   return Animated.timing(state, {
     toValue: endValue,
-    duration: 150,
+    duration: duration,
     useNativeDriver: true,
   });
 };

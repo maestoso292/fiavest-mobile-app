@@ -1,17 +1,9 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  TextInput,
-  KeyboardAvoidingView,
-  Dimensions,
-} from "react-native";
-import ModalPopup from "./base/ModalPopup";
-import Button2 from "./Button2";
+import { StyleSheet, View, Text, TextInput, Dimensions } from "react-native";
+import Button2 from "../Button2";
 import { Picker } from "@react-native-picker/picker";
-import ViewPopup from "./base/ViewPopup";
-import { POPUP_LIGHT } from "../constants/colors";
+import ViewPopup from "../base/ViewPopup";
+import { POPUP_LIGHT } from "../../constants/colors";
 
 const DEVICE_HEIGHT = Dimensions.get("window").height;
 
@@ -26,7 +18,7 @@ const SellPopUp = (props) => {
     >
       <ViewPopup style={{ ...styles.popup, ...props.popupStyle }}>
         <View style={styles.pickerContainer}>
-          <Text style={{fontWeight: 'bold'}}>Brokerage : </Text>
+          <Text style={{ fontWeight: "bold" }}>Brokerage : </Text>
           <Picker
             selectedValue={brokerage}
             style={styles.picker}
@@ -39,15 +31,15 @@ const SellPopUp = (props) => {
           </Picker>
         </View>
         <View style={styles.inputContainer}>
-          <Text style={{fontWeight: 'bold'}}>Lot (x100) : </Text>
+          <Text style={{ fontWeight: "bold" }}>Lot (x100) : </Text>
           <TextInput style={styles.input} />
         </View>
         <View style={styles.inputContainer}>
-          <Text style={{fontWeight: 'bold'}}>Total (RM) : </Text>
+          <Text style={{ fontWeight: "bold" }}>Total (RM) : </Text>
           <TextInput style={styles.input} />
         </View>
         <View style={styles.pickerContainer}>
-          <Text style={{fontWeight: 'bold'}}>Brokerage : </Text>
+          <Text style={{ fontWeight: "bold" }}>Brokerage : </Text>
           <Picker
             selectedValue={payment}
             style={styles.picker}
@@ -82,7 +74,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     backgroundColor: POPUP_LIGHT,
     overflow: "hidden",
-    padding: 15
+    padding: 15,
   },
   buttonContainer: {
     flex: 1,

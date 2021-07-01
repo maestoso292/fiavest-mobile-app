@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { BORDER_PRIMARY } from '../constants/colors';
+import { BORDER_PRIMARY } from '../../constants/colors';
 
 const OutputCon = props => {
     return (

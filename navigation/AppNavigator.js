@@ -14,13 +14,12 @@ import { Routes } from "../constants/routes";
 
 import ProfileScreen from "../screens/ProfileScreen";
 import PortfolioScreen from "../screens/PortfolioScreen";
-import EMA5Screen from "../screens/EMA5Sceen";
+import EMA5Screen from "../screens/EMA5Screen";
 import CalculatorScreen from "../screens/CalculatorsScreen";
 import HistoryScreen from "../screens/HistoryScreen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SET_ALERT } from "../store/actions/alert";
 import NewsScreen from "../screens/NewsScreen";
-import { AntDesign } from '@expo/vector-icons'
 
 const RootStack = createStackNavigator();
 const MainDrawer = createDrawerNavigator();

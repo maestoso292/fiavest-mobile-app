@@ -5,7 +5,6 @@ import {
   StyleSheet,
   Image,
   Animated,
-  KeyboardAvoidingView,
   Keyboard,
 } from "react-native";
 
@@ -21,7 +20,6 @@ import {
 
 import { STOCKS_DATA } from "../data/dummy_stocks";
 import { currencyFormatter } from "../constants/formatter";
-import Divider from "../components/Divider";
 import { fade } from "../animations/popup-anims";
 import { useDispatch, useSelector } from "react-redux";
 import { disableAlert, enableAlert } from "../store/actions/alert";
