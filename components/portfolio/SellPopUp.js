@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, TextInput, Dimensions } from "react-native";
-import Button2 from "../Button2";
 import { Picker } from "@react-native-picker/picker";
 import ViewPopup from "../base/ViewPopup";
-import { POPUP_LIGHT } from "../../constants/colors";
+import TextButton from "../base/TextButton";
+import {
+  POPUP_LIGHT,
+} from "../../constants/colors";
 
 const DEVICE_HEIGHT = Dimensions.get("window").height;
 
@@ -51,9 +53,17 @@ const SellPopUp = (props) => {
             <Picker.Item label="Test 4" value="test 4" />
           </Picker>
         </View>
-        <View style={styles.buttonContainer}>
-          <Button2 onPress={() => {}}>Sell</Button2>
-          <Button2 onPress={props.onClose}>Close</Button2>
+        <View style={styles.temp}>
+          <TextButton
+            text="Close"
+            onPress={props.onClose}
+            containerStyle={styles.buttonContainer}
+          />
+          <TextButton
+            text="Sell"
+            onPress={() => {}}
+            containerStyle={styles.buttonContainer}
+          />
         </View>
       </ViewPopup>
     </View>
@@ -70,13 +80,13 @@ const styles = StyleSheet.create({
   },
   popup: {
     width: "85%",
-    height: "55%",
+    height: "45%",
     borderRadius: 30,
     backgroundColor: POPUP_LIGHT,
     overflow: "hidden",
     padding: 15,
   },
-  buttonContainer: {
+  temp: {
     flex: 1,
     width: "100%",
     flexDirection: "row",
@@ -106,6 +116,9 @@ const styles = StyleSheet.create({
   input: {
     width: 150,
     borderBottomWidth: 1,
+  },
+  buttonContainer: {
+    width: "35%",
   },
 });
 

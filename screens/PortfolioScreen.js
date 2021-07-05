@@ -11,7 +11,6 @@ import "intl";
 import "intl/locale-data/jsonp/en";
 
 import Container from "../components/portfolio/Portfolio-Conn";
-import Button2 from "../components/Button2";
 import SellPopUp from "../components/portfolio/SellPopUp";
 import {
   BACKGROUND_LIGHT,
@@ -20,6 +19,7 @@ import {
 } from "../constants/colors";
 import { useFocusEffect } from "@react-navigation/native";
 import { fade } from "../animations/popup-anims";
+import TextButton from "../components/base/TextButton";
 
 const renderStock = ({ item }) => {
   return (
@@ -128,7 +128,11 @@ const PortfolioScreen = (props) => {
               </Text>
             </Text>
           </View>
-          <Button2 onPress={openPopup}>SELL</Button2>
+          <TextButton
+            text="Sell"
+            onPress={openPopup}
+            containerStyle={styles.buttonContainer}
+          />
         </View>
       </View>
       <SellPopUp
@@ -182,7 +186,10 @@ const styles = StyleSheet.create({
     elevation: 2,
     width: "100%",
     height: 60,
-    paddingHorizontal: 10,
+    padding: 10,
+  },
+  buttonContainer: {
+    width: "30%"
   },
   listContainer: {
     flex: 1,
