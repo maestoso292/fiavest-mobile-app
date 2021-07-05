@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import Button2 from './Button2';
+import Button2 from '../Button2';
 
 const ButtonCon = props => {
     return (

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Pressable } from 'react-native';
 import { AntDesign } from "@expo/vector-icons";
-import { BACKGROUND_LIGHT } from '../constants/colors';
+import { BACKGROUND_LIGHT } from '../../constants/colors';
 
 const TypeCalculator = props => {
 

@@ -1,9 +1,5 @@
 import HistoryEntry from "../models/HistoryEntry";
 
-const randomDate = (start, end) => {
-    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-}
-
 export const HISTORY_DATA = {
     1 : new HistoryEntry(
         "1",
@@ -38,6 +34,18 @@ export const HISTORY_DATA = {
     6 : new HistoryEntry(
         "6",
         "date 6",
+        "5062 Huayang",
+        (Math.random() * 100).toFixed(2)
+    ),
+    7 : new HistoryEntry(
+        "7",
+        "date 7",
+        "5062 Huayang",
+        (Math.random() * 100).toFixed(2)
+    ),
+    8 : new HistoryEntry(
+        "8",
+        "date 8",
         "5062 Huayang",
         (Math.random() * 100).toFixed(2)
     ),
