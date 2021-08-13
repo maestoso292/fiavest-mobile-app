@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, Linking } from "react-native";
 
 import TouchableCustom from "../base/TouchableCustom";
 import {
@@ -11,6 +11,17 @@ import {
 import CardBase from "../base/CardBase";
 
 const PostingCard = (props) => {
+
+  const OpenLink = () => {
+    Linking.canOpenURL(props.url).then(supported => {
+      if(supported) {
+        Linking.openURL(props.url);
+      } else {
+        console.log("Cant open URI: " + props.url)
+      }
+    });
+  };
+
   return (
     <CardBase style={styles.rootContainer}>
       <TouchableCustom
@@ -18,7 +29,7 @@ const PostingCard = (props) => {
         useAndroid
         containerStyle={{width: "100%", flex: 1}}
         contentStyle={{ width: "100%", flex: 1}}
-        onPress={() => {}}
+        onPress={OpenLink}
       >
         <View style={styles.imageContainer}>
           <Image source={{ uri: props.source }} style={styles.image} />

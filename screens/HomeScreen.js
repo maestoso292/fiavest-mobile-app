@@ -8,7 +8,7 @@ import { AD_SLIDESHOW_DATA, POSTING_DATA } from "../data/dummy_postings";
 
 const renderPosting = ({ item }) => {
   return (
-    <PostingCard name={item.title} details={item.body} source={item.imgSrc} />
+    <PostingCard name={item.title} details={item.body} source={item.imgSrc} url={item.URL} />
   );
 };
 

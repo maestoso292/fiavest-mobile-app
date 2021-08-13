@@ -62,53 +62,63 @@ const SignUpPage = () => {
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
-      username: "",
+      nameGiven: "",
+      nameFamily: "",
       email: "",
       password: "",
       address: "",
-      phone: "",
+      phoneNum: "",
       brokingHouse: "",
       term: "",
       experience: "",
+      actiCode: "",
     },
     inputValidities: {
-      username: false,
+      nameGiven: false,
+      nameFamily: false,
       email: false,
       password: false,
       address: false,
-      phone: false,
+      phoneNum: false,
       brokingHouse: false,
       term: false,
       experience: false,
+      actiCode: false,
     },
     formIsValid: false,
   });
 
   useEffect(() => {
     if (error) {
-      Alert.alert("Error, please try again later", error, [{ text: "Okay" }]);
+      Alert.alert("Opps, something happened...", error, [{ text: "Okay" }]);
     }
   }, [error]);
 
   const authHandler = async () => {
     Keyboard.dismiss();
     let action;
-    action = authActions.registerViaEmail(
-      formState.inputValues.email,
-      formState.inputValues.password,
-      formState.inputValues.username,
-      formState.inputValues.address,
-      formState.inputValues.phone,
-      selectedBroking,
-      selectedTerm,
-      selectedExperience
-    );
-    setError(null);
-    setIsLoading(true);
-    dispatch(action).catch((err) => {
-      setError(err.message);
-      setIsLoading(false);
-    });
+    if (isAgree === false) {
+      Alert.alert("Term & Conditions not agree? ", "Please agree to our term and conditions.", [{ text: "Ok"}])
+    } else {
+      action = authActions.registerViaEmail(
+        formState.inputValues.email,
+        formState.inputValues.password,
+        formState.inputValues.nameGiven,
+        formState.inputValues.nameFamily,
+        formState.inputValues.address,
+        formState.inputValues.phoneNum,
+        selectedBroking,
+        selectedTerm,
+        parseInt(selectedExperience),
+        formState.inputValues.actiCode,
+      );
+      setError(null);
+      setIsLoading(true);
+      dispatch(action).catch((err) => {
+        setError(err.message);
+        setIsLoading(false);
+      });
+    }
   };
 
   const inputChangeHandler = useCallback(
@@ -127,11 +137,22 @@ const SignUpPage = () => {
     <ScrollView>
       <View style={styles.signUpMain}>
         <InputCard
-          id="username"
-          placeholder="Username"
+          id="nameGiven"
+          placeholder="First Name"
           keyboardType="default"
           autoCorrect={false}
           required
+          errorText="Please enter first name"
+          onInputChange={inputChangeHandler}
+          initialValue=""
+        />
+        <InputCard
+          id="nameFamily"
+          placeholder="Last Name"
+          keyboardType="default"
+          autoCorrect={false}
+          required
+          errorText="Please enter last name"
           onInputChange={inputChangeHandler}
           initialValue=""
         />
@@ -177,18 +198,25 @@ const SignUpPage = () => {
           autoCorrect={false}
           errorText="Please enter a valid address"
           required
-          minLength={10}
+          minLength={2}
           onInputChange={inputChangeHandler}
           initialValue=""
         />
         <InputCard
-          id="phone"
+          id="phoneNum"
           placeholder="Phone Number"
           keyboardType="phone-pad"
           errorText="Please enter a phone number"
           required
           minLength={8}
           maxLength={10}
+          onInputChange={inputChangeHandler}
+          initialValue=""
+        />
+        <InputCard
+          id="actiCode"
+          placeholder="Activation Code"
+          keyboardType="default"
           onInputChange={inputChangeHandler}
           initialValue=""
         />
@@ -219,13 +247,6 @@ const SignUpPage = () => {
             <Picker.Item label="Long Term" value="Long Term" />
           </Picker>
         </View>
-        <View style={styles.term}>
-          <TouchableOpacity
-            onPress={() => alert("Forget")}
-          >
-            <Text style={styles.termText}>Term ?</Text>
-          </TouchableOpacity>
-        </View>
         <View style={styles.Picker}>
           <Text style={{ color: "#000" }}>Trading Experience : </Text>
           <Picker
@@ -235,15 +256,14 @@ const SignUpPage = () => {
               setSelectedExperience(itemValue)
             }
           >
-            <Picker.Item label="0 year" value="0 years" />
-            <Picker.Item label="1 year" value="1 year" />
-            <Picker.Item label="2 year" value="2 years" />
-            <Picker.Item label="3 year" value="3 years" />
+            <Picker.Item label="0 year" value="0" />
+            <Picker.Item label="1 year" value="1" />
+            <Picker.Item label="2 year" value="2" />
+            <Picker.Item label="3 year" value="3" />
           </Picker>
         </View>
         <View style={styles.TandC}>
           <CheckBox
-            disabled={false}
             value={isAgree}
             onValueChange={(newValue) => setIsAgree(newValue)}
           />
@@ -279,7 +299,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "#b3b3b3",
     padding: 10,
-    borderRadius: 25,
+    borderRadius: 15,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -289,12 +309,6 @@ const styles = StyleSheet.create({
     color: "#2e64e5",
     textDecorationLine: "underline",
     //justifyContent: 'flex-start'
-  },
-  term: {
-    marginTop: 10,
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    width: "70%",
   },
   TandC: {
     flexDirection: "row",

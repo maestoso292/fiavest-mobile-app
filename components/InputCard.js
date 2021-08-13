@@ -86,14 +86,14 @@ const styles = StyleSheet.create({
         width: 300,
         //alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 25,
+        marginTop: 20,
     },
     inputBox: {
         borderWidth: 2,
         borderColor: '#b3b3b3',
         width: '100%',
         padding: 10,
-        borderRadius: 25,
+        borderRadius: 15,
     },
     errorContainer: {
         marginVertical: 5
