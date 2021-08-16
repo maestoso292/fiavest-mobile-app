@@ -53,10 +53,12 @@ const formReducer = (state, action) => {
 const SignUpPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
+  const [selectedAddress, setSelectedAddress] = useState("Johor")
   const [selectedBroking, setSelectedBroking] = useState("Malacca");
   const [selectedTerm, setSelectedTerm] = useState("Short Term");
   const [selectedExperience, setSelectedExperience] = useState("0 year");
   const [isAgree, setIsAgree] = useState(false);
+  const [passConError, setPassConError] = useState("Minimum length is 10");
 
   const dispatch = useDispatch();
 
@@ -66,11 +68,7 @@ const SignUpPage = () => {
       nameFamily: "",
       email: "",
       password: "",
-      address: "",
       phoneNum: "",
-      brokingHouse: "",
-      term: "",
-      experience: "",
       actiCode: "",
     },
     inputValidities: {
@@ -78,11 +76,7 @@ const SignUpPage = () => {
       nameFamily: false,
       email: false,
       password: false,
-      address: false,
       phoneNum: false,
-      brokingHouse: false,
-      term: false,
-      experience: false,
       actiCode: false,
     },
     formIsValid: false,
@@ -98,15 +92,21 @@ const SignUpPage = () => {
     Keyboard.dismiss();
     let action;
     if (isAgree === false) {
-      Alert.alert("Term & Conditions not agree? ", "Please agree to our term and conditions.", [{ text: "Ok"}])
+      Alert.alert("Term & Conditions not agree ? ", "Please agree to our term and conditions...", [{ text: "Okay"}])
+    } else if (formState.inputValues.nameGiven === "" || formState.inputValues.nameFamily === "" || formState.inputValues.email === "" || formState.inputValues.password === "" || formState.inputValues.conPassword === "" || formState.inputValues.phoneNum === "" ) {
+      Alert.alert("Empty Field !", "Please fill up all inputs...", [{ text: "Okay" }]);
+    } else if (formState.inputValidities.nameGiven === false || formState.inputValidities.nameFamily === false || formState.inputValidities.email === false || formState.inputValidities.password === false || formState.inputValidities.phoneNum === false ) {
+      Alert.alert("Invalid Input !", "Make sure inputs are in correct format...", [{ text: "Okay" }]);
+    } else if (formState.inputValues.conPassword !== formState.inputValues.password) {
+      Alert.alert("Password Not Match !", "Please double confirm the password again...", [{text: "Okay"}])
     } else {
       action = authActions.registerViaEmail(
         formState.inputValues.email,
         formState.inputValues.password,
         formState.inputValues.nameGiven,
         formState.inputValues.nameFamily,
-        formState.inputValues.address,
         formState.inputValues.phoneNum,
+        selectedAddress,
         selectedBroking,
         selectedTerm,
         parseInt(selectedExperience),
@@ -162,8 +162,8 @@ const SignUpPage = () => {
           keyboardType="default"
           secureTextEntry={true}
           required
-          errorText="Please enter valid password"
-          minLength={8}
+          errorText="Minimum length is 10"
+          minLength={10}
           onInputChange={inputChangeHandler}
           initialValue=""
         />
@@ -173,8 +173,8 @@ const SignUpPage = () => {
           keyboardType="default"
           secureTextEntry={true}
           required
-          errorText="Password not matches"
-          minLength={8}
+          errorText={passConError}
+          minLength={10}
           onInputChange={inputChangeHandler}
           initialValue=""
         />
@@ -191,35 +191,43 @@ const SignUpPage = () => {
           initialValue=""
         />
         <InputCard
-          extraStyle={{ height: 100 }}
-          id="address"
-          placeholder="Address"
-          keyboardType="default"
-          autoCorrect={false}
-          errorText="Please enter a valid address"
-          required
-          minLength={2}
-          onInputChange={inputChangeHandler}
-          initialValue=""
-        />
-        <InputCard
           id="phoneNum"
           placeholder="Phone Number"
           keyboardType="phone-pad"
-          errorText="Please enter a phone number"
+          errorText="Please enter a valid phone number"
           required
           minLength={8}
           maxLength={10}
           onInputChange={inputChangeHandler}
           initialValue=""
         />
-        <InputCard
-          id="actiCode"
-          placeholder="Activation Code"
-          keyboardType="default"
-          onInputChange={inputChangeHandler}
-          initialValue=""
-        />
+        <View style={styles.Picker}>
+          <Text style={{ color: "#000" }}>Address (State) : </Text>
+          <Picker
+            selectedValue={selectedAddress}
+            style={{ height: 30, width: 150 }}
+            onValueChange={(itemValue, itemIndex) =>
+              setSelectedAddress(itemValue)
+            }
+          >
+            <Picker.Item label="Johor" value="Johor" />
+            <Picker.Item label="Kedah" value="Kedah" />
+            <Picker.Item label="Kelantan" value="Kelantan" />
+            <Picker.Item label="Malacca" value="Malacca" />
+            <Picker.Item label="Negeri Sembilan" value="Negeri Sembilan" />
+            <Picker.Item label="Pahang" value="Pahang" />
+            <Picker.Item label="Penang" value="Penang" />
+            <Picker.Item label="Perak" value="Perak" />
+            <Picker.Item label="Perlis" value="Perlis" />
+            <Picker.Item label="Sabah" value="Sabah" />
+            <Picker.Item label="Sarawak" value="Sarawak" />
+            <Picker.Item label="Selangor" value="Selangor" />
+            <Picker.Item label="Terengganu" value="Terengganu" />
+            <Picker.Item label="Kuala Lumpur" value="Kuala Lumpur" />
+            <Picker.Item label="Labuan" value="Labuan" />
+            <Picker.Item label="Putrajaya" value="Putrajaya" />
+          </Picker>
+        </View>
         <View style={styles.Picker}>
           <Text style={{ color: "#000" }}>Brokerage Company : </Text>
           <Picker
@@ -262,6 +270,13 @@ const SignUpPage = () => {
             <Picker.Item label="3 year" value="3" />
           </Picker>
         </View>
+        <InputCard
+          id="actiCode"
+          placeholder="Activation Code (Optional)"
+          keyboardType="default"
+          onInputChange={inputChangeHandler}
+          initialValue=""
+        />
         <View style={styles.TandC}>
           <CheckBox
             value={isAgree}

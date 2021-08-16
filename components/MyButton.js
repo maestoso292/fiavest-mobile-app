@@ -15,17 +15,27 @@ const MyButton = props => {
 
 const styles=StyleSheet.create({
     button: {
-        width: 150,
         //marginTop: 32,
-        backgroundColor: '#ccc',
-        padding: 10,
-        borderWidth: 1,
-        borderRadius: 100,
+        backgroundColor: 'rgb(211,211,211)',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        // borderWidth: 1,
+        borderRadius: 12,
         alignItems:'center',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 5,
+        },
+        shadowOpacity: 0.46,
+        shadowRadius: 11.14,
+        elevation: 17,
+        fontFamily: 'Iowan Old Style',
     },
 
     text: {
         color: 'black',
+        backgroundColor: 'transparent',
         fontSize: 18,
     },
 });

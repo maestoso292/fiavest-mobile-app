@@ -92,8 +92,11 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: '#b3b3b3',
         width: '100%',
-        padding: 10,
-        borderRadius: 15,
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        borderTopWidth: 0,
+        borderRightWidth: 0,
+        borderLeftWidth: 0,
     },
     errorContainer: {
         marginVertical: 5

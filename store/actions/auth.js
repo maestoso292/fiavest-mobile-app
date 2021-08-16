@@ -159,7 +159,6 @@ export const autoLoginViaGoogle = (refreshToken) => {
   };
 };
 
-//(email, password) add more info inside this bracket
 export const registerViaEmail = (
   email,
   password,
@@ -173,6 +172,7 @@ export const registerViaEmail = (
   actiCode,
 ) => {
   return async (dispatch) => {
+    if (actiCode === "") actiCode = null
     const response = await fetch(
       "https://fiavest-plus-app-api.fiavest.com/api/public/register/new-via-email",
       {
@@ -206,53 +206,24 @@ export const registerViaEmail = (
     const responseData = await response.json();
     // console.log(responseData);
 
-    // const expirationDate = new Date(
-    //   Date.now() + parseInt(responseData.expiresIn) * 1000
-    // );
+    await dispatch(loginViaEmail(email, password))
+    
+    const userData = await AsyncStorage.getItem("userData")
+    const jsonData = JSON.parse(userData)
+    // console.log(jsonData);
 
-    // console.log(`Expiration date of token: ${expirationDate}`);
-
-    // loginViaEmail(email,password)
-    try {
-        dispatch(loginViaEmail(email, password))
-        saveDataToLocal(
-        null,
-        responseData.uuid,
-        null,
-        null,
-        LOGIN_METHODS.EMAIL,
+    dispatch(writeUserDataToDB(
+          jsonData.token,
+          responseData.uuid,
+          nameGiven,
+          nameFamily,
+          phoneNum,
+          address,
+          brokingHouse,
+          investmentTerm,
+          tradingExp
         )
-        try {
-          dispatch(
-            writeUserDataToDB(
-              responseData.uuid,
-              nameGiven,
-              nameFamily,
-              phoneNum,
-              address,
-              brokingHouse,
-              investmentTerm,
-              tradingExp
-            )
-          );
-          try {
-            dispatch(
-            authenticate(
-              responseData.uuid,
-              null,
-              null,
-              LOGIN_METHODS.EMAIL
-            )
-          );
-          } catch (authenticateError) {
-            console.log(authenticateError);
-          }
-        } catch (saveDataError) {
-          console.log(saveDataError);
-        }
-    } catch (loginError) {
-      console.log(loginError);
-    }
+      );
   };
 };
 
@@ -278,7 +249,7 @@ export const loginViaEmail = (email, password) => {
       const errorResData = await response.json();
       const errorID = errorResData.error.message;
       let message = `Something went wrong: ${errorID}`;
-      console.log(message);
+      console.log(errorResData);
       if (errorID === "EMAIL_NOT_FOUND" || errorID === "INVALID_PASSWORD") {
         message = "Invalid credentials";
       } else if (errorID === "USER_DISABLED") {
@@ -288,80 +259,56 @@ export const loginViaEmail = (email, password) => {
     }
 
     const responseData = await response.json();
-
-    // const expirationDate = new Date(
-    //   Date.now() + parseInt(responseData.expiresIn) * 1000
-    // );
-
-    // console.log(`Expiration date of token: ${expirationDate}`);
+    // console.log(responseData);
 
     saveDataToLocal(
       responseData.sessionId,
       responseData.uuid,
       LOGIN_METHODS.EMAIL,
     )
-
-    // dispatch(
-    //   authenticate(
-    //     responseData.localId,
-    //     responseData.idToken,
-    //     expirationDate,
-    //     LOGIN_METHODS.EMAIL
-    //   )
-    // );
+    dispatch(
+      authenticate(
+        responseData.uuid,
+        responseData.sessionId
+      )
+    )
   };
 };
 
-// export const refreshTokenEmail = (refreshToken) => {
-//   return async (dispatch) => {
-//     const response = await fetch(
-//       "https://securetoken.googleapis.com/v1/token?key=AIzaSyAJDYVoRRinh626T1wLJh6MI6sCl7YZ5BM",
-//       {
-//         method: "POST",
-//         headers: {
-//           Accept: "application/json",
-//           "Content-Type": "application/x-www-form-urlencoded",
-//         },
-//         body: `grant_type=refresh_token&refresh_token=${refreshToken}`,
-//       }
-//     );
+export const resetPassword = (email) => {
+  return async (dispatch) => {
+    const response = await fetch(
+      "https://fiavest-plus-app-api.fiavest.com/api/public/reset-password/request-via-email",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+          url: "http://localhost:3000/resetPass"
+        }),
+      }
+    );
 
-//     if (!response.ok) {
-//       const errorResData = await response.json();
-//       const errorID = errorResData.error.message;
-//       let message = `Something wrong: ${errorID}`;
-//       if (errorID === "TOKEN_EXPIRED") {
-//         message = "Token Expired";
-//       } else if (errorID === "INVALID_REFRESH_TOKEN") {
-//         message = "Refresh token invalid";
-//       } else if (errorID === "INVALID_GRANT_TYPE") {
-//         message = "Password Problem";
-//       }
-//       throw new Error(message);
-//     }
+      if(!response.ok) {
+        const errorResData = await response.json();
+        const errorID = errorResData.error.message;
+        let message = `Something went wrong: ${errorID}`;
+        console.log(errorResData);
+        if (errorID === "EMAIL_NOT_FOUND" || errorID === "INVALID_PASSWORD") {
+          message = "Invalid credentials";
+        } else if (errorID === "USER_DISABLED") {
+          message = "Account has been disabled. Please contact support.";
+        }
+        throw new Error(message);
+      }
 
-//     const responseData = await response.json();
-
-//     // console.log(`Expiration date of token: ${expirationDate}`);
-
-//     saveDataToLocal(
-//       responseData.id_token,
-//       responseData.user_id,
-//       responseData.refresh_token,
-//       LOGIN_METHODS.EMAIL
-//     );
-
-//     dispatch(
-//       authenticate(
-//         responseData.user_id,
-//         responseData.id_token,
-//         LOGIN_METHODS.EMAIL
-//       )
-//     );
-//   };
-// };
+  }
+}
 
 export const writeUserDataToDB = (
+  sessionID,
   uuid,
   nameGiven,
   nameFamily,
@@ -372,15 +319,13 @@ export const writeUserDataToDB = (
   tradingExp
 ) => {
   return async () => {
-    const userData = await AsyncStorage.getItem("userData")
-    const jsonData = JSON.parse(userData)
-    console.log(jsonData);
-    const response = await fetch(
+    await fetch(
       "https://fiavest-plus-app-api.fiavest.com/api/private/user/update-user-details",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "sessionId": `${sessionID}`
         },
         body: JSON.stringify({
           uuid,
@@ -394,15 +339,6 @@ export const writeUserDataToDB = (
         }),
       }
     );
-
-      if(!response.ok) {
-        const errorResData = await response.json();
-        const errorID = errorResData.error.message;
-        console.log(errorResData);
-        console.log(errorID);
-      }
-    
-    console.log(response);
 
   };
 };

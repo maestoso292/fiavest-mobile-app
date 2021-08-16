@@ -47,6 +47,7 @@ const formReducer = (state, action) => {
 };
 
 const SignInPage = () => {
+  const [isResetPassword, setIsResetPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
@@ -72,18 +73,49 @@ const SignInPage = () => {
 
   const authHandler = async () => {
     Keyboard.dismiss();
-    let action;
-    action = authActions.loginViaEmail(
-      formState.inputValues.email,
-      formState.inputValues.password
-    );
-    setError(null);
-    setIsLoading(true);
-    dispatch(action).catch((err) => {
-      setError(err.message);
-      setIsLoading(false);
-    });
+    if (formState.inputValidities.email === false || formState.inputValidities.password === false) {
+      Alert.alert("Invalid Input !", "Make sure inputs are in correct format...", [{ text: "Okay" }]);
+    } else if (formState.inputValues.email === "" || formState.inputValues.password === "") {
+      Alert.alert("Empty Field !", "Please fill up all inputs...", [{ text: "Okay" }]);
+    } else {
+      let action;
+      action = authActions.loginViaEmail(
+        formState.inputValues.email,
+        formState.inputValues.password
+      );
+      setError(null);
+      setIsLoading(true);
+      dispatch(action).catch((err) => {
+        setError(err.message);
+        setIsLoading(false);
+      });
+    }
+    
   };
+
+  const resetHandler = async () => {
+    Keyboard.dismiss();
+    if (formState.inputValidities.email === false) {
+      Alert.alert("Invalid Email !", "Make sure it is correct email format...", [{ text: "Okay" }]);
+    } else if (formState.inputValues.email === "") {
+      Alert.alert("Empty Field !", "Please fill up the email for reset password...")
+    } else {
+      console.log(formState.inputValues.email);
+      let action;
+      action = authActions.resetPassword(
+        formState.inputValues.email
+      );
+      setError(null);
+      setIsLoading(true);
+      dispatch(action).catch((err) => {
+        setError(err.message)
+        setIsLoading(false)
+      })
+      Alert.alert("Reset Sent ~", "Please check your email, also junk and spam folder to reassign a new password.", [{text: "Okay"}])
+      setIsLoading(false)
+      setIsResetPassword(false)
+    }
+  }
 
   const inputChangeHandler = useCallback(
     (inputIdentify, inputValue, inputValidity) => {
@@ -101,7 +133,7 @@ const SignInPage = () => {
     <View style={styles.signInMain}>
       <InputCard
         id="email"
-        placeholder="Email Address"
+        placeholder={(isResetPassword === false) ? "Email Address" : "Recovery Email Address"}
         placeholderTextColor="#8e8e8e"
         keyboardType="email-address"
         errorText="Please enter a valid email address"
@@ -112,7 +144,10 @@ const SignInPage = () => {
         onInputChange={inputChangeHandler}
         initialValue=""
       />
-      <InputCard
+      {isResetPassword ? (
+        <></>
+      ) : (
+        <InputCard
         id="password"
         placeholder="Password"
         keyboardType="default"
@@ -122,19 +157,29 @@ const SignInPage = () => {
         minLength={8}
         onInputChange={inputChangeHandler}
         initialValue=""
-      />
+        />
+      )}
+      
       <View style={{ marginTop: 32 }}>
         {isLoading ? (
           <ActivityIndicator size="small" color={"#d3d3d3"} />
         ) : (
-          <MyButton onPress={authHandler}>Login</MyButton>
+          <View>
+            {isResetPassword ? (
+              <MyButton onPress={resetHandler}>RESET NOW</MyButton>
+            ) : (
+              <MyButton onPress={authHandler}>LOGIN</MyButton>
+            )}
+            
+          </View>
         )}
       </View>
+      <View style={{marginTop: 20}}>
+        <MyButton onPress={() => setIsResetPassword(!isResetPassword)}>{isResetPassword ? "Back to Login" : "Forget Password ?"}</MyButton>
+      </View>
       <Text
-        style={{ fontSize: 30, marginTop: 10, marginBottom: 5, color: "#ccc" }}
-      >
-        OR
-      </Text>
+        style={{ fontSize: 30, marginTop: 20, marginBottom: 5, color: "#ccc" }}
+      >OR</Text>
       <Text style={{ letterSpacing: 1, marginBottom: 10 }}>Sign In Via</Text>
       <View style={styles.others}>
         <CustomButton
@@ -164,14 +209,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     flexDirection: "row",
     width: "70%",
-  },
-  forgetText: {
-    color: "#2e64e5",
-    textDecorationLine: "underline",
-  },
-  forgetButton: {
-    alignItems: "center",
-    marginTop: 15,
   },
 });
 

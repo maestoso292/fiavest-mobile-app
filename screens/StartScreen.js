@@ -7,8 +7,9 @@ import * as Facebook from "expo-facebook";
 import * as authActions from "../store/actions/auth";
 
 const StartScreen = (props) => {
+  // AsyncStorage.removeItem("userData");
   const dispatch = useDispatch();
-
+  
   // TODO tryLogin can probably be broken down into separate functions
   useEffect(() => {
     const tryLogin = async () => {
@@ -28,24 +29,29 @@ const StartScreen = (props) => {
         return;
       }
 
-      const { token, userId, expiryDate, refreshToken, method } =
+      const { token, userId, method } =
         JSON.parse(userData);
 
       switch (method) {
         case authActions.LOGIN_METHODS.EMAIL:
-          // Refresh token 1 min early. Extra time just in case.
-          if (Date.now() <= expiryDate - 60000) {
-            dispatch(
-              authActions.authenticate(userId, token, expiryDate, method)
-            );
+          if (token !== "") {
+            dispatch(authActions.authenticate(userId, token));
             return;
           }
-          // Refreshes token
-          dispatch(authActions.refreshTokenEmail(refreshToken)).catch((err) => {
-            console.log(err);
-            AsyncStorage.removeItem("userData");
-            dispatch(setDidAutoLogin());
-          });
+          // Refresh token 1 min early. Extra time just in case.
+          // if (Date.now() <= expiryDate - 60000) {
+          //   dispatch(
+          //     authActions.authenticate(userId, token, expiryDate, method)
+          //   );
+          //   return;
+          // }
+          // // Refreshes token
+          // dispatch(authActions.refreshTokenEmail(refreshToken)).catch((err) => {
+          //   console.log(err);
+          //   AsyncStorage.removeItem("userData");
+          //   dispatch(setDidAutoLogin());
+          // });
+          // dispatch(authActions.setDidAutoLogin)
           break;
         case authActions.LOGIN_METHODS.FACEBOOK:
           dispatch(authActions.autoLoginViaFacebook);
