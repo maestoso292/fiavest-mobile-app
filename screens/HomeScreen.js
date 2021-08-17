@@ -14,6 +14,19 @@ const renderPosting = ({ item }) => {
 
 // TODO Fetching data of company postings
 const fetchPostingData = () => {
+  // const response = await fetch(
+  //   "https://fiavest-plus-app-api.fiavest.com/api/public/postings/fetch-postings",
+  //   {
+  //     method: "GET",
+  //   }
+  // );
+  // if (!response.ok) {
+  //   const errorResData = await response.json();
+  //   console.log(errorResData.error.message);
+  // } else {
+  //   const ResData = await response.json()
+  //   return ResData;
+  // }
   return POSTING_DATA;
 };
 

@@ -29,8 +29,7 @@ const StartScreen = (props) => {
         return;
       }
 
-      const { token, userId, method } =
-        JSON.parse(userData);
+      const { token, userId, method } = JSON.parse(userData);
 
       switch (method) {
         case authActions.LOGIN_METHODS.EMAIL:

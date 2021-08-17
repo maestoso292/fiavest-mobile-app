@@ -42,28 +42,23 @@ export const loginViaFacebook = async (dispatch) => {
       permissions: ["public_profile"],
     });
     if (type === "success") {
-      const response = await fetch(
+      await fetch(
         `https://graph.facebook.com/me?access_token=${token}`
       );
 
-      saveDataToLocal(
-        token,
-        userId,
-        null,
-        LOGIN_METHODS.FACEBOOK
-      );
       dispatch(
-        authenticate(
+        FacebookUserLogin(
           userId,
-          token,
-          LOGIN_METHODS.FACEBOOK
+          LOGIN_METHODS.FACEBOOK,
+          token
         )
-      );
+      )
     } else {
-      console.log("Cancel");
+      let message = "Facebook Login Failed";
+      throw new Error(message);
     }
   } catch (e) {
-    console.log(`Facebook Login Error : ${e}`);
+    throw new Error(`Facebook Login Error : ${e}`);
   }
 };
 
@@ -339,7 +334,6 @@ export const writeUserDataToDB = (
         }),
       }
     );
-
   };
 };
 
@@ -353,6 +347,48 @@ export const logout = () => {
   }
   return { type: LOGOUT };
 };
+
+export const FacebookUserLogin = (facebookId, method, token) => {
+  return async (dispatch) => {
+    const repsonse =  await fetch(
+      "https://fiavest-plus-app-api.fiavest.com/api/public/register/new-via-facebook",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          facebookId: facebookId
+        })
+      }
+    )
+
+    if (!repsonse.ok) {
+      const errorResData = await repsonse.json();
+      const errorID = errorResData.error.message;
+      let message = `Something went wrong: ${errorID}`;
+      console.log(errorResData);
+      throw new Error(message);
+    }
+
+    const responseData = await repsonse.json();
+    console.log(responseData);
+    
+    // saveDataToLocal(
+    //   token,
+    //   userId,
+    //   method
+    // );
+
+    // dispatch(
+    //   authenticate(
+    //     userId,
+    //     token
+    //   )
+    // )
+
+  }
+}
 
 const saveDataToLocal = async (
   token,

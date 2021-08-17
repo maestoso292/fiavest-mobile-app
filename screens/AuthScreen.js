@@ -55,7 +55,10 @@ const AuthScreen = (props) => {
           style={styles.img}
         />
       </View>
-      <Tab.Navigator>
+      <Tab.Navigator 
+      backBehavior="none"
+      keyboardDismissMode="on-drag"
+      >
         <Tab.Screen name="LOGIN" component={Login} />
         <Tab.Screen name="REGISTER" component={Register} />
       </Tab.Navigator>

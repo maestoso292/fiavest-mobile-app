@@ -100,7 +100,7 @@ const SignInPage = () => {
     } else if (formState.inputValues.email === "") {
       Alert.alert("Empty Field !", "Please fill up the email for reset password...")
     } else {
-      console.log(formState.inputValues.email);
+      // console.log(formState.inputValues.email);
       let action;
       action = authActions.resetPassword(
         formState.inputValues.email
@@ -111,7 +111,7 @@ const SignInPage = () => {
         setError(err.message)
         setIsLoading(false)
       })
-      Alert.alert("Reset Sent ~", "Please check your email, also junk and spam folder to reassign a new password.", [{text: "Okay"}])
+      Alert.alert("Reset Sent ~", "Please check your email, also check the junk and spam folder to reassign a new password.", [{text: "Okay"}])
       setIsLoading(false)
       setIsResetPassword(false)
     }
@@ -175,7 +175,7 @@ const SignInPage = () => {
         )}
       </View>
       <View style={{marginTop: 20}}>
-        <MyButton onPress={() => setIsResetPassword(!isResetPassword)}>{isResetPassword ? "Back to Login" : "Forget Password ?"}</MyButton>
+        <MyButton onPress={() => setIsResetPassword(!isResetPassword)}>{isResetPassword ? "BACK TO LOGIN" : "RESET PASSWORD ?"}</MyButton>
       </View>
       <Text
         style={{ fontSize: 30, marginTop: 20, marginBottom: 5, color: "#ccc" }}

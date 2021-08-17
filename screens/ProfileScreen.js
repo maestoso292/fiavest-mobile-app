@@ -1,7 +1,8 @@
-import React from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet, Button, Alert } from "react-native";
 import { useDispatch } from "react-redux";
 import CardBase from "../components/base/CardBase";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import TouchableCustom from "../components/base/TouchableCustom";
 import {
   BACKGROUND_LIGHT,
@@ -9,46 +10,80 @@ import {
   POPUP_LIGHT,
 } from "../constants/colors";
 import * as authActions from "../store/actions/auth";
+import DetailsCard from "../components/detailsCard";
 
-const ProfileScreen = ({ navigation }) => {
+const ProfileScreen = (props) => {
+
+  const [userInfo, setUserInfo] = useState([])
   const dispatch = useDispatch();
+
+  const getUserData = async (dispatch) => {
+    const userData = await AsyncStorage.getItem("userData")
+    const jsonData = JSON.parse(userData)
+    console.log(jsonData);
+    console.log(jsonData.token);
+    console.log(jsonData.userId);
+    const response = await fetch(
+      "https://fiavest-plus-app-api.fiavest.com/api/private/user/fetch-user-details",
+      {
+        method:"POST",
+        headers: {
+          "Content-Type": "application/json",
+          "sessionId": `${jsonData.token}`
+        },
+        body: JSON.stringify({
+          uuid: jsonData.userId
+        })
+      }
+    )
+    if(!response.ok) {
+      const errorResData = await response.json();
+      console.log(errorResData.error.message);
+      if (errorResData.error.message === "Session expired") {
+        Alert.alert("Session Expired", "Please Log In Again", [{text: "Okay"}]);
+        dispatch(authActions.logout())
+      }
+    } else {
+      const resData = await response.json()
+      console.log(resData);
+      return resData;
+    }
+  }
+
+  useEffect(() => {
+    const getAction = async () => {
+      const getInfo = await getUserData();
+      if (getInfo) setUserInfo(getInfo)
+    };
+    getAction();
+  }, [props])
 
   return (
     <View style={styles.screen}>
-      <CardBase style={styles.card}>
-        <View style={styles.fieldContainer}>
-          <Text>Username</Text>
-        </View>
-        <View style={styles.dataContainer}>
-          <Text>Sample Name</Text>
-        </View>
-      </CardBase>
-      <CardBase style={styles.card}>
-        <View style={styles.fieldContainer}>
-          <Text>NRIC/Passport</Text>
-        </View>
-        <View style={styles.dataContainer}>
-          <Text>Sample Name</Text>
-        </View>
-      </CardBase>
-      <CardBase style={styles.card}>
-        <View style={styles.fieldContainer}>
-          <Text>Address</Text>
-        </View>
-        <View style={styles.dataContainer}>
-          <Text>Address Line 1</Text>
-          <Text>Address Line 2</Text>
-          <Text>Address Line 3</Text>
-        </View>
-      </CardBase>
-      <CardBase style={styles.card}>
-        <View style={styles.fieldContainer}>
-          <Text>Phone No.</Text>
-        </View>
-        <View style={styles.dataContainer}>
-          <Text>0111111111</Text>
-        </View>
-      </CardBase>
+      <DetailsCard 
+      title="Username"
+      content={userInfo.nameGiven + " " + userInfo.nameFamily}
+      />
+      <DetailsCard 
+      title="Address (State)"
+      content={userInfo.address}
+      />
+      <DetailsCard 
+      title="Broking House"
+      content={userInfo.brokingHouse}
+      />
+      <DetailsCard 
+      title="Investment Term"
+      content={userInfo.investmentTerm}
+      />
+      <DetailsCard 
+      title="Phone Num"
+      content={userInfo.phoneNum}
+      />
+      <DetailsCard 
+      title="Trading Experience"
+      content={userInfo.tradingExp + "years"}
+      />
       <CardBase style={styles.buttonContainer}>
         <TouchableCustom
           useAndroid
@@ -69,23 +104,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     backgroundColor: BACKGROUND_LIGHT,
-  },
-  card: {
-    width: "90%",
-    marginTop: 10,
-    flexDirection: "row",
-    borderRadius: 10,
-  },
-  fieldContainer: {
-    flex: 1,
-    padding: 10,
-    justifyContent: 'center'
-  },
-  dataContainer: {
-    flex: 2,
-    borderLeftColor: BORDER_PRIMARY,
-    borderLeftWidth: StyleSheet.hairlineWidth,
-    padding: 10,
   },
   buttonContainer: {
     borderRadius: 10,

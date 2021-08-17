@@ -30,7 +30,6 @@ const styles=StyleSheet.create({
         shadowOpacity: 0.46,
         shadowRadius: 11.14,
         elevation: 17,
-        fontFamily: 'Iowan Old Style',
     },
 
     text: {
