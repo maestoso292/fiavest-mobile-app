@@ -3,6 +3,7 @@ import React, {
   useReducer,
   useEffect,
   useCallback,
+  useRef,
   Component,
   FC,
 } from "react";
@@ -15,10 +16,15 @@ import {
   Alert,
   ActivityIndicator,
   Keyboard,
+  TextInput,
+  Animated
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import CheckBox from "@react-native-community/checkbox";
 import { useDispatch } from "react-redux";
+import { useFocusEffect } from "@react-navigation/core";
+import { fade } from "../animations/popup-anims";
+import TNCPopUp from "../components/TNCPop-Up";
 
 import CustomButton from "../components/CustomButton";
 import InputCard from "../components/InputCard";
@@ -56,11 +62,16 @@ const SignUpPage = () => {
   const [selectedAddress, setSelectedAddress] = useState("Johor")
   const [selectedBroking, setSelectedBroking] = useState("Malacca");
   const [selectedTerm, setSelectedTerm] = useState("Short Term");
-  const [selectedExperience, setSelectedExperience] = useState("0 year");
   const [isAgree, setIsAgree] = useState(false);
+  const [isOthers, setIsOthers] = useState({
+    broking: false,
+    address: false,
+  })
+  const [showTNC, setShowTNC] = useState(false)
   const [passConError, setPassConError] = useState("Minimum length is 10");
 
   const dispatch = useDispatch();
+  const fadeAnimate = useRef(new Animated.Value(0)).current;
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
@@ -69,6 +80,7 @@ const SignUpPage = () => {
       email: "",
       password: "",
       phoneNum: "",
+      tradingExp: "",
       actiCode: "",
     },
     inputValidities: {
@@ -77,6 +89,7 @@ const SignUpPage = () => {
       email: false,
       password: false,
       phoneNum: false,
+      tradingExp: false,
       actiCode: false,
     },
     formIsValid: false,
@@ -88,17 +101,39 @@ const SignUpPage = () => {
     }
   }, [error]);
 
+  useEffect(() => {
+    let endValue = showTNC ? 1 : 0;
+    fade(fadeAnimate, endValue).start();
+  }, [showTNC]);
+
+  useFocusEffect(
+    useCallback(() => {
+        setShowTNC(false)
+    }, [setShowTNC])
+  )
+
+  const closeTNC = () => {
+    Keyboard.dismiss();
+    setShowTNC(false);
+    setIsAgree(true)
+  }
+
+  const openTNC = () => {
+    setShowTNC(true);
+  }
+
   const authHandler = async () => {
     Keyboard.dismiss();
     let action;
     if (isAgree === false) {
       Alert.alert("Term & Conditions not agree ? ", "Please agree to our term and conditions...", [{ text: "Okay"}])
-    } else if (formState.inputValues.nameGiven === "" || formState.inputValues.nameFamily === "" || formState.inputValues.email === "" || formState.inputValues.password === "" || formState.inputValues.conPassword === "" || formState.inputValues.phoneNum === "" ) {
+    } else if (formState.inputValues.nameGiven === "" || formState.inputValues.nameFamily === "" || formState.inputValues.email === "" || formState.inputValues.password === "" || formState.inputValues.conPassword === "" || formState.inputValues.phoneNum === "" || formState.inputValues.tradingExp === "") {
       Alert.alert("Empty Field !", "Please fill up all inputs...", [{ text: "Okay" }]);
-    } else if (formState.inputValidities.nameGiven === false || formState.inputValidities.nameFamily === false || formState.inputValidities.email === false || formState.inputValidities.password === false || formState.inputValidities.phoneNum === false ) {
+    } else if (formState.inputValidities.nameGiven === false || formState.inputValidities.nameFamily === false || formState.inputValidities.email === false || formState.inputValidities.password === false || formState.inputValidities.phoneNum === false || formState.inputValues.tradingExp === false ) {
       Alert.alert("Invalid Input !", "Make sure inputs are in correct format...", [{ text: "Okay" }]);
     } else if (formState.inputValues.conPassword !== formState.inputValues.password) {
-      Alert.alert("Password Not Match !", "Please double confirm the password again...", [{text: "Okay"}])
+      // Alert.alert("Password Not Match !", "Please double confirm the password again...", [{text: "Okay"}])
+      setPassConError("Password not Match !")
     } else {
       action = authActions.registerViaEmail(
         formState.inputValues.email,
@@ -109,7 +144,7 @@ const SignUpPage = () => {
         selectedAddress,
         selectedBroking,
         selectedTerm,
-        parseInt(selectedExperience),
+        parseInt(formState.inputValues.tradingExp),
         formState.inputValues.actiCode,
       );
       setError(null);
@@ -129,13 +164,12 @@ const SignUpPage = () => {
         isValid: inputValidity,
         input: inputIdentify,
       });
-    },
-    [dispatchFormState]
+    },[dispatchFormState]
   );
 
   return (
-    <ScrollView>
-      <View style={styles.signUpMain}>
+    <View>
+      <ScrollView contentContainerStyle={styles.signUpMain}>
         <InputCard
           id="nameGiven"
           placeholder="First Name"
@@ -201,13 +235,35 @@ const SignUpPage = () => {
           onInputChange={inputChangeHandler}
           initialValue=""
         />
+        <InputCard
+          id="tradingExp"
+          placeholder="Trading Experience (years) (Enter 0 if less than 1)"
+          keyboardType="numeric"
+          errorText="Please enter a valid years"
+          required
+          maxLength={2}
+          onInputChange={inputChangeHandler}
+          initialValue=""
+        />
         <View style={styles.Picker}>
           <Text style={{ color: "#000" }}>Address (State) : </Text>
           <Picker
             selectedValue={selectedAddress}
             style={{ height: 30, width: 150 }}
-            onValueChange={(itemValue, itemIndex) =>
-              setSelectedAddress(itemValue)
+            onValueChange={(itemValue, itemIndex) => {
+              if (itemValue === "others") {
+                setIsOthers(old => ({
+                  ...old,
+                  address: true
+                }))
+              } else {
+                setIsOthers(old => ({
+                  ...old,
+                  address: false
+                }))
+                setSelectedAddress(itemValue)
+              }
+            }
             }
           >
             <Picker.Item label="Johor" value="Johor" />
@@ -226,23 +282,56 @@ const SignUpPage = () => {
             <Picker.Item label="Kuala Lumpur" value="Kuala Lumpur" />
             <Picker.Item label="Labuan" value="Labuan" />
             <Picker.Item label="Putrajaya" value="Putrajaya" />
+            <Picker.Item label="Others" value="others" />
           </Picker>
         </View>
+        {isOthers.address && (
+          <TextInput 
+          style={styles.inputOther}
+          placeholder="Other Country / State ?"
+          onChange={(value) => setSelectedAddress(value)}
+          />
+        )}
         <View style={styles.Picker}>
           <Text style={{ color: "#000" }}>Brokerage Company : </Text>
           <Picker
             selectedValue={selectedBroking}
             style={{ height: 30, width: 150 }}
-            onValueChange={(itemValue, itemIndex) =>
-              setSelectedBroking(itemValue)
-            }
+            onValueChange={(itemValue, itemIndex) => {
+              if (itemValue === "others") {
+                setIsOthers(old => ({
+                  ...old,
+                  broking: true
+                }))
+              } else {
+                setIsOthers(old => ({
+                  ...old,
+                  broking: false
+                }))
+                setSelectedBroking(itemValue)
+              }
+            }}
           >
-            <Picker.Item label="Malacca Securities Sdn Bhd" value="Malacca" />
-            <Picker.Item label="Test 2" value="test 2" />
-            <Picker.Item label="Test 3" value="test 3" />
-            <Picker.Item label="Test 4" value="test 4" />
+            <Picker.Item label="Malacca Securities Sdn Bhd" value="Malacca Securities Sdn Bhd" />
+            <Picker.Item label="Public Bank" value="Public Bank" />
+            <Picker.Item label="Kenaga Investors Berhad" value="Kenaga Investors Berhad" />
+            <Picker.Item label="Rakuten" value="Rakuten" />
+            <Picker.Item label="CIMB Bank" value="CIMB Bank" />
+            <Picker.Item label="Maybank" value="Maybank" />
+            <Picker.Item label="RHB Bank" value="RHB Bank" />
+            <Picker.Item label="Hong Leong Bank" value="Hong Leong Bank" />
+            <Picker.Item label="UOB Kay Hian" value="UOB Kay Hian" />
+            <Picker.Item label="Alliance Bank" value="Alliance Bank" />
+            <Picker.Item label="Others" value="others" />
           </Picker>
         </View>
+        {isOthers.broking && (
+          <TextInput 
+          style={styles.inputOther}
+          placeholder="Other Brokerage Company ?"
+          onChange={(value) => setSelectedBroking(value)}
+          />
+        )}
         <View style={styles.Picker}>
           <Text style={{ color: "#000" }}>Investment Term : </Text>
           <Picker
@@ -250,24 +339,9 @@ const SignUpPage = () => {
             style={{ height: 30, width: 150 }}
             onValueChange={(itemValue, itemIndex) => setSelectedTerm(itemValue)}
           >
-            <Picker.Item label="Short Term" value="Short Term" />
-            <Picker.Item label="Medium Term" value="Medium Term" />
-            <Picker.Item label="Long Term" value="Long Term" />
-          </Picker>
-        </View>
-        <View style={styles.Picker}>
-          <Text style={{ color: "#000" }}>Trading Experience : </Text>
-          <Picker
-            selectedValue={selectedExperience}
-            style={{ height: 30, width: 150 }}
-            onValueChange={(itemValue, itemIndex) =>
-              setSelectedExperience(itemValue)
-            }
-          >
-            <Picker.Item label="0 year" value="0" />
-            <Picker.Item label="1 year" value="1" />
-            <Picker.Item label="2 year" value="2" />
-            <Picker.Item label="3 year" value="3" />
+            <Picker.Item label="Short Term 短期" value="Short Term" />
+            <Picker.Item label="Medium Term 中期" value="Medium Term" />
+            <Picker.Item label="Long Term 长期" value="Long Term" />
           </Picker>
         </View>
         <InputCard
@@ -285,8 +359,7 @@ const SignUpPage = () => {
           <View style={styles.termAndCondition}>
             <Text>By ticking this, you agree to our </Text>
             <TouchableOpacity
-              style={styles.termButton}
-              onPress={() => alert("term and condition")}
+              onPress={openTNC}
             >
               <Text style={styles.termText}>T & C</Text>
             </TouchableOpacity>
@@ -299,8 +372,14 @@ const SignUpPage = () => {
             <MyButton onPress={authHandler}>Register</MyButton>
           )}
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+      <TNCPopUp 
+        visible={showTNC}
+        onClose={closeTNC}
+        popupStyle={{opacity: fadeAnimate}}
+        conStyle={{height: "100%"}}
+      />
+    </View>
   );
 };
 
@@ -310,19 +389,23 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   Picker: {
-    width: 300,
+    width: '90%',
     borderWidth: 2,
     borderColor: "#b3b3b3",
-    padding: 10,
     borderRadius: 10,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginTop: 26,
+    marginTop: 20,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderTopWidth: 0,
+    borderRightWidth: 0,
+    borderLeftWidth: 0,
   },
   termText: {
     color: "#2e64e5",
-    textDecorationLine: "underline",
+    // textDecorationLine: "underline",
     //justifyContent: 'flex-start'
   },
   TandC: {
@@ -338,6 +421,18 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     width: "100%",
   },
+  inputOther: {
+    width: '90%',
+    borderWidth: 2,
+    marginTop: 20,
+    borderColor: '#b3b3b3',
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderTopWidth: 0,
+    borderRightWidth: 0,
+    borderLeftWidth: 0,
+  }
 });
 
 export default SignUpPage;

@@ -65,9 +65,9 @@ const InputCard = props => {
     };
 
     return (
-        <View style={styles.inputCon}>
+        <View style={[styles.inputCon, props.Extra]}>
             <TextInput 
-            style={[styles.inputBox, , props.extraStyle]}
+            style={[styles.inputBox, props.extraStyle]}
             {...props}
             value={inputState.value}
             onChangeText={textChangeHandler}
@@ -83,7 +83,7 @@ const InputCard = props => {
 
 const styles = StyleSheet.create({
     inputCon: {
-        width: 300,
+        width: '90%',
         //alignItems: 'center',
         justifyContent: 'center',
         marginTop: 20,
@@ -91,6 +91,7 @@ const styles = StyleSheet.create({
     inputBox: {
         borderWidth: 2,
         borderColor: '#b3b3b3',
+        borderRadius: 10,
         width: '100%',
         paddingHorizontal: 10,
         paddingVertical: 5,
@@ -99,7 +100,9 @@ const styles = StyleSheet.create({
         borderLeftWidth: 0,
     },
     errorContainer: {
-        marginVertical: 5
+        width: "100%",
+        marginVertical: 5,
+        alignItems: "center"
     },
     errorText: {
         color: 'red',

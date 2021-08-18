@@ -15,10 +15,10 @@ const Button2 = props => {
 
 const styles=StyleSheet.create({
     button: {
-        width: 100,
         //marginTop: 32,
         backgroundColor: '#ccc',
         padding: 10,
+        paddingHorizontal: 20,
         borderWidth: 1,
         borderRadius: 10,
         alignItems:'center',

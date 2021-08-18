@@ -17,7 +17,7 @@ const ProfileScreen = (props) => {
   const [userInfo, setUserInfo] = useState([])
   const dispatch = useDispatch();
 
-  const getUserData = async (dispatch) => {
+  const getUserData = async () => {
     const userData = await AsyncStorage.getItem("userData")
     const jsonData = JSON.parse(userData)
     console.log(jsonData);
@@ -82,7 +82,7 @@ const ProfileScreen = (props) => {
       />
       <DetailsCard 
       title="Trading Experience"
-      content={userInfo.tradingExp + "years"}
+      content={userInfo.tradingExp + " years"}
       />
       <CardBase style={styles.buttonContainer}>
         <TouchableCustom
