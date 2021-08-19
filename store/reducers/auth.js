@@ -13,6 +13,7 @@ export default (state = initialState, action) => {
         uuid: action.uuid,
         sessionId: action.sessionId,
         didAutoLogin: true,
+        ...action.additionalData,
       };
     case DID_AUTO_LOGIN:
       return {

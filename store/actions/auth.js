@@ -19,13 +19,14 @@ export const setDidAutoLogin = () => {
   };
 };
 
-export const authenticate = (uuid, sessionId) => {
+export const authenticate = (uuid, sessionId, additionalData = {}) => {
   return (dispatch) => {
     //dispatch(setLogoutTimer(expiryTime));
     dispatch({
       type: AUTHENTICATE,
       uuid: uuid,
       sessionId: sessionId,
+      additionalData: additionalData,
     });
   };
 };
@@ -61,7 +62,10 @@ export const loginViaFacebook = async (dispatch) => {
       return {
         ...fiavestResponse,
         method: LOGIN_METHODS.FACEBOOK,
-        facebookId: facebookResponse.userId,
+        additionalData: {
+          facebookId: facebookResponse.userId,
+          facebookToken: facebookResponse.token,
+        },
       };
     } else {
       let message = "Facebook Login Failed";
@@ -94,7 +98,10 @@ export const autoLoginViaFacebook = async (dispatch) => {
     return {
       ...fiavestResponse,
       method: LOGIN_METHODS.FACEBOOK,
-      facebookId: facebookResponse.userId,
+      additionalData: {
+        facebookId: facebookResponse.userId,
+        facebookToken: facebookResponse.token,
+      },
     };
   } catch (err) {
     console.log(err);
@@ -120,6 +127,7 @@ export const loginViaGoogle = async (dispatch) => {
         fiavestResponse.sessionId,
         LOGIN_METHODS.GOOGLE,
         {
+          googleAccessToken: googleResponse.accessToken,
           googleRefreshToken: googleResponse.refreshToken,
         }
       );
@@ -127,7 +135,10 @@ export const loginViaGoogle = async (dispatch) => {
       return {
         ...fiavestResponse,
         method: LOGIN_METHODS.GOOGLE,
-        googleId: googleResponse.user.id,
+        additionalData: {
+          googleId: googleResponse.user.id,
+          googleAccessToken: googleResponse.accessToken,
+        },
       };
     } else {
       return { cancel: true };
@@ -168,6 +179,7 @@ export const autoLoginViaGoogle = (refreshToken) => {
       fiavestResponse.sessionId,
       LOGIN_METHODS.GOOGLE,
       {
+        googleAccessToken: googleResponse.accessToken,
         googleRefreshToken: googleResponse.refreshToken,
       }
     );
@@ -175,7 +187,10 @@ export const autoLoginViaGoogle = (refreshToken) => {
     return {
       ...fiavestResponse,
       method: LOGIN_METHODS.GOOGLE,
-      googleId: googleResponse.user.id,
+      additionalData: {
+        googleId: googleResponse.user.id,
+        googleAccessToken: googleResponse.accessToken,
+      },
     };
   };
 };
@@ -358,14 +373,41 @@ export const writeUserDataToDB = (
   };
 };
 
-// TODO Proper logout required (Invalidating access tokens)
 export const logout = () => {
-  AsyncStorage.removeItem("userData");
-  try {
-    Facebook.logOutAsync();
-  } catch (err) {
-    console.log(err);
+  const userData = AsyncStorage.getItem("userData");
+
+  const fiavestResponse = await fetch(
+    "https://fiavest-plus-app-api.fiavest.com/api/public/logout",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    }
+  );
+
+  switch (method) {
+    case LOGIN_METHODS.FACEBOOK:
+      try {
+        Facebook.logOutAsync();
+      } catch (err) {
+        console.log(err);
+      }
+      break;
+    case LOGIN_METHODS.GOOGLE:
+      const googleResponse = Google.logOutAsync({
+        accessToken: userData.googleAccessToken,
+        androidClientId:
+          "950808968576-mnhc5gcaqt787o33ccukn1bfvch8pepe.apps.googleusercontent.com",
+        iosClientId:
+          "950808968576-ufc28236nnhdh3ickcv8beugfd43do5m.apps.googleusercontent.com",
+        scopes: ["profile", "email"],
+      });
+      break;
+    default:
+      break;
   }
+
+  AsyncStorage.removeItem("userData");
+
   return { type: LOGOUT };
 };
 
@@ -437,6 +479,7 @@ const saveDataToLocal = async (
       sessionId: sessionId,
       uuid: uuid,
       method: method,
+      ...additionalData,
     })
   ).catch((e) => console.log(e));
 };

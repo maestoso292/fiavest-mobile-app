@@ -152,12 +152,12 @@ const SignInPage = () => {
     [dispatchFormState]
   );
 
-  const altLoginMethodHandler = (action, method) => {
+  const altLoginMethodHandler = (action) => {
     dispatch(action).then((result) => {
       if (result.isNewUser) {
         navigation.navigate(Routes.DETAILS_FORM, result);
       } else {
-        dispatch(authActions.authenticate(result.uuid, result.sessionId));
+        dispatch(authActions.authenticate(result.uuid, result.sessionId, result.additionalData));
       }
     });
   };
