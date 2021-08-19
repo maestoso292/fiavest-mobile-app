@@ -19,58 +19,45 @@ export const setDidAutoLogin = () => {
   };
 };
 
-export const authenticate = (userId, token) => {
+export const authenticate = (uuid, sessionId) => {
   return (dispatch) => {
     //dispatch(setLogoutTimer(expiryTime));
     dispatch({
       type: AUTHENTICATE,
-      userId: userId,
-      token: token,
+      uuid: uuid,
+      sessionId: sessionId,
     });
   };
 };
 
 export const loginViaFacebook = async (dispatch) => {
   try {
-    const { type, userId, token, permissions, declinedPermissions } =
-      await Facebook.logInWithReadPermissionsAsync({
-        permissions: ["public_profile"],
-      });
+    const facebookResponse = await Facebook.logInWithReadPermissionsAsync({
+      permissions: ["public_profile"],
+    });
     if (type === "success") {
-      const temp = await fetch(
-        `https://graph.facebook.com/me?access_token=${token}`
+      const facebookGraphResponse = await fetch(
+        `https://graph.facebook.com/me?access_token=${facebookResponse.token}`
       );
 
-      if (temp.ok) {
-        const tempData = await temp.json();
+      if (facebookGraphResponse.ok) {
+        const tempData = await facebookGraphResponse.json();
         // console.log(tempData);
       }
 
-      const response = await fetch(
-        "https://fiavest-plus-app-api.fiavest.com/api/public/login/facebook",
+      const fiavestResponse = loginFiavestViaFacebook(facebookResponse.userId);
+
+      saveDataToLocal(
+        fiavestResponse.uuid,
+        fiavestResponse.sessionId,
+        LOGIN_METHODS.FACEBOOK,
         {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            facebookId: userId,
-          }),
+          facebookToken: facebookResponse.token,
+          facebookTokenExpiryDate: facebookResponse.expirationDate,
         }
       );
 
-      if (!response.ok) {
-        const errorResData = await repsonse.json();
-        const errorID = errorResData.error.message;
-        let message = `Something went wrong: ${errorID}`;
-        console.log(errorResData);
-        throw new Error(message);
-      }
-
-      const responseData = await response.json();
-      // console.log(responseData);
-
-      return responseData;
+      return fiavestResponse;
     } else {
       let message = "Facebook Login Failed";
       throw new Error(message);
@@ -82,10 +69,23 @@ export const loginViaFacebook = async (dispatch) => {
 
 export const autoLoginViaFacebook = async (dispatch) => {
   try {
-    const response = await Facebook.getAuthenticationCredentialAsync();
+    const facebookResponse = await Facebook.getAuthenticationCredentialAsync();
+
+    if (facebookResponse.type === "success") {
+      const fiavestResponse = loginFiavestViaFacebook(facebookResponse.userId);
+
+      saveDataToLocal(
+        fiavestResponse.uuid,
+        fiavestResponse.sessionId,
+        LOGIN_METHODS.FACEBOOK,
+        {
+          facebookToken: facebookResponse.token,
+          facebookTokenExpiryDate: facebookResponse.expirationDate,
+        });
+    }
 
     dispatch(
-      authenticate(response.userId, response.token, LOGIN_METHODS.FACEBOOK)
+      authenticate(fiavestResponse.uuid, fiavestResponse.sessionId, LOGIN_METHODS.FACEBOOK)
     );
   } catch (err) {
     console.log(err);
@@ -104,13 +104,13 @@ export const loginViaGoogle = async (dispatch) => {
     });
 
     if (result.type === "success") {
-      saveDataToLocal(
-        result.accessToken,
-        result.user.id,
-        0,
-        result.refreshToken,
-        LOGIN_METHODS.GOOGLE
-      );
+      // saveDataToLocal(
+      //   result.user.id,
+      //   result.accessToken,
+      //   0,
+      //   result.refreshToken,
+      //   LOGIN_METHODS.GOOGLE
+      // );
 
       const response = await fetch(
         "https://fiavest-plus-app-api.fiavest.com/api/public/login/google",
@@ -134,8 +134,6 @@ export const loginViaGoogle = async (dispatch) => {
       }
 
       const responseData = await response.json();
-      // console.log(responseData);
-
       return responseData;
 
       // dispatch(
@@ -178,12 +176,12 @@ export const autoLoginViaGoogle = (refreshToken) => {
       throw new Error(message + errorID);
     }
 
-    saveDataToLocal(
-      responseData.access_token,
-      "",
-      responseData.refresh_token,
-      LOGIN_METHODS.GOOGLE
-    );
+    // saveDataToLocal(
+    //   responseData.access_token,
+    //   "",
+    //   responseData.refresh_token,
+    //   LOGIN_METHODS.GOOGLE
+    // );
 
     dispatch(authenticate("", responseData.access_token, LOGIN_METHODS.GOOGLE));
   };
@@ -293,8 +291,8 @@ export const loginViaEmail = (email, password) => {
     // console.log(responseData);
 
     saveDataToLocal(
-      responseData.sessionId,
       responseData.uuid,
+      responseData.sessionId,
       LOGIN_METHODS.EMAIL
     );
     dispatch(authenticate(responseData.uuid, responseData.sessionId));
@@ -378,9 +376,9 @@ export const logout = () => {
   return { type: LOGOUT };
 };
 
-export const FacebookUserLogin = (facebookId, method, token) => {
+const loginFiavestViaFacebook = (facebookId) => {
   return async (dispatch) => {
-    const repsonse = await fetch(
+    const response = await fetch(
       "https://fiavest-plus-app-api.fiavest.com/api/public/login/facebook",
       {
         method: "POST",
@@ -393,39 +391,30 @@ export const FacebookUserLogin = (facebookId, method, token) => {
       }
     );
 
-    if (!repsonse.ok) {
-      const errorResData = await repsonse.json();
+    if (!response.ok) {
+      const errorResData = await response.json();
       const errorID = errorResData.error.message;
       let message = `Something went wrong: ${errorID}`;
       console.log(errorResData);
       throw new Error(message);
     }
 
-    const responseData = await repsonse.json();
-    // console.log(responseData);
+    const responseData = await response.json();
     return responseData;
-
-    // saveDataToLocal(
-    //   token,
-    //   userId,
-    //   method
-    // );
-
-    // dispatch(
-    //   authenticate(
-    //     userId,
-    //     token
-    //   )
-    // )
   };
 };
 
-const saveDataToLocal = async (token, userId, method) => {
+const saveDataToLocal = async (
+  uuid,
+  sessionId,
+  method,
+  additionalData = {}
+) => {
   AsyncStorage.setItem(
     "userData",
     JSON.stringify({
-      token: token,
-      userId: userId,
+      sessionId: sessionId,
+      uuid: uuid,
       method: method,
     })
   ).catch((e) => console.log(e));

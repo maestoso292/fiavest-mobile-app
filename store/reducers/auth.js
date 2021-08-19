@@ -1,8 +1,8 @@
 import { AUTHENTICATE, DID_AUTO_LOGIN, LOGOUT } from "../actions/auth";
 
 const initialState = {
-  token: null,
-  userId: null,
+  uuid: null,
+  sessionId: null,
   didAutoLogin: false,
 };
 
@@ -10,8 +10,8 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case AUTHENTICATE:
       return {
-        token: action.token,
-        userId: action.userId,
+        uuid: action.uuid,
+        sessionId: action.sessionId,
         didAutoLogin: true,
       };
     case DID_AUTO_LOGIN:

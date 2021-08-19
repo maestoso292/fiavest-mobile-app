@@ -5,11 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import * as Facebook from "expo-facebook";
 
 import * as authActions from "../store/actions/auth";
+import { CommonActions } from "@react-navigation/native";
+import { Routes } from "../constants/routes";
 
-const StartScreen = (props) => {
+const StartScreen = ({ navigation }) => {
   // AsyncStorage.removeItem("userData");
   const dispatch = useDispatch();
-  
+
   // TODO tryLogin can probably be broken down into separate functions
   useEffect(() => {
     const tryLogin = async () => {
@@ -29,12 +31,12 @@ const StartScreen = (props) => {
         return;
       }
 
-      const { token, userId, method } = JSON.parse(userData);
+      const { sessionId, uuid, method } = JSON.parse(userData);
 
       switch (method) {
         case authActions.LOGIN_METHODS.EMAIL:
-          if (token !== "") {
-            dispatch(authActions.authenticate(userId, token));
+          if (sessionId !== "") {
+            dispatch(authActions.authenticate(uuid, sessionId));
             return;
           }
           // Refresh token 1 min early. Extra time just in case.
@@ -53,7 +55,13 @@ const StartScreen = (props) => {
           // dispatch(authActions.setDidAutoLogin)
           break;
         case authActions.LOGIN_METHODS.FACEBOOK:
-          dispatch(authActions.autoLoginViaFacebook);
+          dispatch(authActions.autoLoginViaFacebook).then((result) => {
+            if (result.isNewUser) {
+              navigation.navigate(Routes.DETAILS_FORM, result);
+            } else {
+              dispatch(authActions.authenticate(result.uuid, result.sessionId));
+            }
+          });
           break;
         case authActions.LOGIN_METHODS.GOOGLE:
           // No fix for auto login as of now. May require API_KEY for Google REST API

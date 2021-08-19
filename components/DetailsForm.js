@@ -35,7 +35,7 @@ const formReducer = (state, action) => {
     }
     return state;
   };
-const DetailsForm = () => {
+const DetailsForm = ({route, navigation}) => {
 
     const dispatch = useDispatch();
 

@@ -82,7 +82,14 @@ const AppNavigator = () => {
           </>
         )}
         {!isAuth && !didAutoLogin && (
-          <RootStack.Screen name="Start" component={StartScreen} />
+          <>
+            <RootStack.Screen name="Start" component={StartScreen} />
+            <RootStack.Screen
+              name="Details Form"
+              component={DetailsForm}
+              option={{ headerShown: true }}
+            />
+          </>
         )}
       </RootStack.Navigator>
     </NavigationContainer>
