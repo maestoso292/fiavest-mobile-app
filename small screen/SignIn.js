@@ -155,9 +155,9 @@ const SignInPage = () => {
   const altLoginMethodHandler = (action, method) => {
     dispatch(action).then((result) => {
       if (result.isNewUser) {
-        navigation.navigate(Routes.DETAILS_FORM, result)
+        navigation.navigate(Routes.DETAILS_FORM, result);
       } else {
-        dispatch(authActions.authenticate(result.uuid, result.sessionId))
+        dispatch(authActions.authenticate(result.uuid, result.sessionId));
       }
     });
   };
@@ -222,11 +222,19 @@ const SignInPage = () => {
       <View style={styles.others}>
         <CustomButton
           source={require("../assets/fb-icon.png")}
-          onPress={altLoginMethodHandler.bind(this, authActions.loginViaFacebook, authActions.LOGIN_METHODS.FACEBOOK)}
+          onPress={altLoginMethodHandler.bind(
+            this,
+            authActions.loginViaFacebook,
+            authActions.LOGIN_METHODS.FACEBOOK
+          )}
         />
         <CustomButton
           source={require("../assets/google-icon.png")}
-          onPress={altLoginMethodHandler.bind(this, authActions.loginViaGoogle, authActions.LOGIN_METHODS.GOOGLE)}
+          onPress={altLoginMethodHandler.bind(
+            this,
+            authActions.loginViaGoogle,
+            authActions.LOGIN_METHODS.GOOGLE
+          )}
         />
       </View>
     </View>
