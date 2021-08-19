@@ -32,27 +32,45 @@ export const authenticate = (userId, token) => {
 
 export const loginViaFacebook = async (dispatch) => {
   try {
-    const {
-      type,
-      userId,
-      token,
-      permissions,
-      declinedPermissions,
-    } = await Facebook.logInWithReadPermissionsAsync({
-      permissions: ["public_profile"],
-    });
+    const { type, userId, token, permissions, declinedPermissions } =
+      await Facebook.logInWithReadPermissionsAsync({
+        permissions: ["public_profile"],
+      });
     if (type === "success") {
-      await fetch(
+      const temp = await fetch(
         `https://graph.facebook.com/me?access_token=${token}`
       );
 
-      dispatch(
-        FacebookUserLogin(
-          userId,
-          LOGIN_METHODS.FACEBOOK,
-          token
-        )
-      )
+      if (temp.ok) {
+        const tempData = await temp.json();
+        // console.log(tempData);
+      }
+
+      const response = await fetch(
+        "https://fiavest-plus-app-api.fiavest.com/api/public/login/facebook",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            facebookId: userId,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorResData = await repsonse.json();
+        const errorID = errorResData.error.message;
+        let message = `Something went wrong: ${errorID}`;
+        console.log(errorResData);
+        throw new Error(message);
+      }
+
+      const responseData = await response.json();
+      // console.log(responseData);
+
+      return responseData;
     } else {
       let message = "Facebook Login Failed";
       throw new Error(message);
@@ -67,11 +85,7 @@ export const autoLoginViaFacebook = async (dispatch) => {
     const response = await Facebook.getAuthenticationCredentialAsync();
 
     dispatch(
-      authenticate(
-        response.userId,
-        response.token,
-        LOGIN_METHODS.FACEBOOK
-      )
+      authenticate(response.userId, response.token, LOGIN_METHODS.FACEBOOK)
     );
   } catch (err) {
     console.log(err);
@@ -97,14 +111,41 @@ export const loginViaGoogle = async (dispatch) => {
         result.refreshToken,
         LOGIN_METHODS.GOOGLE
       );
-      dispatch(
-        authenticate(
-          result.idToken,
-          result.accessToken,
-          0,
-          LOGIN_METHODS.GOOGLE
-        )
+
+      const response = await fetch(
+        "https://fiavest-plus-app-api.fiavest.com/api/public/login/google",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            googleId: result.user.id,
+          }),
+        }
       );
+
+      if (!response.ok) {
+        const errorResData = await repsonse.json();
+        const errorID = errorResData.error.message;
+        let message = `Something went wrong: ${errorID}`;
+        console.log(errorResData);
+        throw new Error(message);
+      }
+
+      const responseData = await response.json();
+      // console.log(responseData);
+
+      return responseData;
+
+      // dispatch(
+      //   authenticate(
+      //     result.idToken,
+      //     result.accessToken,
+      //     0,
+      //     LOGIN_METHODS.GOOGLE
+      //   )
+      // );
     } else {
       return { cancel: true };
     }
@@ -144,13 +185,7 @@ export const autoLoginViaGoogle = (refreshToken) => {
       LOGIN_METHODS.GOOGLE
     );
 
-    dispatch(
-      authenticate(
-        "",
-        responseData.access_token,
-        LOGIN_METHODS.GOOGLE
-      )
-    );
+    dispatch(authenticate("", responseData.access_token, LOGIN_METHODS.GOOGLE));
   };
 };
 
@@ -164,10 +199,10 @@ export const registerViaEmail = (
   brokingHouse,
   investmentTerm,
   tradingExp,
-  actiCode,
+  actiCode
 ) => {
   return async (dispatch) => {
-    if (actiCode === "") actiCode = null
+    if (actiCode === "") actiCode = null;
     const response = await fetch(
       "https://fiavest-plus-app-api.fiavest.com/api/public/register/new-via-email",
       {
@@ -193,7 +228,7 @@ export const registerViaEmail = (
       if (errorID === "Invalid email") {
         message = "Email Invalid";
       } else if (errorID === "Email already registered") {
-        message = "Email Registered"
+        message = "Email Registered";
       }
       throw new Error(message);
     }
@@ -201,24 +236,25 @@ export const registerViaEmail = (
     const responseData = await response.json();
     // console.log(responseData);
 
-    await dispatch(loginViaEmail(email, password))
-    
-    const userData = await AsyncStorage.getItem("userData")
-    const jsonData = JSON.parse(userData)
+    await dispatch(loginViaEmail(email, password));
+
+    const userData = await AsyncStorage.getItem("userData");
+    const jsonData = JSON.parse(userData);
     // console.log(jsonData);
 
-    dispatch(writeUserDataToDB(
-          jsonData.token,
-          responseData.uuid,
-          nameGiven,
-          nameFamily,
-          phoneNum,
-          address,
-          brokingHouse,
-          investmentTerm,
-          tradingExp
-        )
-      );
+    dispatch(
+      writeUserDataToDB(
+        jsonData.token,
+        responseData.uuid,
+        nameGiven,
+        nameFamily,
+        phoneNum,
+        address,
+        brokingHouse,
+        investmentTerm,
+        tradingExp
+      )
+    );
   };
 };
 
@@ -259,14 +295,9 @@ export const loginViaEmail = (email, password) => {
     saveDataToLocal(
       responseData.sessionId,
       responseData.uuid,
-      LOGIN_METHODS.EMAIL,
-    )
-    dispatch(
-      authenticate(
-        responseData.uuid,
-        responseData.sessionId
-      )
-    )
+      LOGIN_METHODS.EMAIL
+    );
+    dispatch(authenticate(responseData.uuid, responseData.sessionId));
   };
 };
 
@@ -281,26 +312,25 @@ export const resetPassword = (email) => {
         },
         body: JSON.stringify({
           email: email,
-          url: "http://localhost:3000/resetPass"
+          url: "http://localhost:3000/resetPass",
         }),
       }
     );
 
-      if(!response.ok) {
-        const errorResData = await response.json();
-        const errorID = errorResData.error.message;
-        let message = `Something went wrong: ${errorID}`;
-        console.log(errorResData);
-        if (errorID === "EMAIL_NOT_FOUND" || errorID === "INVALID_PASSWORD") {
-          message = "Invalid credentials";
-        } else if (errorID === "USER_DISABLED") {
-          message = "Account has been disabled. Please contact support.";
-        }
-        throw new Error(message);
+    if (!response.ok) {
+      const errorResData = await response.json();
+      const errorID = errorResData.error.message;
+      let message = `Something went wrong: ${errorID}`;
+      console.log(errorResData);
+      if (errorID === "EMAIL_NOT_FOUND" || errorID === "INVALID_PASSWORD") {
+        message = "Invalid credentials";
+      } else if (errorID === "USER_DISABLED") {
+        message = "Account has been disabled. Please contact support.";
       }
-
-  }
-}
+      throw new Error(message);
+    }
+  };
+};
 
 export const writeUserDataToDB = (
   sessionID,
@@ -320,7 +350,7 @@ export const writeUserDataToDB = (
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "sessionId": `${sessionID}`
+          sessionId: `${sessionID}`,
         },
         body: JSON.stringify({
           uuid,
@@ -330,7 +360,7 @@ export const writeUserDataToDB = (
           address,
           brokingHouse,
           investmentTerm,
-          tradingExp
+          tradingExp,
         }),
       }
     );
@@ -350,18 +380,18 @@ export const logout = () => {
 
 export const FacebookUserLogin = (facebookId, method, token) => {
   return async (dispatch) => {
-    const repsonse =  await fetch(
-      "https://fiavest-plus-app-api.fiavest.com/api/public/register/new-via-facebook",
+    const repsonse = await fetch(
+      "https://fiavest-plus-app-api.fiavest.com/api/public/login/facebook",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          facebookId: facebookId
-        })
+          facebookId: facebookId,
+        }),
       }
-    )
+    );
 
     if (!repsonse.ok) {
       const errorResData = await repsonse.json();
@@ -372,8 +402,9 @@ export const FacebookUserLogin = (facebookId, method, token) => {
     }
 
     const responseData = await repsonse.json();
-    console.log(responseData);
-    
+    // console.log(responseData);
+    return responseData;
+
     // saveDataToLocal(
     //   token,
     //   userId,
@@ -386,15 +417,10 @@ export const FacebookUserLogin = (facebookId, method, token) => {
     //     token
     //   )
     // )
+  };
+};
 
-  }
-}
-
-const saveDataToLocal = async (
-  token,
-  userId,
-  method
-) => {
+const saveDataToLocal = async (token, userId, method) => {
   AsyncStorage.setItem(
     "userData",
     JSON.stringify({

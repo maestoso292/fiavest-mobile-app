@@ -20,6 +20,7 @@ import HistoryScreen from "../screens/HistoryScreen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SET_ALERT } from "../store/actions/alert";
 import NewsScreen from "../screens/NewsScreen";
+import DetailsForm from "../components/DetailsForm";
 
 const RootStack = createStackNavigator();
 const MainDrawer = createDrawerNavigator();
@@ -67,11 +68,18 @@ const AppNavigator = () => {
           </>
         )}
         {!isAuth && didAutoLogin && (
-          <RootStack.Screen
-            name="Auth"
-            component={AuthScreen}
-            option={{ headerShown: true }}
-          />
+          <>
+            <RootStack.Screen
+              name="Auth"
+              component={AuthScreen}
+              option={{ headerShown: true }}
+            />
+            <RootStack.Screen
+              name="Details Form"
+              component={DetailsForm}
+              option={{ headerShown: true }}
+            />
+          </>
         )}
         {!isAuth && !didAutoLogin && (
           <RootStack.Screen name="Start" component={StartScreen} />
@@ -112,12 +120,12 @@ const MainNavigator = ({ navigation }) => {
       <MainDrawer.Screen name={Routes.PROFILE} component={ProfileScreen} />
       <MainDrawer.Screen name={Routes.PORTFOLIO} component={PortfolioScreen} />
       <MainDrawer.Screen name={Routes.EMA5} component={EMA5Screen} />
-      <MainDrawer.Screen name={Routes.CALCULATOR} component={CalculatorScreen} />
-      <MainDrawer.Screen name={Routes.NEWS} component={NewsScreen} />
-      <MainDrawer.Screen 
-      name={Routes.HISTORY}
-      component={HistoryScreen}
+      <MainDrawer.Screen
+        name={Routes.CALCULATOR}
+        component={CalculatorScreen}
       />
+      <MainDrawer.Screen name={Routes.NEWS} component={NewsScreen} />
+      <MainDrawer.Screen name={Routes.HISTORY} component={HistoryScreen} />
     </MainDrawer.Navigator>
   );
 };

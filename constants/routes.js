@@ -1,5 +1,6 @@
 export const Routes = {
     AUTH: "Auth",
+    DETAILS_FORM: "Details Form",
     HOME: "Home",
     STOCKS: "Stocks",
     STOCKS_SEARCH :"Stock Search",
