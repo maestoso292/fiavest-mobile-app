@@ -20,19 +20,17 @@ const ProfileScreen = (props) => {
   const getUserData = async () => {
     const userData = await AsyncStorage.getItem("userData")
     const jsonData = JSON.parse(userData)
-    console.log(jsonData);
-    console.log(jsonData.token);
-    console.log(jsonData.userId);
+    // console.log(jsonData.sessionId);
     const response = await fetch(
       "https://fiavest-plus-app-api.fiavest.com/api/private/user/fetch-user-details",
       {
         method:"POST",
         headers: {
           "Content-Type": "application/json",
-          "sessionId": `${jsonData.token}`
+          sessionId : `${jsonData.sessionId}`
         },
         body: JSON.stringify({
-          uuid: jsonData.userId
+          uuid: jsonData.uuid
         })
       }
     )
@@ -41,11 +39,13 @@ const ProfileScreen = (props) => {
       console.log(errorResData.error.message);
       if (errorResData.error.message === "Session expired") {
         Alert.alert("Session Expired", "Please Log In Again", [{text: "Okay"}]);
-        dispatch(authActions.logout())
+        dispatch(authActions.logout).catch((err) => {
+          alert(err.message)
+        })
       }
     } else {
       const resData = await response.json()
-      console.log(resData);
+      // console.log(resData);
       return resData;
     }
   }

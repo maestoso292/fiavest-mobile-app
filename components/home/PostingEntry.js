@@ -32,7 +32,7 @@ const PostingCard = (props) => {
         onPress={OpenLink}
       >
         <View style={styles.imageContainer}>
-          <Image source={{ uri: props.source }} style={styles.image} />
+          <Image source={{ uri: `data:image/jpeg;base64,${props.source}` }} style={styles.image} />
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.titleText}>{props.name}</Text>
