@@ -39,11 +39,13 @@ const ProfileScreen = (props) => {
       console.log(errorResData);
       if (errorResData.error.message === "Session expired") {
         Alert.alert("Session Expired", "Please Log In Again", [{text: "Okay"}]);
-        dispatch(authActions.logout())
+        dispatch(authActions.logout).catch((err) => {
+          alert(err.message)
+        })
       }
     } else {
       const resData = await response.json()
-      console.log(resData);
+      // console.log(resData);
       return resData;
     }
   }

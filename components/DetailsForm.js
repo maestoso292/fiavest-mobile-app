@@ -147,7 +147,7 @@ const DetailsForm = ({route, navigation}) => {
     return (
         <View style={styles.mainBody}>
             <ScrollView contentContainerStyle={styles.ScrollBody}>
-                <Text style={styles.remindText}>We wants to know you more ~</Text>
+                <Text style={styles.remindText}>Before that, we would like to know more about you ~</Text>
 
                 <InputCard
                 Extra={{width : "100%"}}
@@ -385,6 +385,7 @@ const styles = StyleSheet.create({
         flexGrow: 1
     },
     remindText: {
+        width: "70%",
         textAlign: "center",
         fontSize: 20,
     },
