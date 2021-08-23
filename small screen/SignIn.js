@@ -157,6 +157,7 @@ const SignInPage = () => {
       if (result.isNewUser) {
         navigation.navigate(Routes.DETAILS_FORM, result);
       } else {
+        console.log(result);
         dispatch(authActions.authenticate(result.uuid, result.sessionId, result.additionalData));
       }
     });

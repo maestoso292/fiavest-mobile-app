@@ -253,7 +253,7 @@ export const registerViaEmail = (
     await dispatch(loginViaEmail(email, password));
 
     const userData = await AsyncStorage.getItem("userData");
-    const jsonData = JSON.parse(userData);
+    const jsonData = await JSON.parse(userData);
     console.log(jsonData);
 
     dispatch(

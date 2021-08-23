@@ -114,7 +114,7 @@ const DetailsForm = ({route, navigation}) => {
     const submitHandler = async () => {
         Keyboard.dismiss();
         const userData = await AsyncStorage.getItem("userData");
-        const jsonData = JSON.parse(userData)
+        const jsonData = await JSON.parse(userData)
         console.log(jsonData.uuid);
         let action;
           if (formState.inputValues.nameGiven === "" || formState.inputValues.nameFamily === "" || formState.inputValues.email === "" || formState.inputValues.phoneNum === "" || formState.inputValues.tradingExp === "" ) {
@@ -133,7 +133,7 @@ const DetailsForm = ({route, navigation}) => {
                 details.address,
                 details.brokingHouse,
                 details.investmentTerm,
-                formState.inputValues.tradingExp,
+                parseInt(formState.inputValues.tradingExp),
             )
             setError(null)
             setIsLoading(true)

@@ -27,8 +27,8 @@ const MainDrawer = createDrawerNavigator();
 const StockStack = createStackNavigator();
 
 const AppNavigator = () => {
-  const authToken = useSelector((state) => state.auth.token);
-  const isAuth = useSelector((state) => !!state.auth.token);
+  const authToken = useSelector((state) => state.auth.sessionId);
+  const isAuth = useSelector((state) => !!state.auth.sessionId);
   const didAutoLogin = useSelector((state) => state.auth.didAutoLogin);
 
   const alerts = useSelector((state) => state.alert.alertEnabledStocks);
