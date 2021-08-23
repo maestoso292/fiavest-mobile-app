@@ -384,36 +384,41 @@ export const writeUserDataToDB = (
       const errorID = errorResData.error.message;
       let message = `Something went wrong: ${errorID}`;
       console.log(errorResData);
-      throw new Error(message)
+      throw new Error(message);
     } else {
       console.log("store to DB ok");
-    };
+    }
     dispatch(authenticate(uuid, sessionID));
   };
 };
 
-export const logout = async () => {
-  return async () => {
-    const userData = AsyncStorage.getItem("userData");
+export const logout = () => {
+  return async (dispatch) => {
+    const userData = await AsyncStorage.getItem("userData");
+    const userDataJson = await JSON.parse(userData);
+    console.log(userDataJson);
 
     const fiavestResponse = await fetch(
       "https://fiavest-plus-app-api.fiavest.com/api/public/logout",
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          sessionId: userDataJson.sessionId,
+        },
       }
     );
 
-    switch (method) {
+    switch (userDataJson.method) {
       case LOGIN_METHODS.FACEBOOK:
         try {
-          Facebook.logOutAsync();
+          await Facebook.logOutAsync();
         } catch (err) {
           console.log(err);
         }
         break;
       case LOGIN_METHODS.GOOGLE:
-        const googleResponse = Google.logOutAsync({
+        const googleResponse = await Google.logOutAsync({
           accessToken: userData.googleAccessToken,
           androidClientId:
             "950808968576-mnhc5gcaqt787o33ccukn1bfvch8pepe.apps.googleusercontent.com",
@@ -426,7 +431,7 @@ export const logout = async () => {
         break;
     }
     AsyncStorage.removeItem("userData");
-    return { type: LOGOUT };
+    dispatch({ type: LOGOUT });
   };
 };
 

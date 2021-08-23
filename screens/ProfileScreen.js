@@ -19,26 +19,24 @@ const ProfileScreen = (props) => {
 
   const getUserData = async () => {
     const userData = await AsyncStorage.getItem("userData")
-    const jsonData = JSON.parse(userData)
+    const jsonData = await JSON.parse(userData)
     console.log(jsonData);
-    console.log(jsonData.token);
-    console.log(jsonData.userId);
     const response = await fetch(
       "https://fiavest-plus-app-api.fiavest.com/api/private/user/fetch-user-details",
       {
         method:"POST",
         headers: {
           "Content-Type": "application/json",
-          "sessionId": `${jsonData.token}`
+          "sessionId": `${jsonData.sessionId}`
         },
         body: JSON.stringify({
-          uuid: jsonData.userId
+          uuid: jsonData.uuid
         })
       }
     )
     if(!response.ok) {
       const errorResData = await response.json();
-      console.log(errorResData.error.message);
+      console.log(errorResData);
       if (errorResData.error.message === "Session expired") {
         Alert.alert("Session Expired", "Please Log In Again", [{text: "Okay"}]);
         dispatch(authActions.logout())
