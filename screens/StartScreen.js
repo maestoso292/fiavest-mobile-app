@@ -59,7 +59,13 @@ const StartScreen = ({ navigation }) => {
             if (result.isNewUser) {
               navigation.navigate(Routes.DETAILS_FORM, result);
             } else {
-              dispatch(authActions.authenticate(result.uuid, result.sessionId, result.additionalData));
+              dispatch(
+                authActions.authenticate(
+                  result.uuid,
+                  result.sessionId,
+                  result.additionalData
+                )
+              );
             }
           });
           break;

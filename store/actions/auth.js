@@ -31,12 +31,12 @@ export const authenticate = (uuid, sessionId, additionalData = {}) => {
   };
 };
 
-export const loginViaFacebook = async (dispatch) => {
+export const loginViaFacebook = async () => {
   try {
     const facebookResponse = await Facebook.logInWithReadPermissionsAsync({
       permissions: ["public_profile"],
     });
-    if (type === "success") {
+    if (facebookResponse.type === "success") {
       const facebookGraphResponse = await fetch(
         `https://graph.facebook.com/me?access_token=${facebookResponse.token}`
       );
@@ -46,7 +46,9 @@ export const loginViaFacebook = async (dispatch) => {
         // console.log(tempData);
       }
 
-      const fiavestResponse = loginFiavestViaFacebook(facebookResponse.userId);
+      const fiavestResponse = await loginFiavestViaFacebook(
+        facebookResponse.userId
+      );
 
       saveDataToLocal(
         fiavestResponse.uuid,
@@ -80,8 +82,10 @@ export const autoLoginViaFacebook = async (dispatch) => {
   try {
     const facebookResponse = await Facebook.getAuthenticationCredentialAsync();
 
-    if (facebookResponse.type === "success") {
-      const fiavestResponse = loginFiavestViaFacebook(facebookResponse.userId);
+    if (facebookResponse) {
+      const fiavestResponse = await loginFiavestViaFacebook(
+        facebookResponse.userId
+      );
 
       saveDataToLocal(
         fiavestResponse.uuid,
@@ -93,16 +97,18 @@ export const autoLoginViaFacebook = async (dispatch) => {
           facebookTokenExpiryDate: facebookResponse.expirationDate,
         }
       );
-    }
 
-    return {
-      ...fiavestResponse,
-      method: LOGIN_METHODS.FACEBOOK,
-      additionalData: {
-        facebookId: facebookResponse.userId,
-        facebookToken: facebookResponse.token,
-      },
-    };
+      return {
+        ...fiavestResponse,
+        method: LOGIN_METHODS.FACEBOOK,
+        additionalData: {
+          facebookId: facebookResponse.userId,
+          facebookToken: facebookResponse.token,
+        },
+      };
+    } else {
+      throw new Error("Facebook Login Error");
+    }
   } catch (err) {
     console.log(err);
     dispatch(setDidAutoLogin);
@@ -120,7 +126,9 @@ export const loginViaGoogle = async (dispatch) => {
     });
 
     if (googleResponse.type === "success") {
-      const fiavestResponse = loginFiavestViaGoogle(googleResponse.user.id);
+      const fiavestResponse = await loginFiavestViaGoogle(
+        googleResponse.user.id
+      );
 
       saveDataToLocal(
         fiavestResponse.uuid,
@@ -374,45 +382,45 @@ export const writeUserDataToDB = (
 };
 
 export const logout = () => {
-  const userData = AsyncStorage.getItem("userData");
+  return async () => {
+    const userData = AsyncStorage.getItem("userData");
 
-  const fiavestResponse = await fetch(
-    "https://fiavest-plus-app-api.fiavest.com/api/public/logout",
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-    }
-  );
-
-  switch (method) {
-    case LOGIN_METHODS.FACEBOOK:
-      try {
-        Facebook.logOutAsync();
-      } catch (err) {
-        console.log(err);
+    const fiavestResponse = await fetch(
+      "https://fiavest-plus-app-api.fiavest.com/api/public/logout",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
       }
-      break;
-    case LOGIN_METHODS.GOOGLE:
-      const googleResponse = Google.logOutAsync({
-        accessToken: userData.googleAccessToken,
-        androidClientId:
-          "950808968576-mnhc5gcaqt787o33ccukn1bfvch8pepe.apps.googleusercontent.com",
-        iosClientId:
-          "950808968576-ufc28236nnhdh3ickcv8beugfd43do5m.apps.googleusercontent.com",
-        scopes: ["profile", "email"],
-      });
-      break;
-    default:
-      break;
-  }
+    );
 
-  AsyncStorage.removeItem("userData");
-
-  return { type: LOGOUT };
+    switch (method) {
+      case LOGIN_METHODS.FACEBOOK:
+        try {
+          Facebook.logOutAsync();
+        } catch (err) {
+          console.log(err);
+        }
+        break;
+      case LOGIN_METHODS.GOOGLE:
+        const googleResponse = Google.logOutAsync({
+          accessToken: userData.googleAccessToken,
+          androidClientId:
+            "950808968576-mnhc5gcaqt787o33ccukn1bfvch8pepe.apps.googleusercontent.com",
+          iosClientId:
+            "950808968576-ufc28236nnhdh3ickcv8beugfd43do5m.apps.googleusercontent.com",
+          scopes: ["profile", "email"],
+        });
+        break;
+      default:
+        break;
+    }
+    AsyncStorage.removeItem("userData");
+    return { type: LOGOUT };
+  };
 };
 
 const loginFiavestViaGoogle = (googleId) => {
-  return async (dispatch) => {
+  return new Promise(async (resolve, reject) => {
     const response = await fetch(
       "https://fiavest-plus-app-api.fiavest.com/api/public/login/google",
       {
@@ -431,16 +439,16 @@ const loginFiavestViaGoogle = (googleId) => {
       const errorID = errorResData.error.message;
       let message = `Something went wrong: ${errorID}`;
       console.log(errorResData);
-      throw new Error(message);
+      reject(new Error(message));
     }
 
     const responseData = await response.json();
-    return responseData;
-  };
+    resolve(responseData);
+  });
 };
 
 const loginFiavestViaFacebook = (facebookId) => {
-  return async (dispatch) => {
+  return new Promise(async (resolve, reject) => {
     const response = await fetch(
       "https://fiavest-plus-app-api.fiavest.com/api/public/login/facebook",
       {
@@ -459,12 +467,12 @@ const loginFiavestViaFacebook = (facebookId) => {
       const errorID = errorResData.error.message;
       let message = `Something went wrong: ${errorID}`;
       console.log(errorResData);
-      throw new Error(message);
+      reject(new Error(message));
     }
 
     const responseData = await response.json();
-    return responseData;
-  };
+    resolve(responseData);
+  });
 };
 
 const saveDataToLocal = async (
