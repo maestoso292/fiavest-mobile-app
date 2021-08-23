@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback, useReducer } from 'react'
-import { View, Text, StyleSheet, ScrollView, ActivityIndicator, Keyboard, TouchableOpacity, TextInput, Animated} from 'react-native'
+import { View, Text, StyleSheet, ScrollView, ActivityIndicator, Keyboard, TouchableOpacity, TextInput, Animated, Alert} from 'react-native'
 import { Picker } from "@react-native-picker/picker";
 import CheckBox from "@react-native-community/checkbox";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch } from "react-redux";
 
 import MyButton from './MyButton'
@@ -49,7 +50,7 @@ const DetailsForm = ({route, navigation}) => {
     const [isAgree, setIsAgree] = useState(false)
     const [isOthers, setIsOthers] = useState({
         address: false,
-        broking: false
+        broking: false,
     })
     const [viewTNC, setViewTNC] = useState(false)
 
@@ -70,7 +71,6 @@ const DetailsForm = ({route, navigation}) => {
         },
         formIsValid: false,
       });
-
     const fadeAnimate = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
@@ -113,33 +113,34 @@ const DetailsForm = ({route, navigation}) => {
 
     const submitHandler = async () => {
         Keyboard.dismiss();
+        const userData = await AsyncStorage.getItem("userData");
+        const jsonData = JSON.parse(userData)
+        console.log(jsonData.uuid);
         let action;
-        if (isAgree === false) {
-            Alert.alert("Term & Conditions not agree ? ", "Please agree to our term and conditions...", [{ text: "Okay"}])
-          } else if (formState.inputValues.nameGiven === "" || formState.inputValues.nameFamily === "" || formState.inputValues.email === "" || formState.inputValues.phoneNum === "" || formState.inputValues.tradingExp === "" ) {
+          if (formState.inputValues.nameGiven === "" || formState.inputValues.nameFamily === "" || formState.inputValues.email === "" || formState.inputValues.phoneNum === "" || formState.inputValues.tradingExp === "" ) {
             Alert.alert("Empty Field !", "Please fill up all inputs...", [{ text: "Okay" }]);
           } else if (formState.inputValidities.nameGiven === false || formState.inputValidities.nameFamily === false || formState.inputValidities.email === false || formState.inputValidities.phoneNum === false || formState.inputValues.tradingExp === false) {
             Alert.alert("Invalid Input !", "Make sure inputs are in correct format...", [{ text: "Okay" }]);
+          } else if (isAgree === false) {
+            Alert.alert("Term & Conditions not agree ? ", "Please agree to our term and conditions...", [{ text: "Okay"}])
           } else {
-              console.log("Use it");
-            // action = authActions.registerViaEmail(
-            //   formState.inputValues.email,
-            //   formState.inputValues.password,
-            //   formState.inputValues.nameGiven,
-            //   formState.inputValues.nameFamily,
-            //   formState.inputValues.phoneNum,
-            //   selectedAddress,
-            //   selectedBroking,
-            //   selectedTerm,
-            //   parseInt(formState.inputValues.tradingExp),
-            //   formState.inputValues.actiCode,
-            // );
-            // setError(null);
-            // setIsLoading(true);
-            // dispatch(action).catch((err) => {
-            //   setError(err.message);
-            //   setIsLoading(false);
-            // });
+            action = authAction.writeUserDataToDB(
+                jsonData.sessionId,
+                jsonData.uuid,
+                formState.inputValues.nameGiven,
+                formState.inputValues.nameFamily,
+                formState.inputValues.phoneNum,
+                details.address,
+                details.brokingHouse,
+                details.investmentTerm,
+                formState.inputValues.tradingExp,
+            )
+            setError(null)
+            setIsLoading(true)
+            dispatch(action).catch((err) => {
+                setError(err.message)
+                setIsLoading(false)
+            })
           }
     }
 

@@ -7,7 +7,7 @@ const NewsScreen = () => {
 
     return (
         <View style={styles.container}>
-            <DetailsForm />
+            <Text>Test</Text>
         </View>
     )
 }

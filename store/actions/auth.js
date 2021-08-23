@@ -254,11 +254,11 @@ export const registerViaEmail = (
 
     const userData = await AsyncStorage.getItem("userData");
     const jsonData = JSON.parse(userData);
-    // console.log(jsonData);
+    console.log(jsonData);
 
     dispatch(
       writeUserDataToDB(
-        jsonData.token,
+        jsonData.sessionId,
         responseData.uuid,
         nameGiven,
         nameFamily,
@@ -293,7 +293,7 @@ export const loginViaEmail = (email, password) => {
     if (!response.ok) {
       const errorResData = await response.json();
       const errorID = errorResData.error.message;
-      let message = `Something went wrong: ${errorID}`;
+      let message = `Something went wrong : ${errorID}`;
       console.log(errorResData);
       if (errorID === "EMAIL_NOT_FOUND" || errorID === "INVALID_PASSWORD") {
         message = "Invalid credentials";
@@ -304,7 +304,7 @@ export const loginViaEmail = (email, password) => {
     }
 
     const responseData = await response.json();
-    // console.log(responseData);
+    console.log(responseData);
 
     saveDataToLocal(
       responseData.uuid,
@@ -334,9 +334,9 @@ export const resetPassword = (email) => {
     if (!response.ok) {
       const errorResData = await response.json();
       const errorID = errorResData.error.message;
-      let message = `Something went wrong: ${errorID}`;
+      let message = `Something went wrong : ${errorID}`;
       console.log(errorResData);
-      if (errorID === "EMAIL_NOT_FOUND" || errorID === "INVALID_PASSWORD") {
+      if (errorID === "EMAIL_NOT_FOUND") {
         message = "Invalid credentials";
       } else if (errorID === "USER_DISABLED") {
         message = "Account has been disabled. Please contact support.";
@@ -357,8 +357,8 @@ export const writeUserDataToDB = (
   investmentTerm,
   tradingExp
 ) => {
-  return async () => {
-    await fetch(
+  return async (dispatch) => {
+    const response = await fetch(
       "https://fiavest-plus-app-api.fiavest.com/api/private/user/update-user-details",
       {
         method: "POST",
@@ -378,10 +378,21 @@ export const writeUserDataToDB = (
         }),
       }
     );
+
+    if (!response.ok) {
+      const errorResData = await response.json();
+      const errorID = errorResData.error.message;
+      let message = `Something went wrong: ${errorID}`;
+      console.log(errorResData);
+      throw new Error(message)
+    } else {
+      console.log("store to DB ok");
+    };
+    dispatch(authenticate(uuid, sessionID));
   };
 };
 
-export const logout = () => {
+export const logout = async () => {
   return async () => {
     const userData = AsyncStorage.getItem("userData");
 
