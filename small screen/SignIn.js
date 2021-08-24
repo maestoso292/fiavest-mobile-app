@@ -14,6 +14,7 @@ import {
   ActivityIndicator,
   Alert,
   Keyboard,
+  Image,
 } from "react-native";
 import { useDispatch } from "react-redux";
 
@@ -22,6 +23,8 @@ import InputCard from "../components/InputCard";
 import MyButton from "../components/MyButton";
 import { Routes } from "../constants/routes";
 import * as authActions from "../store/actions/auth";
+import emailIcon from "../assets/icon-email.png"
+import passIcon from "../assets/icon-pass.png"
 
 const FORM_UPDATE = "FORM_UPDATE";
 
@@ -165,7 +168,8 @@ const SignInPage = () => {
 
   return (
     <View style={styles.signInMain}>
-      <InputCard
+      <View style={styles.inputContainer}>
+        <InputCard
         id="email"
         placeholder={
           isResetPassword === false ? "Email Address" : "Recovery Email Address"
@@ -179,11 +183,20 @@ const SignInPage = () => {
         autoCorrect={false}
         onInputChange={inputChangeHandler}
         initialValue=""
-      />
+        Extra={{width: "85%", marginTop: 0}}
+        extraStyle={{
+          borderWidth: 0,
+          borderColor: 'transparent',
+        }}
+        />
+        <Image source={emailIcon} style={styles.iconImg}/>
+      </View>
+      
       {isResetPassword ? (
         <></>
       ) : (
-        <InputCard
+        <View style={styles.inputContainer}>
+          <InputCard
           id="password"
           placeholder="Password"
           keyboardType="default"
@@ -193,33 +206,44 @@ const SignInPage = () => {
           minLength={8}
           onInputChange={inputChangeHandler}
           initialValue=""
-        />
+          Extra={{width: "85%", marginTop: 0}}
+          extraStyle={{
+            borderWidth: 0,
+            borderColor: 'transparent',
+          }}
+          />
+          <Image source={passIcon} style={styles.iconImg}/>
+        </View>
       )}
 
-      <View style={{ marginTop: 32 }}>
+      <View style={styles.buttonCon}>
         {isLoading ? (
           <ActivityIndicator size="small" color={"#d3d3d3"} />
         ) : (
-          <View>
+          <View style={{width: "90%"}}>
             {isResetPassword ? (
-              <MyButton onPress={resetHandler}>RESET NOW</MyButton>
+              <MyButton 
+              onPress={resetHandler}>Reset Password</MyButton>
             ) : (
-              <MyButton onPress={authHandler}>LOGIN</MyButton>
+              <MyButton
+              style={{backgroundColor: "#4885c7"}}
+              onPress={authHandler}>Log In</MyButton>
             )}
           </View>
         )}
       </View>
       <View style={{ marginTop: 20 }}>
-        <MyButton onPress={() => setIsResetPassword(!isResetPassword)}>
-          {isResetPassword ? "BACK TO LOGIN" : "RESET PASSWORD ?"}
-        </MyButton>
+        <TouchableOpacity 
+        onPress={() => setIsResetPassword(!isResetPassword)}>
+          <Text style={styles.forgetText}>{isResetPassword ? "Back To Log In" : "Forgot Password ?"}</Text>
+        </TouchableOpacity>
       </View>
       <Text
         style={{ fontSize: 30, marginTop: 20, marginBottom: 5, color: "#ccc" }}
       >
-        OR
+        Or
       </Text>
-      <Text style={{ letterSpacing: 1, marginBottom: 10 }}>Sign In Via</Text>
+      <Text style={{ letterSpacing: 1, marginBottom: 10, color: "white" }}>Sign In Via</Text>
       <View style={styles.others}>
         <CustomButton
           source={require("../assets/fb-icon.png")}
@@ -245,6 +269,7 @@ const SignInPage = () => {
 const styles = StyleSheet.create({
   signInMain: {
     alignItems: "center",
+    flex: 1,
   },
   others: {
     //flex: 1,
@@ -253,6 +278,37 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: "70%",
   },
+  inputContainer: {
+    display: "flex",
+    flexDirection: "row",
+    width: "90%",
+    backgroundColor: "white",
+    justifyContent: "space-around",
+    marginTop: 30,
+    borderWidth: 2,
+    borderColor: '#b3b3b3',
+    borderRadius: 10,
+  },
+  iconImg: {
+    height: "auto",
+    width: "10%",
+    resizeMode: "contain",
+    marginRight: 10,
+  },
+  buttonCon: {
+    marginTop: 32,
+    width: "100%",
+    display: "flex",
+    justifyContent:"center",
+    alignItems:"center",
+    // borderWidth: 2,
+    // borderColor: "white",
+  },
+  forgetText: {
+    color : "white",
+    textDecorationLine: "underline",
+    fontWeight: "700"
+  }
 });
 
 export default SignInPage;

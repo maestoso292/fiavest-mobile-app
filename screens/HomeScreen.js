@@ -54,7 +54,7 @@ const HomeScreen = (props) => {
       if(allPost) setPostings(allPost)
     };
     getAllPost()
-  }, [])
+  }, [postings])
 
   return (
     <View style={styles.screen}>

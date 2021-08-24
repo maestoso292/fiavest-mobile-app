@@ -69,6 +69,7 @@ const InputCard = props => {
             <TextInput 
             style={[styles.inputBox, props.extraStyle]}
             {...props}
+            placeholderTextColor="grey"
             value={inputState.value}
             onChangeText={textChangeHandler}
             />
@@ -94,10 +95,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         width: '100%',
         paddingHorizontal: 10,
-        paddingVertical: 5,
-        borderTopWidth: 0,
-        borderRightWidth: 0,
-        borderLeftWidth: 0,
+        paddingVertical: 10,
+        backgroundColor: "white",
     },
     errorContainer: {
         width: "100%",
