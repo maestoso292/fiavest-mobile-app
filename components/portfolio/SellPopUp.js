@@ -3,7 +3,10 @@ import { StyleSheet, View, Text, TextInput, Dimensions } from "react-native";
 import MyButton from "../MyButton";
 import { Picker } from "@react-native-picker/picker";
 import ViewPopup from "../base/ViewPopup";
-import { POPUP_LIGHT } from "../../constants/colors";
+import TextButton from "../base/TextButton";
+import {
+  POPUP_LIGHT,
+} from "../../constants/colors";
 
 const DEVICE_HEIGHT = Dimensions.get("window").height;
 
@@ -74,13 +77,13 @@ const styles = StyleSheet.create({
   },
   popup: {
     width: "85%",
-    height: "55%",
+    height: "45%",
     borderRadius: 30,
     backgroundColor: "#454545",
     overflow: "hidden",
     padding: 15,
   },
-  buttonContainer: {
+  temp: {
     flex: 1,
     width: "100%",
     flexDirection: "row",

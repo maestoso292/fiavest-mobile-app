@@ -185,7 +185,10 @@ const styles = StyleSheet.create({
     elevation: 2,
     width: "95%",
     height: 60,
-    paddingHorizontal: 10,
+    padding: 10,
+  },
+  buttonContainer: {
+    width: "30%"
   },
   listContainer: {
     flex: 1,

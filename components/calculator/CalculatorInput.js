@@ -1,5 +1,5 @@
-import React from 'react';
-import {StyleSheet, View, Text, TextInput} from 'react-native';
+import React from "react";
+import { StyleSheet, View, Text, TextInput } from "react-native";
 
 const InputCon = props => {
     return (
@@ -33,4 +33,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default InputCon;
+export default CalculatorInput;

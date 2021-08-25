@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, View, ScrollView } from 'react-native';
 
-import BrokerageCalculator from '../calculators/brokerage';
-import DividendCalculator from '../calculators/dividend';
-import RightIssuedCalculator from '../calculators/right_Issued';
-import BonusIssuedCalculator from '../calculators/bonus_Issued';
-import ProfitAndLostCalculator from '../calculators/profitNLost';
+import BrokerageCalculator from "../components/calculator/calculators/BrokerageCalculator";
+import DividendCalculator from "../components/calculator/calculators/DividendCalculator";
+import RightIssuedCalculator from "../components/calculator/calculators/RightIssuedCalculator";
+import BonusIssuedCalculator from "../components/calculator/calculators/BonusIssuedCalculator";
+import ProfitLossCalculator from "../components/calculator/calculators/ProfitLossCalculator";
 
 const CalculatorScreen = props => {
 

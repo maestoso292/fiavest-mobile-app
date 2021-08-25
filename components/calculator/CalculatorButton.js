@@ -12,12 +12,15 @@ const ButtonCon = props => {
 }
 
 const styles = StyleSheet.create({
-    buttonCon: {
-        width: '100%',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    }
+  rootContainer: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  buttonContainer: {
+    width: "40%",
+  },
 });
 
 export default ButtonCon;
