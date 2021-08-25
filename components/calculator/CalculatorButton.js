@@ -2,9 +2,9 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import MyButton from '../MyButton';
 
-const ButtonCon = props => {
+const CalculatorButton = props => {
     return (
-        <View style={styles.buttonCon}>
+        <View style={styles.rootContainer}>
             <MyButton onPress={props.onCalculate}>Calculate</MyButton>
             <MyButton onPress={props.onClear}>Reset</MyButton>
         </View>
@@ -18,9 +18,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
-  buttonContainer: {
-    width: "40%",
-  },
 });
 
-export default ButtonCon;
+export default CalculatorButton;

@@ -6,9 +6,9 @@ import CheckBox from "@react-native-community/checkbox";
 import CalculatorCollapsible from "../CalculatorCollapsible";
 import CalculatorOutput from "../CalculatorOutput";
 import CalculatorInput from "../CalculatorInput";
-import ButtonCon from "../CalculatorButton";
+import CalculatorButton from "../CalculatorButton";
 import Divider from "../../Divider";
-import TextButton from "../../base/TextButton";
+import MyButton from "../../MyButton";
 
 const BrokerageCalculator = (props) => {
   //Set boolean for input
@@ -208,30 +208,36 @@ const BrokerageCalculator = (props) => {
   return (
     <CalculatorCollapsible {...props} title="Brokerage Fee Calculator">
       <View style={styles.container}>
-        <Text>Brokerage Firm</Text>
-        <Picker
-          selectedValue={Brokerage}
-          style={{ width: 130, height: 30 }}
-          enabled={isPick}
-          onValueChange={PickerValueHandler}
-        >
-          <Picker.Item label="M+ Online" value="mplus" />
-          <Picker.Item label="Public Bank" value="pbb" />
-          <Picker.Item label="Kenaga Investors Berhad" value="kenaga" />
-          <Picker.Item label="Rakuten" value="rakuten" />
-          <Picker.Item label="CIMB Bank" value="cimb" />
-          <Picker.Item label="Maybank" value="mbb" />
-          <Picker.Item label="RHB Bank" value="rhb" />
-          <Picker.Item label="Hong Leong Bank" value="hlb" />
-          <Picker.Item label="UOB Kay Hian" value="uob" />
-          <Picker.Item label="Alliance Bank" value="alliance" />
-        </Picker>
+        <Text style={styles.title}>Brokerage Firm</Text>
+        <View style={styles.pickerBackground}>
+          <Picker
+            selectedValue={Brokerage}
+            style={{ width: "100%", height: 30 }}
+            enabled={isPick}
+            onValueChange={PickerValueHandler}
+          >
+            <Picker.Item label="M+ Online" value="mplus" />
+            <Picker.Item label="Public Bank" value="pbb" />
+            <Picker.Item label="Kenaga Investors Berhad" value="kenaga" />
+            <Picker.Item label="Rakuten" value="rakuten" />
+            <Picker.Item label="CIMB Bank" value="cimb" />
+            <Picker.Item label="Maybank" value="mbb" />
+            <Picker.Item label="RHB Bank" value="rhb" />
+            <Picker.Item label="Hong Leong Bank" value="hlb" />
+            <Picker.Item label="UOB Kay Hian" value="uob" />
+            <Picker.Item label="Alliance Bank" value="alliance" />
+          </Picker>
+        </View>
       </View>
       <View style={styles.container}>
-        <Text>Intraday : </Text>
+        <Text style={styles.title}>Intraday : </Text>
         <CheckBox
           disabled={disable}
           value={isIntraday}
+          tintColors={{ true: "white", false: "white" }}
+          tintColor="white"
+          onTintColor="white"
+          onFillColor="white"
           onValueChange={(value) => setIsIntraday(value)}
         />
       </View>
@@ -268,7 +274,10 @@ const BrokerageCalculator = (props) => {
       />
       <Divider />
       {isCalculate ? (
-        <ButtonCon onCalculate={calculateHandler} onClear={clearHandler} />
+        <CalculatorButton
+          onCalculate={calculateHandler}
+          onClear={clearHandler}
+        />
       ) : (
         <View>
           <CalculatorOutput
@@ -282,12 +291,10 @@ const BrokerageCalculator = (props) => {
           <CalculatorOutput title="Clearing Fees (RM)" value={clearingFee} />
           <CalculatorOutput title="Stamp Duties (RM)" value={stampDuties} />
           <CalculatorOutput title="Net Profit/Loss (RM)" value={netProfit} />
-          <View style={styles.bottomContainer}>
-            <TextButton
-              text="Recalculate"
-              onPress={recalculateHandler}
-              containerStyle={styles.buttonContainer}
-            />
+          <View style={styles.buttonCon}>
+            <MyButton onPress={RecalculateHandler} extraStyle={{ width: 120 }}>
+              Recalculate
+            </MyButton>
           </View>
         </View>
       )}
@@ -297,6 +304,7 @@ const BrokerageCalculator = (props) => {
 
 const styles = StyleSheet.create({
   container: {
+    width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -306,12 +314,19 @@ const styles = StyleSheet.create({
     width: 130,
     borderBottomWidth: 1,
   },
-  bottomContainer: {
+  buttonCon: {
     justifyContent: "center",
     alignItems: "center",
   },
-  buttonContainer: {
-    width: "40%",
+  title: {
+    color: "white",
+    fontSize: 14,
+  },
+  pickerBackground: {
+    backgroundColor: "white",
+    borderRadius: 20,
+    paddingLeft: 5,
+    width: "50%",
   },
 });
 

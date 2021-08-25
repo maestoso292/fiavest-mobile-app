@@ -3,11 +3,10 @@ import { StyleSheet, View, Text, TextInput } from "react-native";
 
 import CalculatorCollapsible from "../CalculatorCollapsible";
 import CalculatorInput from "../CalculatorInput";
-import CalculatorOutput from "../CalculatorOutput";
-import ButtonCon from "../CalculatorButton";
+import CalculatorOutput from "../CalculateOutput";
+import CalculatorButton from "../CalculatorButton";
 import Divider from "../../Divider";
-import TextButton from "../../base/TextButton";
-import { BORDER_PRIMARY, BUTTON_BG_LIGHT } from "../../../constants/colors";
+import MyButton from "../../MyButton";
 
 const BonusIssuedCalculator = (props) => {
   const [isCalculate, setIsCalculate] = useState(true);
@@ -29,8 +28,10 @@ const BonusIssuedCalculator = (props) => {
     const parseNU = (HU * parseFloat(Bonus1)) / parseFloat(Bonus2) + HU;
     const parseEst = (SP * HU) / parseNU;
 
-    setNewUnits(parseNU.toFixed());
-    setEstimatePrice(parseEst.toFixed(2));
+    isNaN(parseNU) ? setNewUnits("0") : setNewUnits(parseNU.toFixed());
+    isNaN(parseEst)
+      ? setEstimatePrice("0.00")
+      : setEstimatePrice(parseEst.toFixed(2));
 
     setIsCalculate(!isCalculate);
   };
@@ -65,7 +66,7 @@ const BonusIssuedCalculator = (props) => {
         editable={isEdit}
       />
       <View style={styles.container}>
-        <Text>Bonus Ratio</Text>
+        <Text style={styles.title}>Bonus Ratio</Text>
         <View style={styles.forCon}>
           <TextInput
             style={styles.input}
@@ -88,17 +89,15 @@ const BonusIssuedCalculator = (props) => {
       </View>
       <Divider />
       {isCalculate ? (
-        <ButtonCon onCalculate={calculateHandler} onClear={clearHandler} />
+        <CalculatorButton onCalculate={calculateHandler} onClear={clearHandler} />
       ) : (
         <View>
           <CalculatorOutput title="New Units" value={NewUnits} />
           <CalculatorOutput title="Estimate Price" value={EstimatePrice} />
-          <View style={styles.bottomContainer}>
-            <TextButton
-              text="Recalculate"
-              onPress={recalculateHandler}
-              containerStyle={styles.buttonContainer}
-            />
+          <View style={styles.buttonCon}>
+            <MyButton onPress={RecalculateHandler} extraStyle={{ width: 120 }}>
+              Recalculate
+            </MyButton>
           </View>
         </View>
       )}
@@ -116,6 +115,12 @@ const styles = StyleSheet.create({
   input: {
     width: "35%",
     borderBottomWidth: 1,
+    borderColor: "white",
+    color: "white",
+  },
+  buttonCon: {
+    justifyContent: "center",
+    alignItems: "center",
   },
   forCon: {
     flexDirection: "row",
@@ -123,12 +128,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: 130,
   },
-  bottomContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  buttonContainer: {
-    width: "40%",
+  title: {
+    color: "white",
+    fontSize: 14,
   },
 });
 

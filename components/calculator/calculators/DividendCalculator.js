@@ -7,7 +7,7 @@ import CalculatorOutput from "../CalculatorOutput";
 import CalculatorInput from "../CalculatorInput";
 import ButtonCon from "../CalculatorButton";
 import Divider from "../../Divider";
-import TextButton from "../../base/TextButton";
+import MyButton from "../../MyButton";
 
 const DividendCalculator = (props) => {
   const [isCalculate, setIsCalculate] = useState(true);
@@ -52,13 +52,19 @@ const DividendCalculator = (props) => {
         (parseGD / (parseFloat(CurrentStockPrice) * parseFloat(HoldingUnits))) *
         100;
 
-      setGrossDividend(parseGD.toFixed(2));
-      setTax(parseTax.toFixed(2));
-      setNetDividend(parseND.toFixed(2));
-      setCapitalGain(parseCG.toFixed(2));
-      setTotalGain(parseTG.toFixed(2));
-      isNaN(parseROI) === true ? setROI("0.000") : setROI(parseROI.toFixed(3));
-      isNaN(parseYield) === true
+      isNaN(parseGD)
+        ? setGrossDividend("0.00")
+        : setGrossDividend(parseGD.toFixed(2));
+      isNaN(parseTax) ? setTax("0.00") : setTax(parseTax.toFixed(2));
+      isNaN(parseND)
+        ? setNetDividend("0.00")
+        : setNetDividend(parseND.toFixed(2));
+      isNaN(parseCG)
+        ? setCapitalGain("0.00")
+        : setCapitalGain(parseCG.toFixed(2));
+      isNaN(parseTG) ? setTotalGain("0.00") : setTotalGain(parseTG.toFixed(2));
+      isNaN(parseROI) ? setROI("0.000") : setROI(parseROI.toFixed(3));
+      isNaN(parseYield)
         ? setDividendYield(0)
         : setDividendYield(parseYield.toFixed());
     } else if (type === "percent") {
@@ -75,13 +81,19 @@ const DividendCalculator = (props) => {
       const parseYield =
         parseGD / (parseFloat(CurrentStockPrice) * parseFloat(HoldingUnits));
 
-      setGrossDividend(parseGD.toFixed(2));
-      setTax(parseTax.toFixed(2));
-      setNetDividend(parseND.toFixed(2));
-      setCapitalGain(parseCG.toFixed(2));
-      setTotalGain(parseTG.toFixed(2));
-      isNaN(parseROI) === true ? setROI("0.000") : setROI(parseROI.toFixed(3));
-      isNaN(parseYield) === true
+      isNaN(parseGD)
+        ? setGrossDividend("0.00")
+        : setGrossDividend(parseGD.toFixed(2));
+      isNaN(parseTax) ? setTax("0.00") : setTax(parseTax.toFixed(2));
+      isNaN(parseND)
+        ? setNetDividend("0.00")
+        : setNetDividend(parseND.toFixed(2));
+      isNaN(parseCG)
+        ? setCapitalGain("0.00")
+        : setCapitalGain(parseCG.toFixed(2));
+      isNaN(parseTG) ? setTotalGain("0.00") : setTotalGain(parseTG.toFixed(2));
+      isNaN(parseROI) ? setROI("0.000") : setROI(parseROI.toFixed(3));
+      isNaN(parseYield)
         ? setDividendYield(0)
         : setDividendYield(parseYield.toFixed());
     }
@@ -141,16 +153,18 @@ const DividendCalculator = (props) => {
         editable={isEdit}
       />
       <View style={styles.container}>
-        <Text>Type</Text>
-        <Picker
-          selectedValue={type}
-          style={{ width: 130, height: 30 }}
-          enabled={isPick}
-          onValueChange={(value) => setType(value)}
-        >
-          <Picker.Item label="Cents (¢)" value="cent" />
-          <Picker.Item label="Percent (%)" value="percent" />
-        </Picker>
+        <Text style={styles.title}>Type</Text>
+        <View style={styles.pickerBackground}>
+          <Picker
+            selectedValue={type}
+            style={{ width: 130, height: 30 }}
+            enabled={isPick}
+            onValueChange={(value) => setType(value)}
+          >
+            <Picker.Item label="Cents (¢)" value="cent" />
+            <Picker.Item label="Percent (%)" value="percent" />
+          </Picker>
+        </View>
       </View>
       <CalculatorInput
         title="Income Tax"
@@ -177,12 +191,10 @@ const DividendCalculator = (props) => {
           />
           <CalculatorOutput title="Total Gain/Loss (RM)" value={TotalGain} />
           <CalculatorOutput title="ROI (%)" value={ROI} />
-          <View style={styles.bottomContainer}>
-            <TextButton
-              text="Recalculate"
-              onPress={recalculateHandler}
-              containerStyle={styles.buttonContainer}
-            />
+          <View style={styles.buttonCon}>
+            <MyButton onPress={RecalculateHandler} extraStyle={{ width: 120 }}>
+              Recalculate
+            </MyButton>
           </View>
         </View>
       )}
@@ -201,12 +213,19 @@ const styles = StyleSheet.create({
     width: 130,
     borderBottomWidth: 1,
   },
-  bottomContainer: {
+  buttonCon: {
     justifyContent: "center",
     alignItems: "center",
   },
-  buttonContainer: {
-    width: "40%",
+  title: {
+    color: "white",
+    fontSize: 14,
+  },
+  pickerBackground: {
+    backgroundColor: "white",
+    borderRadius: 20,
+    paddingLeft: 5,
+    width: "50%",
   },
 });
 
