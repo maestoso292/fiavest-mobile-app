@@ -5,7 +5,7 @@ import { BORDER_PRIMARY } from "../../constants/colors";
 const CalculatorOutput = (props) => {
   return (
     <View style={styles.container}>
-      <Text style={{ width: "50%", fontWeight: "bold" }}>{props.title}</Text>
+      <Text style={{ width: "50%", fontWeight: "bold", color: "white" }}>{props.title}</Text>
       <Text style={styles.text}>{props.value}</Text>
     </View>
   );
@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
     borderColor: BORDER_PRIMARY,
     width: "30%",
     textAlign: "center",
+    color: "white"
   },
 });
 

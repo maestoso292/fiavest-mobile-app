@@ -87,7 +87,7 @@ const RightIssuedCalculator = (props) => {
             value={ExRightsPrice}
           />
           <View style={styles.buttonCon}>
-            <MyButton onPress={RecalculateHandler} extraStyle={{ width: 120 }}>
+            <MyButton onPress={recalculateHandler} extraStyle={{ width: 120 }}>
               Recalculate
             </MyButton>
           </View>

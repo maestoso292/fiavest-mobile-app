@@ -76,7 +76,7 @@ const BonusIssuedCalculator = (props) => {
             onChangeText={(value) => setBonus1(value)}
             editable={isEdit}
           />
-          <Text>FOR</Text>
+          <Text style={{color: "white"}}>FOR</Text>
           <TextInput
             style={styles.input}
             textAlign={"center"}
@@ -95,7 +95,7 @@ const BonusIssuedCalculator = (props) => {
           <CalculatorOutput title="New Units" value={NewUnits} />
           <CalculatorOutput title="Estimate Price" value={EstimatePrice} />
           <View style={styles.buttonCon}>
-            <MyButton onPress={RecalculateHandler} extraStyle={{ width: 120 }}>
+            <MyButton onPress={recalculateHandler} extraStyle={{ width: 120 }}>
               Recalculate
             </MyButton>
           </View>

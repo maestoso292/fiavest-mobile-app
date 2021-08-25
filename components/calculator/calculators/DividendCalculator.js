@@ -98,7 +98,7 @@ const DividendCalculator = (props) => {
         : setDividendYield(parseYield.toFixed());
     }
 
-    setEstimatePrice(parseEst.toFixed(3));
+    isNaN(parseEst) ? setEstimatePrice("0.00") : setEstimatePrice(parseEst.toFixed(3));
 
     setIsCalculate(!isCalculate);
   };
@@ -192,7 +192,7 @@ const DividendCalculator = (props) => {
           <CalculatorOutput title="Total Gain/Loss (RM)" value={TotalGain} />
           <CalculatorOutput title="ROI (%)" value={ROI} />
           <View style={styles.buttonCon}>
-            <MyButton onPress={RecalculateHandler} extraStyle={{ width: 120 }}>
+            <MyButton onPress={recalculateHandler} extraStyle={{ width: 120 }}>
               Recalculate
             </MyButton>
           </View>

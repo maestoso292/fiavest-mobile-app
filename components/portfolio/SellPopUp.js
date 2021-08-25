@@ -59,8 +59,8 @@ const SellPopUp = (props) => {
           </View>
         </View>
         <View style={styles.buttonContainer}>
-          <MyButton onPress={() => {}} style={{backgroundColor: "red"}}>Sell</MyButton>
-          <MyButton onPress={props.onClose}>Close</MyButton>
+          <MyButton onPress={() => {}} style={{backgroundColor: "red", marginTop: 10}}>Sell</MyButton>
+          <MyButton onPress={props.onClose} style={{marginTop: 10}}>Close</MyButton>
         </View>
       </ViewPopup>
     </View>
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   },
   popup: {
     width: "85%",
-    height: "45%",
+    height: "50%",
     borderRadius: 30,
     backgroundColor: "#454545",
     overflow: "hidden",
