@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback, useReducer } from 'react'
-import { View, Text, StyleSheet, ScrollView, ActivityIndicator, Keyboard, TouchableOpacity, TextInput, Animated, Alert} from 'react-native'
+import { View, Text, StyleSheet, ScrollView, ActivityIndicator, Keyboard, TouchableOpacity, TextInput, Animated, Alert, ImageBackground} from 'react-native'
 import { Picker } from "@react-native-picker/picker";
 import CheckBox from "@react-native-community/checkbox";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -11,6 +11,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { fade } from '../animations/popup-anims';
 import TNCPopUp from './TNCPop-Up';
 import InputCard from './InputCard';
+import GridBackground from './../assets/grid.png'
 
 const FORM_UPDATE = "FORM_UPDATE";
 
@@ -145,7 +146,7 @@ const DetailsForm = ({route, navigation}) => {
     }
 
     return (
-        <View style={styles.mainBody}>
+        <ImageBackground source={GridBackground} style={styles.mainBody}>
             <ScrollView contentContainerStyle={styles.ScrollBody}>
                 <Text style={styles.remindText}>Before that, we would like to know more about you ~</Text>
 
@@ -214,49 +215,52 @@ const DetailsForm = ({route, navigation}) => {
                 />
                 
                 <View style={styles.Picker}>
-                    <Text style={{ color: "#000" }}>Address (State) : </Text>
-                    <Picker
-                        selectedValue={details.address}
-                        style={{ height: 30, width: 150 }}
-                        onValueChange={(itemValue) => {
-                        if (itemValue === "others") {
-                            setDetails(old => ({
+                    <Text style={{ color: "white" }}>Address (State) : </Text>
+                    <View style={styles.pickerBackground}>
+                        <Picker
+                            selectedValue={details.address}
+                            style={{ height: 30, width: 150 }}
+                            onValueChange={(itemValue) => {
+                            if (itemValue === "others") {
+                                setDetails(old => ({
+                                    ...old,
+                                    address: ""
+                                }))
+                                setIsOthers(old => ({
                                 ...old,
-                                address: ""
-                            }))
-                            setIsOthers(old => ({
-                            ...old,
-                            address: true
-                            }))
-                        } else {
-                            setIsOthers(old => ({
-                            ...old,
-                            address: false
-                            }))
-                            setDetails(old => ({
+                                address: true
+                                }))
+                            } else {
+                                setIsOthers(old => ({
                                 ...old,
-                                address: itemValue
-                            }))
-                        }}}
-                    >
-                        <Picker.Item label="Johor" value="Johor" />
-                        <Picker.Item label="Kedah" value="Kedah" />
-                        <Picker.Item label="Kelantan" value="Kelantan" />
-                        <Picker.Item label="Malacca" value="Malacca" />
-                        <Picker.Item label="Negeri Sembilan" value="Negeri Sembilan" />
-                        <Picker.Item label="Pahang" value="Pahang" />
-                        <Picker.Item label="Penang" value="Penang" />
-                        <Picker.Item label="Perak" value="Perak" />
-                        <Picker.Item label="Perlis" value="Perlis" />
-                        <Picker.Item label="Sabah" value="Sabah" />
-                        <Picker.Item label="Sarawak" value="Sarawak" />
-                        <Picker.Item label="Selangor" value="Selangor" />
-                        <Picker.Item label="Terengganu" value="Terengganu" />
-                        <Picker.Item label="Kuala Lumpur" value="Kuala Lumpur" />
-                        <Picker.Item label="Labuan" value="Labuan" />
-                        <Picker.Item label="Putrajaya" value="Putrajaya" />
-                        <Picker.Item label="Others" value="others" />
-                    </Picker>
+                                address: false
+                                }))
+                                setDetails(old => ({
+                                    ...old,
+                                    address: itemValue
+                                }))
+                            }}}
+                        >
+                            <Picker.Item label="Johor" value="Johor" />
+                            <Picker.Item label="Kedah" value="Kedah" />
+                            <Picker.Item label="Kelantan" value="Kelantan" />
+                            <Picker.Item label="Malacca" value="Malacca" />
+                            <Picker.Item label="Negeri Sembilan" value="Negeri Sembilan" />
+                            <Picker.Item label="Pahang" value="Pahang" />
+                            <Picker.Item label="Penang" value="Penang" />
+                            <Picker.Item label="Perak" value="Perak" />
+                            <Picker.Item label="Perlis" value="Perlis" />
+                            <Picker.Item label="Sabah" value="Sabah" />
+                            <Picker.Item label="Sarawak" value="Sarawak" />
+                            <Picker.Item label="Selangor" value="Selangor" />
+                            <Picker.Item label="Terengganu" value="Terengganu" />
+                            <Picker.Item label="Kuala Lumpur" value="Kuala Lumpur" />
+                            <Picker.Item label="Labuan" value="Labuan" />
+                            <Picker.Item label="Putrajaya" value="Putrajaya" />
+                            <Picker.Item label="Others" value="others" />
+                        </Picker>
+                    </View>
+                    
                 </View>
                 {isOthers.address && (
                     <TextInput 
@@ -271,39 +275,42 @@ const DetailsForm = ({route, navigation}) => {
                     />
                 )}
                 <View style={styles.Picker}>
-                    <Text style={{ color: "#000" }}>Brokerage Company : </Text>
-                    <Picker
-                        selectedValue={details.brokingHouse}
-                        style={{ height: 30, width: 150 }}
-                        onValueChange={(itemValue, itemIndex) => {
-                        if (itemValue === "others") {
-                            setIsOthers(old => ({
-                            ...old,
-                            broking: true
-                            }))
-                        } else {
-                            setIsOthers(old => ({
-                            ...old,
-                            broking: false
-                            }))
-                            setDetails(old => ({
+                    <Text style={{ color: "white" }}>Brokerage Company : </Text>
+                    <View style={styles.pickerBackground}>
+                        <Picker
+                            selectedValue={details.brokingHouse}
+                            style={{ height: 30, width: 150 }}
+                            onValueChange={(itemValue, itemIndex) => {
+                            if (itemValue === "others") {
+                                setIsOthers(old => ({
                                 ...old,
-                                brokingHouse: itemValue
-                            }))
-                        }
-                        }}>
-                        <Picker.Item label="Malacca Securities Sdn Bhd" value="Malacca Securities Sdn Bhd" />
-                        <Picker.Item label="Public Bank" value="Public Bank" />
-                        <Picker.Item label="Kenaga Investors Berhad" value="Kenaga Investors Berhad" />
-                        <Picker.Item label="Rakuten" value="Rakuten" />
-                        <Picker.Item label="CIMB Bank" value="CIMB Bank" />
-                        <Picker.Item label="Maybank" value="Maybank" />
-                        <Picker.Item label="RHB Bank" value="RHB Bank" />
-                        <Picker.Item label="Hong Leong Bank" value="Hong Leong Bank" />
-                        <Picker.Item label="UOB Kay Hian" value="UOB Kay Hian" />
-                        <Picker.Item label="Alliance Bank" value="Alliance Bank" />
-                        <Picker.Item label="Others" value="others" />
-                    </Picker>
+                                broking: true
+                                }))
+                            } else {
+                                setIsOthers(old => ({
+                                ...old,
+                                broking: false
+                                }))
+                                setDetails(old => ({
+                                    ...old,
+                                    brokingHouse: itemValue
+                                }))
+                            }
+                            }}>
+                            <Picker.Item label="Malacca Securities Sdn Bhd" value="Malacca Securities Sdn Bhd" />
+                            <Picker.Item label="Public Bank" value="Public Bank" />
+                            <Picker.Item label="Kenaga Investors Berhad" value="Kenaga Investors Berhad" />
+                            <Picker.Item label="Rakuten" value="Rakuten" />
+                            <Picker.Item label="CIMB Bank" value="CIMB Bank" />
+                            <Picker.Item label="Maybank" value="Maybank" />
+                            <Picker.Item label="RHB Bank" value="RHB Bank" />
+                            <Picker.Item label="Hong Leong Bank" value="Hong Leong Bank" />
+                            <Picker.Item label="UOB Kay Hian" value="UOB Kay Hian" />
+                            <Picker.Item label="Alliance Bank" value="Alliance Bank" />
+                            <Picker.Item label="Others" value="others" />
+                        </Picker>
+                    </View> 
+                    
                 </View>
                 {isOthers.broking && (
                     <TextInput 
@@ -318,21 +325,24 @@ const DetailsForm = ({route, navigation}) => {
                     />
                 )}
                 <View style={styles.Picker}>
-                    <Text style={{ color: "#000" }}>Investment Term : </Text>
-                    <Picker
-                        selectedValue={details.investmentTerm}
-                        style={{ height: 30, width: 150 }}
-                        onValueChange={(itemValue) => {
-                            setDetails(old => ({
-                                ...old,
-                                investmentTerm: itemValue
-                            }))
-                        }}
-                    >
-                        <Picker.Item label="Short Term 短期" value="Short Term" />
-                        <Picker.Item label="Medium Term 中期" value="Medium Term" />
-                        <Picker.Item label="Long Term 长期" value="Long Term" />
-                    </Picker>
+                    <Text style={{ color: "white" }}>Investment Term : </Text>
+                    <View style={styles.pickerBackground}>
+                        <Picker
+                            selectedValue={details.investmentTerm}
+                            style={{ height: 30, width: 150 }}
+                            onValueChange={(itemValue) => {
+                                setDetails(old => ({
+                                    ...old,
+                                    investmentTerm: itemValue
+                                }))
+                            }}
+                        >
+                            <Picker.Item label="Short Term 短期" value="Short Term" />
+                            <Picker.Item label="Medium Term 中期" value="Medium Term" />
+                            <Picker.Item label="Long Term 长期" value="Long Term" />
+                        </Picker>
+                    </View>
+                    
                 </View>
                 {error && (
                     <View style={styles.errorCon}>
@@ -342,10 +352,14 @@ const DetailsForm = ({route, navigation}) => {
                 <View style={styles.TandC}>
                     <CheckBox
                         value={isAgree}
+                        tintColors={{true: "white", false: "white"}}
+                        tintColor="white"
+                        onTintColor="white"
+                        onFillColor="white"
                         onValueChange={(newValue) => setIsAgree(newValue)}
                     />
                     <View style={styles.termAndCondition}>
-                        <Text>By ticking this, you agree to our </Text>
+                        <Text style={{color: "white"}}>Before this, Please read our </Text>
                         <TouchableOpacity
                         onPress={openTNC}
                         >
@@ -368,7 +382,7 @@ const DetailsForm = ({route, navigation}) => {
                 onClose={closeTNC}
                 popupStyle={{opacity: fadeAnimate}}
             />
-        </View>
+        </ImageBackground>
     )
 }
 
@@ -388,21 +402,19 @@ const styles = StyleSheet.create({
         width: "70%",
         textAlign: "center",
         fontSize: 20,
+        color: "white",
     },
     Picker: {
       width: "100%",
       borderWidth: 2,
       borderColor: "#b3b3b3",
       paddingHorizontal: 10,
-      paddingVertical: 5,
+      paddingVertical: 10,
       borderRadius: 10,
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
       marginTop: 20,
-      borderTopWidth: 0,
-      borderRightWidth: 0,
-      borderLeftWidth: 0,
     },
     errorCon: {
         width: "100%",
@@ -424,7 +436,7 @@ const styles = StyleSheet.create({
       flexDirection: "row",
       justifyContent: "center",
       alignItems: "center",
-      width: "70%",
+      width: "60%",
       marginTop: 20,
       marginBottom: 10,
     },
@@ -449,6 +461,12 @@ const styles = StyleSheet.create({
       borderTopWidth: 0,
       borderRightWidth: 0,
       borderLeftWidth: 0,
+    },
+    pickerBackground: {
+      backgroundColor: "white",
+      borderRadius: 20,
+      paddingLeft: 5,
+      width: "50%",
     }
 })
 

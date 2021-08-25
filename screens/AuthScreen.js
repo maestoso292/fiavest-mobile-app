@@ -61,11 +61,12 @@ const AuthScreen = (props) => {
         labelStyle: {
           fontSize: 15,
           fontWeight: "bold",
-          color: "white",
           letterSpacing: 1,
         },
+        activeTintColor: 'white',
+        inactiveTintColor: '#D3D3D3',
         style: {backgroundColor: "#454545", color: "white"},
-        indicatorStyle: {borderColor: "#4885c7", borderBottomWidth: 4}
+        indicatorStyle: {borderColor: "white", borderBottomWidth: 4}
       }}
       >
         <Tab.Screen name="LOGIN" component={Login} />

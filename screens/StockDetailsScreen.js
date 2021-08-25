@@ -147,10 +147,10 @@ const StockDetailsScreen = ({ navigation, route }) => {
         <Image source={{ uri: stockData.chartSrc }} style={styles.image} />
       </View>
       <View style={styles.detailsContainer}>
-        <Text style={{ fontSize: 20 }}>
-          Current Price: {currencyFormatter.format(stockData.price)}
+        <Text style={{ fontSize: 20, fontWeight: "700", marginBottom: 10, color: "white" }}>
+          Current Price : {currencyFormatter.format(stockData.price)}
         </Text>
-        <Text>{stockData.details}</Text>
+        <Text style={{color: "white"}}>{stockData.details}</Text>
       </View>
       <CartPopup
         visible={cartVisible}
@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     padding: 10,
-    backgroundColor: BACKGROUND_LIGHT,
+    backgroundColor: "black",
   },
   imageContainer: {
     height: 250,
@@ -209,16 +209,17 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   detailsContainer: {
-    marginVertical: 10,
+    marginVertical: 20,
     padding: 10,
     width: "100%",
-    backgroundColor: POPUP_LIGHT,
+    backgroundColor: "#454545",
     borderColor: BORDER_PRIMARY,
     borderWidth: StyleSheet.hairlineWidth,
     shadowColor: "black",
     shadowOpacity: 0.5,
     shadowOffset: { width: 0, height: 2 },
     overflow: "scroll",
+    borderRadius: 10,
   },
 });
 

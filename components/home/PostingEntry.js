@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
     height: 250,
     marginVertical: 5,
     alignItems: "center",
+    borderRadius: 10,
   },
   imageContainer: {
     flex: 3,
@@ -64,21 +65,24 @@ const styles = StyleSheet.create({
     flex: 2,
     width: "100%",
     justifyContent: "flex-start",
-    alignItems: "flex-start",
+    alignItems: "center",
     borderTopColor: BORDER_PRIMARY,
     borderTopWidth: StyleSheet.hairlineWidth,
     paddingHorizontal: 10,
     paddingTop: 10,
-    backgroundColor: POPUP_LIGHT,
+    backgroundColor: "#454545",
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
   },
   titleText: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: "bold",
-    color: TEXT_PRIMARY_LIGHT,
+    color: "white",
   },
   bodyText: {
     fontSize: 14,
     letterSpacing: 1,
+    color: "#D0FFFF"
   },
 });
 

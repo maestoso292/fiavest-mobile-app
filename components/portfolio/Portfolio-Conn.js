@@ -10,16 +10,20 @@ const Container = props => {
     return(
         <View style={styles.rootContainer}>
             <View style={styles.idAndNameContainer}>
-                <Text style={{fontSize: 18}}>{props.name}</Text>
-                <Text style={{fontSize: 18}}>{props.lots}</Text>
+                <Text style={{fontSize: 18, color: "white"}}>{props.name}</Text>
+                <Text style={{fontSize: 18, color: "white"}}>{props.lots}</Text>
             </View>
             <View style={styles.priceContainer}>
-                <Text style={{fontWeight: 'bold', fontSize: 20}}>{props.price}</Text>
+                <Text style={{fontWeight: 'bold', fontSize: 20, color: "white"}}>{props.price}</Text>
             </View>
             <View style={styles.checkBok}>
                 <CheckBox 
                 disabled={false}
                 value={isSell}
+                tintColors={{true: "white", false: "white"}}
+                tintColor="white"
+                onTintColor="white"
+                onFillColor="white"
                 onValueChange={(newValue) => setIsSell(newValue)}  // OR props.onSelect
                 />
             </View>
@@ -39,11 +43,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'flex-start',
         justifyContent: 'space-between',
-        borderRadius: 20,
+        borderRadius: 15,
         padding: 12,
         borderWidth: StyleSheet.hairlineWidth,
         borderColor: BORDER_PRIMARY,
-        backgroundColor: POPUP_LIGHT,
+        backgroundColor: "#454545",
         shadowColor: "black",
         shadowOpacity: 0.75,
         shadowOffset: { width: 0, height: 2 },

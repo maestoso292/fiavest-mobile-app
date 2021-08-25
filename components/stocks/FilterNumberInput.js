@@ -30,12 +30,13 @@ const FilterNumberInput = (props) => {
 
 const styles = StyleSheet.create({
   input: {
-    borderColor: "black",
-    borderWidth: 1,
+    borderColor: "white",
+    borderWidth: 2,
     borderRadius: 5,
     width: "80%",
     textAlign: "center",
     paddingHorizontal: 5,
+    color: "white"
   },
 });
 

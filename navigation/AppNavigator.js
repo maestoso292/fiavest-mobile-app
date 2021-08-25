@@ -54,6 +54,10 @@ const AppNavigator = () => {
       <RootStack.Navigator
         screenOptions={{
           headerShown: false,
+          headerStyle: {
+            backgroundColor: "#454545",
+          },
+          headerTintColor: "white",
         }}
         mode="modal"
       >
@@ -104,6 +108,10 @@ const MainNavigator = ({ navigation }) => {
         gestureEnabled: false,
         headerShown: true,
         headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: "#454545",
+        },
+        headerTintColor: "white",
         headerLeft: () => {
           const route = useRoute();
           return (
@@ -127,10 +135,7 @@ const MainNavigator = ({ navigation }) => {
       <MainDrawer.Screen name={Routes.PROFILE} component={ProfileScreen} />
       <MainDrawer.Screen name={Routes.PORTFOLIO} component={PortfolioScreen} />
       <MainDrawer.Screen name={Routes.EMA5} component={EMA5Screen} />
-      <MainDrawer.Screen
-        name={Routes.CALCULATOR}
-        component={CalculatorScreen}
-      />
+      <MainDrawer.Screen name={Routes.CALCULATOR} component={CalculatorScreen}/>
       <MainDrawer.Screen name={Routes.NEWS} component={NewsScreen} />
       <MainDrawer.Screen name={Routes.HISTORY} component={HistoryScreen} />
     </MainDrawer.Navigator>
@@ -140,13 +145,24 @@ const MainNavigator = ({ navigation }) => {
 const StockNavigator = ({ navigation }) => {
   return (
     <StockStack.Navigator
-      screenOptions={{ headerShown: true, headerTitleAlign: "center" }}
+      screenOptions={{ 
+        headerShown: true, 
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: "#454545",
+        }, }}
       initialRouteName={Routes.STOCKS_SEARCH}
     >
       <StockStack.Screen name={Routes.STOCKS_SEARCH} component={StocksScreen} />
       <StockStack.Screen
         name={Routes.STOCK_DETAILS}
         component={StockDetailsScreen}
+        options={{
+          headerStyle: {
+            backgroundColor: "grey"
+          },
+          headerTintColor: "white",
+        }}
       />
     </StockStack.Navigator>
   );
@@ -164,7 +180,7 @@ const menuOptions = {
     overlayStyle: {
       opacity: progress.interpolate({
         inputRange: [0, 1],
-        outputRange: [0, 0.7],
+        outputRange: [0, 0.9],
         extrapolate: "clamp",
       }),
     },

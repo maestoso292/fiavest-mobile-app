@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: BACKGROUND_LIGHT,
+    backgroundColor: "black",
   },
   searchBarContainer: {
     flex: 1,
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
   },
   list: {
     flexGrow: 1,
-    marginVertical: 5
+    marginVertical: 5,
   },
 });
 

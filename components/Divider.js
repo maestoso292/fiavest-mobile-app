@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 
 const Divider = () => {
     return (
-        <View style={{borderBottomWidth: StyleSheet.hairlineWidth, borderColor: 'black', marginVertical: 10}}/>
+        <View style={{borderBottomWidth: StyleSheet.hairlineWidth, borderColor: 'white', marginVertical: 10}}/>
     )
 }
 

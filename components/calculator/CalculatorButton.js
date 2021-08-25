@@ -1,12 +1,12 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import Button2 from '../Button2';
+import MyButton from '../MyButton';
 
 const ButtonCon = props => {
     return (
         <View style={styles.buttonCon}>
-            <Button2 onPress={props.onCalculate}>Calculate</Button2>
-            <Button2 onPress={props.onClear}>Reset</Button2>
+            <MyButton onPress={props.onCalculate}>Calculate</MyButton>
+            <MyButton onPress={props.onClear}>Reset</MyButton>
         </View>
     )
 }

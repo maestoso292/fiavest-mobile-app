@@ -25,23 +25,30 @@ const SellHistory = props => {
     const [histories] = useState(fetchHistory())
 
     return (
-        <HistoryCon
-        title="Sell History"
-        >
-            <View style={styles.listContainer}>
-                <FlatList 
-                contentContainerStyle={styles.list}
-                showsVerticalScrollIndicator={false}
-                data={histories}
-                keyExtractor={(item) => item.id}
-                renderItem={HistoryRender}
-                />
-            </View>
-        </HistoryCon>
+        <View style={styles.mainCon}>
+            <HistoryCon
+            title="Sell History"
+            >
+                <View style={styles.listContainer}>
+                    <FlatList 
+                    contentContainerStyle={styles.list}
+                    showsVerticalScrollIndicator={false}
+                    data={histories}
+                    keyExtractor={(item) => item.id}
+                    renderItem={HistoryRender}
+                    />
+                </View>
+            </HistoryCon>
+        </View>
+            
     )
 }
 
 const styles = StyleSheet.create({
+    mainCon: {
+        backgroundColor: "black",
+        paddingBottom: 40
+    },
     listContainer: {
         marginTop: 10,
         marginBottom: 20

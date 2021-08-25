@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: BACKGROUND_LIGHT,
+    backgroundColor: "black",
   },
   listContainer: {
     flex: 1,

@@ -4,7 +4,7 @@ import {StyleSheet, View, Text, TextInput} from 'react-native';
 const InputCon = props => {
     return (
         <View style={styles.container}>
-            <Text>{props.title}</Text>
+            <Text style={styles.title}>{props.title}</Text>
             <TextInput 
             {...props}
             style={styles.input} 
@@ -22,8 +22,14 @@ const styles = StyleSheet.create({
         marginBottom: 12,
     },
     input: {
-        width: 130,
+        width: "50%",
         borderBottomWidth: 1,
+        borderColor: "white",
+        color: "white"
+    },
+    title: {
+        color: "white",
+        fontSize: 14,
     },
 });
 

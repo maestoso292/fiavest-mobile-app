@@ -6,7 +6,7 @@ const HistoryCon = (props) => {
     return (
         <View style={styles.container}>
             <View style={styles.textCon}>
-                <Text style={{fontWeight: 'bold',textDecorationLine: 'underline', fontSize: 20}}>{props.title}</Text>
+                <Text style={{fontWeight: 'bold', fontSize: 24, color: "white"}}>{props.title}</Text>
             </View>
             <View>
                 {props.children}

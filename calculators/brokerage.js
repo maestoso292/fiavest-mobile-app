@@ -4,11 +4,11 @@ import { Picker } from '@react-native-picker/picker';
 import CheckBox from '@react-native-community/checkbox';
 
 import TypeCalculator from '../components/calculator/CalculatorType';
-import Button2 from '../components/Button2';
 import OutputCon from '../components/calculator/CalculateOutput';
 import InputCon from '../components/calculator/CalculatorInput';
 import ButtonCon from '../components/calculator/CalculatorButton';
 import Divider from '../components/Divider';
+import MyButton from '../components/MyButton';
 
 const BrokerageCalculator = (props) => {
 
@@ -220,30 +220,36 @@ const BrokerageCalculator = (props) => {
         title="Brokerage Fee Calculator"
         >
             <View style={styles.container}>
-                <Text>Brokerage Firm</Text>
-                <Picker
-                selectedValue={Brokerage}
-                style={{width: 130, height: 30}}
-                enabled={isPick}
-                onValueChange={PickerValueHandler}
-                >   
-                    <Picker.Item label="M+ Online" value="mplus" />
-                    <Picker.Item label="Public Bank" value="pbb" />
-                    <Picker.Item label="Kenaga Investors Berhad" value="kenaga" />
-                    <Picker.Item label="Rakuten" value="rakuten" />
-                    <Picker.Item label="CIMB Bank" value="cimb" />
-                    <Picker.Item label="Maybank" value="mbb" />
-                    <Picker.Item label="RHB Bank" value="rhb" />
-                    <Picker.Item label="Hong Leong Bank" value="hlb" />
-                    <Picker.Item label="UOB Kay Hian" value="uob" />
-                    <Picker.Item label="Alliance Bank" value="alliance" />
-                </Picker>
+                <Text style={styles.title}>Brokerage Firm</Text>
+                <View style={styles.pickerBackground}>
+                    <Picker
+                    selectedValue={Brokerage}
+                    style={{width: "100%", height: 30}}
+                    enabled={isPick}
+                    onValueChange={PickerValueHandler}
+                    >   
+                        <Picker.Item label="M+ Online" value="mplus" />
+                        <Picker.Item label="Public Bank" value="pbb" />
+                        <Picker.Item label="Kenaga Investors Berhad" value="kenaga" />
+                        <Picker.Item label="Rakuten" value="rakuten" />
+                        <Picker.Item label="CIMB Bank" value="cimb" />
+                        <Picker.Item label="Maybank" value="mbb" />
+                        <Picker.Item label="RHB Bank" value="rhb" />
+                        <Picker.Item label="Hong Leong Bank" value="hlb" />
+                        <Picker.Item label="UOB Kay Hian" value="uob" />
+                        <Picker.Item label="Alliance Bank" value="alliance" />
+                    </Picker>
+                </View>
             </View>
             <View style={styles.container}>
-                <Text>Intraday : </Text>
+                <Text style={styles.title}>Intraday : </Text>
                 <CheckBox 
                 disabled={disable}
                 value={isIntraday}
+                tintColors={{true: "white", false: "white"}}
+                tintColor="white"
+                onTintColor="white"
+                onFillColor="white"
                 onValueChange={(value) => setIsIntraday(value)}
                 />
             </View>
@@ -307,7 +313,7 @@ const BrokerageCalculator = (props) => {
                     value={netProfit}
                     />
                     <View style={styles.buttonCon}>
-                        <Button2 onPress={RecalculateHandler} extraStyle={{width: 120}}>Recalculate</Button2>
+                        <MyButton onPress={RecalculateHandler} extraStyle={{width: 120}}>Recalculate</MyButton>
                     </View>
                 </View>
             )}
@@ -318,18 +324,25 @@ const BrokerageCalculator = (props) => {
 
 const styles = StyleSheet.create({
     container: {
+        width: "100%",
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         marginBottom: 10,
     },
-    input: {
-        width: 130,
-        borderBottomWidth: 1,
-    },
     buttonCon: {
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    title: {
+        color: "white",
+        fontSize: 14,
+    },
+    pickerBackground: {
+      backgroundColor: "white",
+      borderRadius: 20,
+      paddingLeft: 5,
+      width: "50%",
     }
 });
 

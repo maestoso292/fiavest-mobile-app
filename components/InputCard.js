@@ -72,9 +72,10 @@ const InputCard = props => {
             placeholderTextColor="grey"
             value={inputState.value}
             onChangeText={textChangeHandler}
+            autoCompleteType="off"
             />
             {!inputState.isValid && inputState.touched && (
-                <View style={styles.errorContainer}>
+                <View style={[styles.errorContainer, props.extraErrorStyle]}>
                     <Text style={styles.errorText}>{props.errorText}</Text>
                 </View>
             )}

@@ -7,10 +7,10 @@ const DetailsCard = (props) => {
     return (
         <CardBase style={styles.card}>
         <View style={styles.fieldContainer}>
-          <Text>{props.title}</Text>
+          <Text style={{color: "white"}}>{props.title}</Text>
         </View>
         <View style={styles.dataContainer}>
-          <Text>{props.content}</Text>
+          <Text style={{color: "white"}}>{props.content}</Text>
         </View>
       </CardBase>
     )
@@ -21,7 +21,10 @@ const styles = StyleSheet.create({
         width: "90%",
         marginTop: 10,
         flexDirection: "row",
-        borderRadius: 10,
+        borderRadius: 7,
+        borderWidth: 2,
+        borderColor: BORDER_PRIMARY,
+        backgroundColor: "transparent"
       },
       fieldContainer: {
         flex: 1,
@@ -30,7 +33,7 @@ const styles = StyleSheet.create({
       },
       dataContainer: {
         flex: 2,
-        borderLeftColor: BORDER_PRIMARY,
+        borderLeftColor: "white",
         borderLeftWidth: StyleSheet.hairlineWidth,
         padding: 10,
       },

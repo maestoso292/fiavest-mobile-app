@@ -11,7 +11,6 @@ import "intl";
 import "intl/locale-data/jsonp/en";
 
 import Container from "../components/portfolio/Portfolio-Conn";
-import Button2 from "../components/Button2";
 import SellPopUp from "../components/portfolio/SellPopUp";
 import {
   BACKGROUND_LIGHT,
@@ -20,6 +19,7 @@ import {
 } from "../constants/colors";
 import { useFocusEffect } from "@react-navigation/native";
 import { fade } from "../animations/popup-anims";
+import MyButton from "../components/MyButton";
 
 const renderStock = ({ item }) => {
   return (
@@ -98,16 +98,17 @@ const PortfolioScreen = (props) => {
       <View style={{ ...styles.screen, padding: 10 }}>
         <View style={styles.header}>
           <View style={{ ...styles.headerItem, flex: 4 }}>
-            <Text>ID & Name</Text>
+            <Text style={styles.headerText}>ID & Name</Text>
           </View>
           <View style={{ ...styles.headerItem, flex: 2 }}>
-            <Text>Lot (x100)</Text>
+            <Text style={styles.headerText}>Lots</Text>
+            <Text style={styles.headerText}>(x100)</Text>
           </View>
           <View style={{ ...styles.headerItem, flex: 3 }}>
-            <Text>Price (RM)</Text>
+            <Text style={styles.headerText}>Price (RM)</Text>
           </View>
           <View style={{ ...styles.headerItem, flex: 1, borderEndWidth: 0 }}>
-            <Text>Sell</Text>
+            <Text style={styles.headerText}>Sell</Text>
           </View>
         </View>
         <View style={styles.listContainer}>
@@ -121,14 +122,14 @@ const PortfolioScreen = (props) => {
         </View>
         <View style={styles.totalContainer}>
           <View>
-            <Text style={{ fontSize: 20 }}>
+            <Text style={{ fontSize: 20, color: "white" }}>
               Total : RM{" "}
               <Text style={{ fontWeight: "bold" }}>
                 {formatter.format(totalAmount).replace(/[^0123456789.,]/g, "")}
               </Text>
             </Text>
           </View>
-          <Button2 onPress={openPopup}>SELL</Button2>
+          <MyButton onPress={openPopup} style={{paddingHorizontal: 50, backgroundColor: "red"}}>SELL</MyButton>
         </View>
       </View>
       <SellPopUp
@@ -143,9 +144,10 @@ const PortfolioScreen = (props) => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: BACKGROUND_LIGHT,
+    backgroundColor: "grey",
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "black"
   },
   header: {
     borderWidth: StyleSheet.hairlineWidth,
@@ -156,7 +158,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.75,
     shadowRadius: 5,
     elevation: 2,
-    height: 50,
+    height: "7%",
     flexDirection: "row",
     justifyContent: "flex-start",
     backgroundColor: POPUP_LIGHT,
@@ -166,21 +168,22 @@ const styles = StyleSheet.create({
     borderEndWidth: StyleSheet.hairlineWidth,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "#454545"
   },
   totalContainer: {
     flexDirection: "row",
+    borderColor: BORDER_PRIMARY,
+    borderWidth: 2,
     justifyContent: "space-around",
     alignItems: "center",
-    backgroundColor: POPUP_LIGHT,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: BORDER_PRIMARY,
+    backgroundColor: "black",
     borderRadius: 5,
     shadowColor: "black",
     shadowOpacity: 0.75,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 5,
     elevation: 2,
-    width: "100%",
+    width: "95%",
     height: 60,
     paddingHorizontal: 10,
   },
@@ -191,6 +194,10 @@ const styles = StyleSheet.create({
   list: {
     flexGrow: 1,
   },
+  headerText: {
+    fontSize: 16,
+    color: "white"
+  }
 });
 
 export default PortfolioScreen;

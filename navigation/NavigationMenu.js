@@ -38,8 +38,9 @@ const NavigationMenu = ({ navigation }) => {
             name={Routes.HOME}
             onPress={buttonPressHandler.bind(this, Routes.HOME)}
             style={current == Routes.HOME ? styles.menuButtonHighlight : {}}
+            style={{backgroundColor: "#00a8ff"}}
           >
-            <Ionicons name="home" size={ICON_SIZE} />
+            <Ionicons name="home" size={ICON_SIZE} color="white" />
           </MenuButton>
           <MenuButton
             name={Routes.STOCKS}
@@ -47,8 +48,9 @@ const NavigationMenu = ({ navigation }) => {
             style={
               current == Routes.STOCKS_SEARCH ? styles.menuButtonHighlight : {}
             }
+            style={{backgroundColor: "#bfa634"}}
           >
-            <FontAwesome5 name="coins" size={ICON_SIZE} />
+            <FontAwesome5 name="coins" size={ICON_SIZE} color="white" />
           </MenuButton>
         </View>
 
@@ -59,15 +61,17 @@ const NavigationMenu = ({ navigation }) => {
             style={
               current == Routes.PORTFOLIO ? styles.menuButtonHighlight : {}
             }
+            style={{backgroundColor: "#ca6809"}}
           >
-            <Ionicons name="briefcase" size={ICON_SIZE} />
+            <Ionicons name="briefcase" size={ICON_SIZE} color="white" />
           </MenuButton>
           <MenuButton
             name={Routes.EMA5}
             onPress={buttonPressHandler.bind(this, Routes.EMA5)}
             style={current == Routes.EMA5 ? styles.menuButtonHighlight : {}}
+            style={{backgroundColor: "#25852b"}}
           >
-            <Entypo name="line-graph" size={ICON_SIZE} />
+            <Entypo name="line-graph" size={ICON_SIZE} color="white" />
           </MenuButton>
         </View>
 
@@ -78,15 +82,17 @@ const NavigationMenu = ({ navigation }) => {
             style={
               current == Routes.CALCULATOR ? styles.menuButtonHighlight : {}
             }
+            style={{backgroundColor: "#6c2fc7"}}
           >
-            <Ionicons name="calculator" size={ICON_SIZE} />
+            <Ionicons name="calculator" size={ICON_SIZE} color="white" />
           </MenuButton>
           <MenuButton
             name={Routes.NEWS}
             onPress={buttonPressHandler.bind(this, Routes.NEWS)}
             style={current == Routes.NEWS ? styles.menuButtonHighlight : {}}
+            style={{backgroundColor: "#2fc2c7"}}
           >
-            <Ionicons name="newspaper" size={ICON_SIZE} />
+            <Ionicons name="newspaper" size={ICON_SIZE} color="white" />
           </MenuButton>
         </View>
 
@@ -95,15 +101,17 @@ const NavigationMenu = ({ navigation }) => {
             name={Routes.HISTORY}
             onPress={buttonPressHandler.bind(this, Routes.HISTORY)}
             style={current == Routes.HISTORY ? styles.menuButtonHighlight : {}}
+            style={{backgroundColor: "#1755b1"}}
           >
-            <MaterialIcons name="history" size={ICON_SIZE} />
+            <MaterialIcons name="history" size={ICON_SIZE} color="white" />
           </MenuButton>
           <MenuButton
             name={Routes.PROFILE}
             onPress={buttonPressHandler.bind(this, Routes.PROFILE)}
             style={current == Routes.PROFILE ? styles.menuButtonHighlight : {}}
+            style={{backgroundColor: "#b1172d"}}
           >
-            <Ionicons name="person-circle" size={ICON_SIZE} />
+            <Ionicons name="person-circle" size={ICON_SIZE} color="white" />
           </MenuButton>
         </View>
       </View>
@@ -117,7 +125,7 @@ const MenuButton = (props) => {
       <View style={{ ...styles.menuButton, ...props.style }}>
         {props.children}
         <View style={styles.menuButtonText}>
-          <Text>{props.name}</Text>
+          <Text style={{color: "white", fontWeight: "700"}}>{props.name}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -146,14 +154,14 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     backgroundColor: POPUP_LIGHT,
-    borderColor: BORDER_PRIMARY,
+    // borderColor: BORDER_PRIMARY,
     borderWidth: StyleSheet.hairlineWidth,
     borderRadius: 20,
     justifyContent: "center",
     alignItems: "center",
   },
   menuButtonHighlight: {
-    backgroundColor: "#ffeebf",
+    opacity: 0.7,
   },
   menuButtonText: {
     marginTop: 5,

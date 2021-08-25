@@ -19,12 +19,13 @@ const HistoryScreen = () => {
                 tabBarOptions={{
                     labelStyle: {
                         fontSize: 15,
-                        fontWeight: 'bold'
+                        fontWeight: "bold",
+                        letterSpacing: 1,
                     },
-                    activeTintColor: 'blue',
-                    inactiveTintColor: 'grey'
-                    // style: { backgroundColor: 'honeydew' },
-                    // indicatorStyle: { backgroundColor: 'yellow' }
+                    activeTintColor: 'white',
+                    inactiveTintColor: '#D3D3D3',
+                    style: {backgroundColor: "grey", color: "white"},
+                    indicatorStyle: {borderColor: "white", borderBottomWidth: 4}
                 }}
             >
                 <Tab.Screen name="Buy" component={BuyHistory} />
@@ -37,13 +38,8 @@ const HistoryScreen = () => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
-    },
-    itemContainer: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    } 
+    },
 });
 
 export default HistoryScreen;

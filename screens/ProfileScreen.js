@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, Button, Alert } from "react-native";
 import { useDispatch } from "react-redux";
 import CardBase from "../components/base/CardBase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import TouchableCustom from "../components/base/TouchableCustom";
 import {
   BACKGROUND_LIGHT,
   BORDER_PRIMARY,
@@ -11,6 +10,7 @@ import {
 } from "../constants/colors";
 import * as authActions from "../store/actions/auth";
 import DetailsCard from "../components/detailsCard";
+import MyButton from "../components/MyButton";
 
 const ProfileScreen = (props) => {
 
@@ -20,7 +20,7 @@ const ProfileScreen = (props) => {
   const getUserData = async () => {
     const userData = await AsyncStorage.getItem("userData")
     const jsonData = await JSON.parse(userData)
-    console.log(jsonData);
+    // console.log(jsonData);
     const response = await fetch(
       "https://fiavest-plus-app-api.fiavest.com/api/private/user/fetch-user-details",
       {
@@ -36,12 +36,9 @@ const ProfileScreen = (props) => {
     )
     if(!response.ok) {
       const errorResData = await response.json();
-      console.log(errorResData);
+      // console.log(errorResData);
       if (errorResData.error.message === "Session expired") {
-        Alert.alert("Session Expired", "Please Log In Again", [{text: "Okay"}]);
-        dispatch(authActions.logout).catch((err) => {
-          alert(err.message)
-        })
+        dispatch(authActions.logout())
       }
     } else {
       const resData = await response.json()
@@ -85,14 +82,7 @@ const ProfileScreen = (props) => {
       content={userInfo.tradingExp + " years"}
       />
       <CardBase style={styles.buttonContainer}>
-        <TouchableCustom
-          useAndroid
-          type="highlight"
-          onPress={() => dispatch(authActions.logout())}
-          contentStyle={styles.buttonContent}
-        >
-          <Text style={styles.buttonText}>LOGOUT</Text>
-        </TouchableCustom>
+        <MyButton onPress={() => dispatch(authActions.logout())}>LOGOUT</MyButton>
       </CardBase>
     </View>
   );
@@ -103,23 +93,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
-    backgroundColor: BACKGROUND_LIGHT,
+    backgroundColor: "black",
   },
   buttonContainer: {
-    borderRadius: 10,
-    overflow: "hidden",
+    borderRadius: 15,
     marginTop: "auto",
     marginBottom: 20,
-  },
-  buttonContent: {
-    padding: 10,
-  },
-  buttonText: {
-    textAlign: "center",
-    fontSize: 20,
-    color: "red",
-    letterSpacing: 1,
-  },
+  }
 });
 
 export default ProfileScreen;

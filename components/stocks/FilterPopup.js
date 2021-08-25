@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { POPUP_LIGHT } from "../../constants/colors";
 import ViewPopup from "../base/ViewPopup";
+import MyButton from "../MyButton";
 import FilterNumberInput from "./FilterNumberInput";
 
 const DEVICE_HEIGHT = Dimensions.get("window").height;
@@ -86,31 +87,31 @@ const FilterPopup = (props) => {
         <View style={{ ...styles.row, flex: 0.5 }}>
           <View style={styles.column1}></View>
           <View style={styles.column2}>
-            <Text>Min</Text>
+            <Text style={{color: "white"}}>Min</Text>
           </View>
           <View style={styles.column2}>
-            <Text>Max</Text>
+            <Text style={{color: "white"}}>Max</Text>
           </View>
         </View>
         <InputRow
-          name="YPrice:"
+          name="YPrice :"
           id="yPrice"
           onInputChange={inputChangeHandler}
         />
         <InputRow
-          name="Share(M):"
+          name="Share(M) :"
           id="share"
           onInputChange={inputChangeHandler}
         />
         <InputRow
-          name="LT Value(K):"
+          name="LT Value(K) :"
           id="ltValue"
           onInputChange={inputChangeHandler}
         />
         <View style={styles.row}>
-          <View style={styles.button}>
-            <Button title="Save" onPress={() => props.onSubmit(filterState)} />
-          </View>
+          <MyButton onPress={() => props.onSubmit(filterState)}>
+            SAVE
+          </MyButton>
         </View>
       </ViewPopup>
     </View>
@@ -121,7 +122,7 @@ const InputRow = (props) => {
   return (
     <View style={styles.row}>
       <View style={styles.column1}>
-        <Text>{props.name}</Text>
+        <Text style={{fontSize: 16, color: "white"}}>{props.name}</Text>
       </View>
       <View style={styles.column2}>
         <FilterNumberInput
@@ -148,13 +149,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   popup: {
-    width: "70%",
-    height: "30%",
+    width: "85%",
+    height: "40%",
     borderRadius: 30,
-    backgroundColor: POPUP_LIGHT,
+    backgroundColor: "#454545",
     overflow: "hidden",
     paddingHorizontal: 20,
-    paddingVertical: 10,
+    paddingVertical: 20,
   },
   row: {
     marginVertical: 3,
@@ -174,10 +175,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-  },
-  button: {
-    borderRadius: 10,
-    overflow: "hidden",
   },
 });
 

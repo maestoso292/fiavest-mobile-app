@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Pressable } from 'react-native';
 import { AntDesign } from "@expo/vector-icons";
-import { BACKGROUND_LIGHT } from '../../constants/colors';
+import { BACKGROUND_LIGHT, BORDER_PRIMARY } from '../../constants/colors';
 
 const TypeCalculator = props => {
 
@@ -15,11 +15,11 @@ const TypeCalculator = props => {
         <View style={styles.mainCon}>
             <Pressable onPress={pressHandler}>
                 <View style={styles.container}>
-                    <Text style={{fontSize: 20}}>{props.title}</Text>
+                    <Text style={{fontSize: 20, color: "white"}}>{props.title}</Text>
                     {isPress ? (
-                        <AntDesign name="caretright" size={24} color="black" />
+                        <AntDesign name="caretright" size={24} color="white" />
                     ) : (
-                        <AntDesign name="caretdown" size={24} color="black" />
+                        <AntDesign name="caretdown" size={24} color="white" />
                     )}
                 </View>
             </Pressable>
@@ -50,21 +50,24 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         height: 50,
         width: '100%',
-        borderWidth: 1,
+        borderWidth: 2,
+        borderColor: BORDER_PRIMARY,
         borderRadius: 10,
         paddingHorizontal: 10,
+        backgroundColor: "black"
     },
     insideCon: {
         justifyContent: 'center',
         //alignItems: 'center',
         width: '90%',
-        borderBottomWidth: 1,
-        borderLeftWidth: 1,
-        borderRightWidth: 1,
-        borderBottomLeftRadius: 5,
-        borderBottomRightRadius: 5,
+        borderBottomWidth: 2,
+        borderLeftWidth: 2,
+        borderRightWidth: 2,
+        borderBottomLeftRadius: 7,
+        borderBottomRightRadius: 7,
+        borderColor: BORDER_PRIMARY,
         padding: 10,
-        backgroundColor: BACKGROUND_LIGHT
+        backgroundColor: "black"
     },
 });
 

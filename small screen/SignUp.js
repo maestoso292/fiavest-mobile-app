@@ -360,6 +360,10 @@ const SignUpPage = () => {
         <View style={styles.TandC}>
           <CheckBox
             value={isAgree}
+            tintColors={{true: "white", false: "white"}}
+            tintColor="white"
+            onTintColor="white"
+            onFillColor="white"
             onValueChange={(newValue) => setIsAgree(newValue)}
           />
           <View style={styles.termAndCondition}>

@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput } from 'react-native';
 
 import TypeCalculator from '../components/calculator/CalculatorType';
-import Button2 from '../components/Button2';
 import InputCon from '../components/calculator/CalculatorInput';
 import OutputCon from '../components/calculator/CalculateOutput';
 import ButtonCon from '../components/calculator/CalculatorButton';
 import Divider from '../components/Divider';
+import MyButton from '../components/MyButton';
 
 const ProfitAndLostCalculator = (props) => {
 
@@ -170,7 +170,7 @@ const ProfitAndLostCalculator = (props) => {
                 value={netProfit}
                 />
                 <View style={styles.buttonCon}>
-                    <Button2 onPress={RecalculateHandler} extraStyle={{width: 120}}>Recalculate</Button2>
+                    <MyButton onPress={RecalculateHandler} extraStyle={{width: 120}}>Recalculate</MyButton>
                 </View>
             </View>
             )}
@@ -185,10 +185,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         marginBottom: 10,
-    },
-    input: {
-        width: 130,
-        borderBottomWidth: 1,
     },
     buttonCon: {
         justifyContent: 'center',

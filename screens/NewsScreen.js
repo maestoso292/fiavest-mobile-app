@@ -7,7 +7,7 @@ const NewsScreen = () => {
 
     return (
         <View style={styles.container}>
-            <Text>Test</Text>
+            <Text style={{color: "white"}}>Test</Text>
         </View>
     )
 }
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
         width: "100%",
         justifyContent: "center",
         alignItems: "center",
-        // backgroundColor: '#A9BAFF',
+        backgroundColor: 'black',
     }
 });
 

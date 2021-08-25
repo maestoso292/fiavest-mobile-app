@@ -3,11 +3,11 @@ import { StyleSheet, View, Text, TextInput } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 
 import TypeCalculator from '../components/calculator/CalculatorType';
-import Button2 from '../components/Button2';
 import OutputCon from '../components/calculator/CalculateOutput';
 import InputCon from '../components/calculator/CalculatorInput';
 import ButtonCon from '../components/calculator/CalculatorButton';
 import Divider from '../components/Divider';
+import MyButton from '../components/MyButton';
 
 const DividendCalculator = (props) => {
 
@@ -49,13 +49,13 @@ const DividendCalculator = (props) => {
             const parseROI = ((parseTG/parseBuyAmount) * 100)
             const parseYield = (((parseGD) / ((parseFloat(CurrentStockPrice)) * (parseFloat(HoldingUnits)))) * 100)
             
-            setGrossDividend(parseGD.toFixed(2))
-            setTax(parseTax.toFixed(2))
-            setNetDividend(parseND.toFixed(2))
-            setCapitalGain(parseCG.toFixed(2))
-            setTotalGain(parseTG.toFixed(2))
-            isNaN(parseROI) === true ? setROI("0.000") : setROI(parseROI.toFixed(3))
-            isNaN(parseYield) === true ? setDividendYield(0) : setDividendYield(parseYield.toFixed())
+            isNaN(parseGD) ? setGrossDividend("0.00") : setGrossDividend(parseGD.toFixed(2))
+            isNaN(parseTax) ? setTax("0.00") : setTax(parseTax.toFixed(2))
+            isNaN(parseND) ? setNetDividend("0.00") : setNetDividend(parseND.toFixed(2))
+            isNaN(parseCG) ? setCapitalGain("0.00") : setCapitalGain(parseCG.toFixed(2))
+            isNaN(parseTG) ? setTotalGain("0.00") : setTotalGain(parseTG.toFixed(2))
+            isNaN(parseROI) ? setROI("0.000") : setROI(parseROI.toFixed(3))
+            isNaN(parseYield) ? setDividendYield(0) : setDividendYield(parseYield.toFixed())
         } else if (type === 'percent') {
             const parseGD = ((parseFloat(CurrentStockPrice) * (parseFloat(HoldingUnits))) * (parseFloat(DividendPerShare) / 100))
             const parseTax = (parseGD * (incomeTax / 100))
@@ -65,11 +65,11 @@ const DividendCalculator = (props) => {
             const parseROI = ((parseTG/parseBuyAmount) * 100)
             const parseYield = ((parseGD) / ((parseFloat(CurrentStockPrice)) * (parseFloat(HoldingUnits))))
             
-            setGrossDividend(parseGD.toFixed(2))
-            setTax(parseTax.toFixed(2))
-            setNetDividend(parseND.toFixed(2))
-            setCapitalGain(parseCG.toFixed(2))
-            setTotalGain(parseTG.toFixed(2))
+            isNaN(parseGD) ? setGrossDividend("0.00") : setGrossDividend(parseGD.toFixed(2))
+            isNaN(parseTax) ? setTax("0.00") : setTax(parseTax.toFixed(2))
+            isNaN(parseND) ? setNetDividend("0.00") : setNetDividend(parseND.toFixed(2))
+            isNaN(parseCG) ? setCapitalGain("0.00") : setCapitalGain(parseCG.toFixed(2))
+            isNaN(parseTG) ? setTotalGain("0.00") : setTotalGain(parseTG.toFixed(2))
             isNaN(parseROI) === true ? setROI("0.000") : setROI(parseROI.toFixed(3))
             isNaN(parseYield) === true ? setDividendYield(0) : setDividendYield(parseYield.toFixed())
         }
@@ -134,16 +134,18 @@ const DividendCalculator = (props) => {
             editable={isEdit}
             />
             <View style={styles.container}>
-                <Text>Type</Text>
-                <Picker
-                selectedValue={type}
-                style={{width: 130, height: 30}}
-                enabled={isPick}
-                onValueChange={(value) => setType(value)}
-                >   
-                    <Picker.Item label="Cents (¢)" value="cent" />
-                    <Picker.Item label="Percent (%)" value="percent" />
-                </Picker>
+                <Text style={styles.title}>Type</Text>
+                <View style={styles.pickerBackground}>
+                    <Picker
+                    selectedValue={type}
+                    style={{width: 130, height: 30}}
+                    enabled={isPick}
+                    onValueChange={(value) => setType(value)}
+                    >   
+                        <Picker.Item label="Cents (¢)" value="cent" />
+                        <Picker.Item label="Percent (%)" value="percent" />
+                    </Picker>
+                </View>
             </View>
             <InputCon 
             title="Income Tax"
@@ -192,7 +194,7 @@ const DividendCalculator = (props) => {
                 value={ROI}
                 />
                 <View style={styles.buttonCon}>
-                    <Button2 onPress={RecalculateHandler} extraStyle={{width: 120}}>Recalculate</Button2>
+                    <MyButton onPress={RecalculateHandler} extraStyle={{width: 120}}>Recalculate</MyButton>
                 </View>
             </View>
             )}
@@ -208,13 +210,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: 10,
     },
-    input: {
-        width: 130,
-        borderBottomWidth: 1,
-    },
     buttonCon: {
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    title: {
+        color: "white",
+        fontSize: 14,
+    },
+    pickerBackground: {
+      backgroundColor: "white",
+      borderRadius: 20,
+      paddingLeft: 5,
+      width: "50%",
     }
 });
 

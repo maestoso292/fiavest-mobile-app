@@ -188,6 +188,10 @@ const SignInPage = () => {
           borderWidth: 0,
           borderColor: 'transparent',
         }}
+        extraErrorStyle={{
+          alignItems: "flex-start",
+          marginLeft: 10,
+        }}
         />
         <Image source={emailIcon} style={styles.iconImg}/>
       </View>
@@ -210,6 +214,10 @@ const SignInPage = () => {
           extraStyle={{
             borderWidth: 0,
             borderColor: 'transparent',
+          }}
+          extraErrorStyle={{
+            alignItems: "flex-start",
+            marginLeft: 10,
           }}
           />
           <Image source={passIcon} style={styles.iconImg}/>

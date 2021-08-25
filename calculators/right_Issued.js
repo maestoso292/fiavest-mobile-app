@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput } from 'react-native';
 
 import TypeCalculator from '../components/calculator/CalculatorType';
-import Button2 from '../components/Button2';
 import InputCon from '../components/calculator/CalculatorInput';
 import OutputCon from '../components/calculator/CalculateOutput';
 import ButtonCon from '../components/calculator/CalculatorButton';
 import Divider from '../components/Divider';
+import MyButton from '../components/MyButton';
 
 const RightIssuedCalculator = (props) => {
 
@@ -96,7 +96,7 @@ const RightIssuedCalculator = (props) => {
                 value={ExRightsPrice}
                 />
                 <View style={styles.buttonCon}>
-                    <Button2 onPress={RecalculateHandler} extraStyle={{width: 120}}>Recalculate</Button2>
+                    <MyButton onPress={RecalculateHandler} extraStyle={{width: 120}}>Recalculate</MyButton>
                 </View>
             </View>
             )}

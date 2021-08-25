@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, ScrollView } from 'react-native';
+import { StyleSheet, View, ScrollView } from 'react-native';
 
 import BrokerageCalculator from '../calculators/brokerage';
 import DividendCalculator from '../calculators/dividend';
@@ -8,16 +8,20 @@ import BonusIssuedCalculator from '../calculators/bonus_Issued';
 import ProfitAndLostCalculator from '../calculators/profitNLost';
 
 const CalculatorScreen = props => {
+
     return (
-        <ScrollView>
-            <View style={styles.container}>
-                <BrokerageCalculator />
-                <DividendCalculator />
-                <RightIssuedCalculator />
-                <BonusIssuedCalculator />
-                <ProfitAndLostCalculator />
-            </View>
-        </ScrollView>
+        <View style={styles.container}>
+            <ScrollView contentContainerStyle={{width: "100%"}}>
+                <View>
+                    <BrokerageCalculator />
+                    <DividendCalculator />
+                    <RightIssuedCalculator />
+                    <BonusIssuedCalculator />
+                    <ProfitAndLostCalculator />
+                </View>
+            </ScrollView>
+        </View>
+        
     )
 }
 
@@ -26,7 +30,7 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingHorizontal: 20,
         paddingVertical: 10,
-        alignItems: 'center',
+        backgroundColor: "black",
     }
 })
 
