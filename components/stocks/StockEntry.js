@@ -28,13 +28,13 @@ const StockEntry = (props) => {
       </View>
       <View style={styles.textContainer}>
         <View style={styles.idContainer}>
-          <Text>{props.id}</Text>
+          <Text style={{color: "white", fontWeight: "bold"}}>{props.id}</Text>
         </View>
         <View style={styles.nameContainer}>
-          <Text>{props.name}</Text>
+          <Text style={{color: "white", fontWeight: "bold"}}>{props.name}</Text>
         </View>
         <View style={styles.priceContainer}>
-          <Text>{currencyFormatter.format(props.price)}</Text>
+          <Text style={{color: "white", fontWeight: "bold"}}>{currencyFormatter.format(props.price)}</Text>
         </View>
       </View>
     </TouchableCustom>
@@ -75,6 +75,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     borderTopColor: BORDER_PRIMARY,
     borderTopWidth: StyleSheet.hairlineWidth,
+    backgroundColor: "#454545",
   },
   idContainer: {
     flex: 1,

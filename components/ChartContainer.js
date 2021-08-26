@@ -15,7 +15,7 @@ const ImgContainer = props => {
             <View style={styles.imgCon}>
                 <Image source={{ uri: props.source, width: "100%", height: "90%" }}/>
                 <View style={styles.textCon}>
-                    <Text style={{fontSize: 20}}>{props.title}</Text>
+                    <Text style={{fontSize: 20, color: "white"}}>{props.title}</Text>
                 </View>
             </View>
         </TouchComponent>
@@ -26,8 +26,8 @@ const styles = StyleSheet.create({
     imgCon: {
         width: '95%',
         height: 250,
-        borderWidth: 1,
-        borderColor: BORDER_PRIMARY,
+        borderWidth: 2,
+        borderColor: "#454545",
         borderRadius: 10,
         overflow: 'hidden',
         alignItems: 'center',
@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
         height: '10%',
         justifyContent: 'center',
         alignItems: 'center',
+        backgroundColor: "#454545",
     }
 });
 

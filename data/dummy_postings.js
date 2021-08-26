@@ -18,15 +18,15 @@ const sampleSrc = [
 ];
 
 export const POSTING_DATA = [
-    new Posting(nanoid(), "Something Happened", sampleBody, sampleSrc[Math.floor(Math.random() * 8)]),
-    new Posting(nanoid(), "Another Thing Happened", sampleBody, sampleSrc[Math.floor(Math.random() * 8)]),
-    new Posting(nanoid(), "WOW", sampleBody, sampleSrc[Math.floor(Math.random() * 8)]),
-    new Posting(nanoid(), "Try Out This New Thing", sampleBody, sampleSrc[Math.floor(Math.random() * 8)]),
-    new Posting(nanoid(), "Limited", sampleBody, sampleSrc[Math.floor(Math.random() * 8)]),
-    new Posting(nanoid(), "Get This", sampleBody, sampleSrc[Math.floor(Math.random() * 8)]),
-    new Posting(nanoid(), "App Update", sampleBody, sampleSrc[Math.floor(Math.random() * 8)]),
-    new Posting(nanoid(), "New Terms and Conditions", sampleBody, sampleSrc[Math.floor(Math.random() * 8)]),
-    new Posting(nanoid(), "New Privacy Policy", sampleBody, sampleSrc[Math.floor(Math.random() * 8)]),
+    new Posting(nanoid(), "Something Happened", sampleBody, sampleSrc[Math.floor(Math.random() * 8)], "https://www.google.com"),
+    new Posting(nanoid(), "Another Thing Happened", sampleBody, sampleSrc[Math.floor(Math.random() * 8)], "https://www.google.com"),
+    new Posting(nanoid(), "WOW", sampleBody, sampleSrc[Math.floor(Math.random() * 8)], "https://www.google.com"),
+    new Posting(nanoid(), "Try Out This New Thing", sampleBody, sampleSrc[Math.floor(Math.random() * 8)], "https://www.google.com"),
+    new Posting(nanoid(), "Limited", sampleBody, sampleSrc[Math.floor(Math.random() * 8)], "https://www.google.com"),
+    new Posting(nanoid(), "Get This", sampleBody, sampleSrc[Math.floor(Math.random() * 8)], "https://www.google.com"),
+    new Posting(nanoid(), "App Update", sampleBody, sampleSrc[Math.floor(Math.random() * 8)], "https://www.google.com"),
+    new Posting(nanoid(), "New Terms and Conditions", sampleBody, sampleSrc[Math.floor(Math.random() * 8)], "https://www.google.com"),
+    new Posting(nanoid(), "New Privacy Policy", sampleBody, sampleSrc[Math.floor(Math.random() * 8)], "https://www.google.com"),
 ]
 
 export const AD_SLIDESHOW_DATA = sampleSrc;

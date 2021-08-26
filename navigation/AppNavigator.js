@@ -20,14 +20,15 @@ import HistoryScreen from "../screens/HistoryScreen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SET_ALERT } from "../store/actions/alert";
 import NewsScreen from "../screens/NewsScreen";
+import DetailsForm from "../components/DetailsForm";
 
 const RootStack = createStackNavigator();
 const MainDrawer = createDrawerNavigator();
 const StockStack = createStackNavigator();
 
 const AppNavigator = () => {
-  const authToken = useSelector((state) => state.auth.token);
-  const isAuth = useSelector((state) => !!state.auth.token);
+  const authToken = useSelector((state) => state.auth.sessionId);
+  const isAuth = useSelector((state) => !!state.auth.sessionId);
   const didAutoLogin = useSelector((state) => state.auth.didAutoLogin);
 
   const alerts = useSelector((state) => state.alert.alertEnabledStocks);
@@ -53,6 +54,10 @@ const AppNavigator = () => {
       <RootStack.Navigator
         screenOptions={{
           headerShown: false,
+          headerStyle: {
+            backgroundColor: "#454545",
+          },
+          headerTintColor: "white",
         }}
         mode="modal"
       >
@@ -67,14 +72,28 @@ const AppNavigator = () => {
           </>
         )}
         {!isAuth && didAutoLogin && (
-          <RootStack.Screen
-            name="Auth"
-            component={AuthScreen}
-            option={{ headerShown: true }}
-          />
+          <>
+            <RootStack.Screen
+              name="Auth"
+              component={AuthScreen}
+              option={{ headerShown: true }}
+            />
+            <RootStack.Screen
+              name="Details Form"
+              component={DetailsForm}
+              option={{ headerShown: true }}
+            />
+          </>
         )}
         {!isAuth && !didAutoLogin && (
-          <RootStack.Screen name="Start" component={StartScreen} />
+          <>
+            <RootStack.Screen name="Start" component={StartScreen} />
+            <RootStack.Screen
+              name="Details Form"
+              component={DetailsForm}
+              option={{ headerShown: true }}
+            />
+          </>
         )}
       </RootStack.Navigator>
     </NavigationContainer>
@@ -89,6 +108,10 @@ const MainNavigator = ({ navigation }) => {
         gestureEnabled: false,
         headerShown: true,
         headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: "#454545",
+        },
+        headerTintColor: "white",
         headerLeft: () => {
           const route = useRoute();
           return (
@@ -112,12 +135,9 @@ const MainNavigator = ({ navigation }) => {
       <MainDrawer.Screen name={Routes.PROFILE} component={ProfileScreen} />
       <MainDrawer.Screen name={Routes.PORTFOLIO} component={PortfolioScreen} />
       <MainDrawer.Screen name={Routes.EMA5} component={EMA5Screen} />
-      <MainDrawer.Screen name={Routes.CALCULATOR} component={CalculatorScreen} />
+      <MainDrawer.Screen name={Routes.CALCULATOR} component={CalculatorScreen}/>
       <MainDrawer.Screen name={Routes.NEWS} component={NewsScreen} />
-      <MainDrawer.Screen 
-      name={Routes.HISTORY}
-      component={HistoryScreen}
-      />
+      <MainDrawer.Screen name={Routes.HISTORY} component={HistoryScreen} />
     </MainDrawer.Navigator>
   );
 };
@@ -125,13 +145,24 @@ const MainNavigator = ({ navigation }) => {
 const StockNavigator = ({ navigation }) => {
   return (
     <StockStack.Navigator
-      screenOptions={{ headerShown: true, headerTitleAlign: "center" }}
+      screenOptions={{ 
+        headerShown: true, 
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: "#454545",
+        }, }}
       initialRouteName={Routes.STOCKS_SEARCH}
     >
       <StockStack.Screen name={Routes.STOCKS_SEARCH} component={StocksScreen} />
       <StockStack.Screen
         name={Routes.STOCK_DETAILS}
         component={StockDetailsScreen}
+        options={{
+          headerStyle: {
+            backgroundColor: "grey"
+          },
+          headerTintColor: "white",
+        }}
       />
     </StockStack.Navigator>
   );
@@ -149,7 +180,7 @@ const menuOptions = {
     overlayStyle: {
       opacity: progress.interpolate({
         inputRange: [0, 1],
-        outputRange: [0, 0.7],
+        outputRange: [0, 0.9],
         extrapolate: "clamp",
       }),
     },

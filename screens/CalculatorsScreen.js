@@ -9,15 +9,17 @@ import ProfitLossCalculator from "../components/calculator/calculators/ProfitLos
 
 const CalculatorScreen = (props) => {
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <BrokerageCalculator />
-        <DividendCalculator />
-        <RightIssuedCalculator />
-        <BonusIssuedCalculator />
-        <ProfitLossCalculator />
-      </View>
-    </ScrollView>
+    <View style={styles.container}>
+      <ScrollView contentContainerStyle={{ width: "100%" }}>
+        <View>
+          <BrokerageCalculator />
+          <DividendCalculator />
+          <RightIssuedCalculator />
+          <BonusIssuedCalculator />
+          <ProfitLossCalculator />
+        </View>
+      </ScrollView>
+    </View>
   );
 };
 
@@ -26,7 +28,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
     paddingVertical: 10,
-    alignItems: "center",
+    backgroundColor: "black",
   },
 });
 

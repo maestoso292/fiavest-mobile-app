@@ -25,7 +25,7 @@ const CustomButton = props => {
 
 const styles = StyleSheet.create({
     outline: {
-        //borderWidth: 1,
+        // borderWidth: 1,
         borderRadius: 15,
         height: 60,
         width: 60,

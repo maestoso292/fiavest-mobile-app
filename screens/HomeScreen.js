@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import PostingCard from "../components/home/PostingEntry";
 import AdPopup from "../components/home/AdPopup";
@@ -8,13 +8,8 @@ import { AD_SLIDESHOW_DATA, POSTING_DATA } from "../data/dummy_postings";
 
 const renderPosting = ({ item }) => {
   return (
-    <PostingCard name={item.title} details={item.body} source={item.imgSrc} />
+    <PostingCard name={item.title} details={item.body} source={item.img} url={item.url} />
   );
-};
-
-// TODO Fetching data of company postings
-const fetchPostingData = () => {
-  return POSTING_DATA;
 };
 
 // TODO Fetching ads (Company ads? Playstore ads?)
@@ -29,12 +24,37 @@ const fetchAdPopup = () => {
 
 const HomeScreen = (props) => {
   // TODO Unsure if this needs to be a state
-  const [postings, setPostings] = useState(fetchPostingData());
+  const [postings, setPostings] = useState([]);
   const [adVisible, setAdVisible] = useState(true);
 
   const closeAdPopup = () => {
     setAdVisible(false);
   };
+
+  const getPosting = async () => {
+    const response = await fetch(
+      "https://fiavest-plus-app-api.fiavest.com/api/public/postings/fetch-postings",
+      {
+        method: "GET",
+      }
+    );
+    if (!response.ok) {
+      const errorResData = await response.json();
+      console.log(errorResData.error.message);
+    } else {
+      const ResData = await response.json()
+      // console.log(ResData);
+      return ResData;
+    }
+  }
+  
+  useEffect(() => {
+    const getAllPost = async () => {
+      const allPost = await getPosting();
+      if(allPost) setPostings(allPost)
+    };
+    getAllPost()
+  }, [postings])
 
   return (
     <View style={styles.screen}>
@@ -53,7 +73,7 @@ const HomeScreen = (props) => {
           showsVerticalScrollIndicator={false}
           data={postings}
           renderItem={renderPosting}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.postingId}
           contentContainerStyle={styles.list}
         />
       </View>
@@ -66,7 +86,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: BACKGROUND_LIGHT,
+    backgroundColor: "black",
   },
   listContainer: {
     flex: 1,

@@ -1,10 +1,13 @@
-import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, {useState} from 'react';
+import { StyleSheet, View, Text, Linking, Button } from 'react-native';
+import DetailsForm from '../components/DetailsForm';
 
 const NewsScreen = () => {
+
     return (
         <View style={styles.container}>
-            <Text>ok</Text>
+            <Text style={{color: "white"}}>Test</Text>
         </View>
     )
 }
@@ -12,8 +15,10 @@ const NewsScreen = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+        width: "100%",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: 'black',
     }
 });
 

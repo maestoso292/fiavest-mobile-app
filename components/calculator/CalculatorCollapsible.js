@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, Pressable } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { BACKGROUND_LIGHT, POPUP_LIGHT } from "../../constants/colors";
+import { BORDER_PRIMARY, BACKGROUND_LIGHT, POPUP_LIGHT } from "../../constants/colors";
 
 const TypeCalculator = (props) => {
   const [isPress, setIsPress] = useState(true);
@@ -14,11 +14,11 @@ const TypeCalculator = (props) => {
     <View style={styles.mainCon}>
       <Pressable onPress={pressHandler}>
         <View style={styles.container}>
-          <Text style={{ fontSize: 20 }}>{props.title}</Text>
+          <Text style={{ fontSize: 20, color: "white" }}>{props.title}</Text>
           {isPress ? (
-            <AntDesign name="caretright" size={24} color="black" />
+            <AntDesign name="caretright" size={24} color="white" />
           ) : (
-            <AntDesign name="caretdown" size={24} color="black" />
+            <AntDesign name="caretdown" size={24} color="white" />
           )}
         </View>
       </Pressable>
@@ -36,41 +36,32 @@ const TypeCalculator = (props) => {
 const styles = StyleSheet.create({
   mainCon: {
     justifyContent: "center",
-    //alignItems: 'center',
     marginVertical: 10,
     width: "100%",
   },
-
   container: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     height: 50,
     width: "100%",
-    borderWidth: 1,
+    borderWidth: 2,
+    borderColor: BORDER_PRIMARY,
     borderRadius: 10,
     paddingHorizontal: 10,
-    backgroundColor: POPUP_LIGHT,
-    shadowColor: "black",
-    shadowOpacity: 0.75,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 2,
+    backgroundColor: "black",
   },
   insideCon: {
     justifyContent: "center",
-    //alignItems: 'center',
     width: "90%",
-    borderBottomWidth: 1,
-    borderLeftWidth: 1,
-    borderRightWidth: 1,
-    borderBottomLeftRadius: 5,
-    borderBottomRightRadius: 5,
+    borderBottomWidth: 2,
+    borderLeftWidth: 2,
+    borderRightWidth: 2,
+    borderBottomLeftRadius: 7,
+    borderBottomRightRadius: 7,
+    borderColor: BORDER_PRIMARY,
     padding: 10,
-    backgroundColor: POPUP_LIGHT,
-    shadowColor: "black",
-    shadowOpacity: 0.75,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 2,
+    backgroundColor: "black",
   },
 });
 

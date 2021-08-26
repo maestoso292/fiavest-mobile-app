@@ -81,7 +81,7 @@ class ImageSwiper extends Component {
 
 const styles = StyleSheet.create({
   scrollContainer: {
-    height: "20%",
+    height: "25%",
     width: "95%",
     marginTop: 12,
     borderRadius: 12,

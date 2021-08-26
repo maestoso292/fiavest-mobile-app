@@ -7,6 +7,7 @@ import CalculatorOutput from "../CalculatorOutput";
 import ButtonCon from "../CalculatorButton";
 import Divider from "../../Divider";
 import TextButton from "../../base/TextButton";
+import MyButton from "../../MyButton";
 
 const RightIssuedCalculator = (props) => {
   const [isCalculate, setIsCalculate] = useState(true);
@@ -85,12 +86,10 @@ const RightIssuedCalculator = (props) => {
             title="Theoretical Ex-rights Price"
             value={ExRightsPrice}
           />
-          <View style={styles.bottomContainer}>
-            <TextButton
-              text="Recalculate"
-              onPress={recalculateHandler}
-              containerStyle={styles.buttonContainer}
-            />
+          <View style={styles.buttonCon}>
+            <MyButton onPress={recalculateHandler} extraStyle={{ width: 120 }}>
+              Recalculate
+            </MyButton>
           </View>
         </View>
       )}
@@ -109,12 +108,9 @@ const styles = StyleSheet.create({
     width: 130,
     borderBottomWidth: 1,
   },
-  bottomContainer: {
+  buttonCon: {
     justifyContent: "center",
     alignItems: "center",
-  },
-  buttonContainer: {
-    width: "40%",
   },
 });
 

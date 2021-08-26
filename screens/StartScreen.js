@@ -5,8 +5,11 @@ import { useDispatch, useSelector } from "react-redux";
 import * as Facebook from "expo-facebook";
 
 import * as authActions from "../store/actions/auth";
+import { CommonActions } from "@react-navigation/native";
+import { Routes } from "../constants/routes";
 
-const StartScreen = (props) => {
+const StartScreen = ({ navigation }) => {
+  // AsyncStorage.removeItem("userData");
   const dispatch = useDispatch();
 
   // TODO tryLogin can probably be broken down into separate functions
@@ -28,27 +31,43 @@ const StartScreen = (props) => {
         return;
       }
 
-      const { token, userId, expiryDate, refreshToken, method } =
-        JSON.parse(userData);
+      const { sessionId, uuid, method } = JSON.parse(userData);
 
       switch (method) {
         case authActions.LOGIN_METHODS.EMAIL:
-          // Refresh token 1 min early. Extra time just in case.
-          if (Date.now() <= expiryDate - 60000) {
-            dispatch(
-              authActions.authenticate(userId, token, expiryDate, method)
-            );
+          if (sessionId !== "") {
+            dispatch(authActions.authenticate(uuid, sessionId));
             return;
           }
-          // Refreshes token
-          dispatch(authActions.refreshTokenEmail(refreshToken)).catch((err) => {
-            console.log(err);
-            AsyncStorage.removeItem("userData");
-            dispatch(setDidAutoLogin());
-          });
+          // Refresh token 1 min early. Extra time just in case.
+          // if (Date.now() <= expiryDate - 60000) {
+          //   dispatch(
+          //     authActions.authenticate(userId, token, expiryDate, method)
+          //   );
+          //   return;
+          // }
+          // // Refreshes token
+          // dispatch(authActions.refreshTokenEmail(refreshToken)).catch((err) => {
+          //   console.log(err);
+          //   AsyncStorage.removeItem("userData");
+          //   dispatch(setDidAutoLogin());
+          // });
+          // dispatch(authActions.setDidAutoLogin)
           break;
         case authActions.LOGIN_METHODS.FACEBOOK:
-          dispatch(authActions.autoLoginViaFacebook);
+          dispatch(authActions.autoLoginViaFacebook).then((result) => {
+            if (result.isNewUser) {
+              navigation.navigate(Routes.DETAILS_FORM, result);
+            } else {
+              dispatch(
+                authActions.authenticate(
+                  result.uuid,
+                  result.sessionId,
+                  result.additionalData
+                )
+              );
+            }
+          });
           break;
         case authActions.LOGIN_METHODS.GOOGLE:
           // No fix for auto login as of now. May require API_KEY for Google REST API

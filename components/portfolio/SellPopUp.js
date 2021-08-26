@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, TextInput, Dimensions } from "react-native";
+import MyButton from "../MyButton";
 import { Picker } from "@react-native-picker/picker";
 import ViewPopup from "../base/ViewPopup";
 import TextButton from "../base/TextButton";
@@ -20,50 +21,46 @@ const SellPopUp = (props) => {
     >
       <ViewPopup style={{ ...styles.popup, ...props.popupStyle }}>
         <View style={styles.pickerContainer}>
-          <Text style={{ fontWeight: "bold" }}>Brokerage : </Text>
-          <Picker
-            selectedValue={brokerage}
-            style={styles.picker}
-            onValueChange={(itemValue) => setBrokerage(itemValue)}
-          >
-            <Picker.Item label="Malacca Securities Sdn Bhd" value="Malacca" />
-            <Picker.Item label="Test 2" value="test 2" />
-            <Picker.Item label="Test 3" value="test 3" />
-            <Picker.Item label="Test 4" value="test 4" />
-          </Picker>
+          <Text style={{ fontWeight: "bold", color: "white" }}>Brokerage : </Text>
+          <View style={styles.pickerBackground}>
+            <Picker
+              selectedValue={brokerage}
+              style={styles.picker}
+              onValueChange={(itemValue) => setBrokerage(itemValue)}
+            >
+              <Picker.Item label="Malacca Securities Sdn Bhd" value="Malacca" />
+              <Picker.Item label="Test 2" value="test 2" />
+              <Picker.Item label="Test 3" value="test 3" />
+              <Picker.Item label="Test 4" value="test 4" />
+            </Picker>
+          </View>
         </View>
         <View style={styles.inputContainer}>
-          <Text style={{ fontWeight: "bold" }}>Lot (x100) : </Text>
+          <Text style={{ fontWeight: "bold", color: "white"  }}>Lot (x100) : </Text>
           <TextInput style={styles.input} />
         </View>
         <View style={styles.inputContainer}>
-          <Text style={{ fontWeight: "bold" }}>Total (RM) : </Text>
+          <Text style={{ fontWeight: "bold", color: "white"  }}>Total (RM) : </Text>
           <TextInput style={styles.input} />
         </View>
         <View style={styles.pickerContainer}>
-          <Text style={{ fontWeight: "bold" }}>Brokerage : </Text>
-          <Picker
-            selectedValue={payment}
-            style={styles.picker}
-            onValueChange={(itemValue) => setPayment(itemValue)}
-          >
-            <Picker.Item label="Maybank 2U" value="Maybank" />
-            <Picker.Item label="Test 2" value="test 2" />
-            <Picker.Item label="Test 3" value="test 3" />
-            <Picker.Item label="Test 4" value="test 4" />
-          </Picker>
+          <Text style={{ fontWeight: "bold", color: "white"  }}>Brokerage : </Text>
+          <View style={styles.pickerBackground}>
+            <Picker
+              selectedValue={payment}
+              style={styles.picker}
+              onValueChange={(itemValue) => setPayment(itemValue)}
+            >
+              <Picker.Item label="Maybank 2U" value="Maybank" />
+              <Picker.Item label="Test 2" value="test 2" />
+              <Picker.Item label="Test 3" value="test 3" />
+              <Picker.Item label="Test 4" value="test 4" />
+            </Picker>
+          </View>
         </View>
-        <View style={styles.temp}>
-          <TextButton
-            text="Close"
-            onPress={props.onClose}
-            containerStyle={styles.buttonContainer}
-          />
-          <TextButton
-            text="Sell"
-            onPress={() => {}}
-            containerStyle={styles.buttonContainer}
-          />
+        <View style={styles.buttonContainer}>
+          <MyButton onPress={() => {}} style={{backgroundColor: "red", marginTop: 10}}>Sell</MyButton>
+          <MyButton onPress={props.onClose} style={{marginTop: 10}}>Close</MyButton>
         </View>
       </ViewPopup>
     </View>
@@ -80,9 +77,9 @@ const styles = StyleSheet.create({
   },
   popup: {
     width: "85%",
-    height: "45%",
+    height: "50%",
     borderRadius: 30,
-    backgroundColor: POPUP_LIGHT,
+    backgroundColor: "#454545",
     overflow: "hidden",
     padding: 15,
   },
@@ -102,8 +99,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   picker: {
-    height: 30,
-    width: 150,
+    height: 40,
+    width: "100%",
   },
   inputContainer: {
     flex: 1,
@@ -114,12 +111,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   input: {
-    width: 150,
-    borderBottomWidth: 1,
+    width: "60%",
+    borderBottomWidth: 2,
+    borderColor: "white",
+    color: "white"
   },
-  buttonContainer: {
-    width: "35%",
-  },
+  pickerBackground: {
+    backgroundColor: "white",
+    borderRadius: 20,
+    paddingLeft: 5,
+    width: "60%",
+  }
 });
 
 export default SellPopUp;

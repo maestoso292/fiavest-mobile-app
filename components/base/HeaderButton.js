@@ -12,7 +12,7 @@ const HeaderButton = (props) => {
       containerStyle={{ ...styles.buttonContainer, ...props.containerStyle }}
       contentStyle={{ ...styles.button, ...props.contentStyle }}
     >
-      <Ionicons name={props.name} size={30} />
+      <Ionicons name={props.name} size={30} color="white" />
     </TouchableCustom>
   );
 };

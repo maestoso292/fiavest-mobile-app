@@ -7,6 +7,7 @@ import CalculatorOutput from "../CalculatorOutput";
 import ButtonCon from "../CalculatorButton";
 import Divider from "../../Divider";
 import TextButton from "../../base/TextButton";
+import MyButton from "../../MyButton";
 
 const ProfitLossCalculator = (props) => {
   const [isCalculate, setIsCalculate] = useState(true);
@@ -145,11 +146,9 @@ const ProfitLossCalculator = (props) => {
           <CalculatorOutput title="Stamp Duties (RM)" value={stampDuties} />
           <CalculatorOutput title="Net Profit/Loss (RM)" value={netProfit} />
           <View style={styles.bottomContainer}>
-            <TextButton
-              text="Recalculate"
-              onPress={recalculateHandler}
-              containerStyle={styles.buttonContainer}
-            />
+            <MyButton onPress={recalculateHandler} extraStyle={{ width: 120 }}>
+              Recalculate
+            </MyButton>
           </View>
         </View>
       )}
@@ -171,9 +170,6 @@ const styles = StyleSheet.create({
   bottomContainer: {
     justifyContent: "center",
     alignItems: "center",
-  },
-  buttonContainer: {
-    width: "40%",
   },
 });
 

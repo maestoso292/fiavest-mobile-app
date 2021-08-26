@@ -65,15 +65,17 @@ const InputCard = props => {
     };
 
     return (
-        <View style={styles.inputCon}>
+        <View style={[styles.inputCon, props.Extra]}>
             <TextInput 
-            style={[styles.inputBox, , props.extraStyle]}
+            style={[styles.inputBox, props.extraStyle]}
             {...props}
+            placeholderTextColor="grey"
             value={inputState.value}
             onChangeText={textChangeHandler}
+            autoCompleteType="off"
             />
             {!inputState.isValid && inputState.touched && (
-                <View style={styles.errorContainer}>
+                <View style={[styles.errorContainer, props.extraErrorStyle]}>
                     <Text style={styles.errorText}>{props.errorText}</Text>
                 </View>
             )}
@@ -83,20 +85,24 @@ const InputCard = props => {
 
 const styles = StyleSheet.create({
     inputCon: {
-        width: 300,
+        width: '90%',
         //alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 25,
+        marginTop: 20,
     },
     inputBox: {
         borderWidth: 2,
         borderColor: '#b3b3b3',
+        borderRadius: 10,
         width: '100%',
-        padding: 10,
-        borderRadius: 25,
+        paddingHorizontal: 10,
+        paddingVertical: 10,
+        backgroundColor: "white",
     },
     errorContainer: {
-        marginVertical: 5
+        width: "100%",
+        marginVertical: 5,
+        alignItems: "center"
     },
     errorText: {
         color: 'red',

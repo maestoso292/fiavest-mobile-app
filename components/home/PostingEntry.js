@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, Linking } from "react-native";
 
 import TouchableCustom from "../base/TouchableCustom";
 import {
@@ -11,6 +11,17 @@ import {
 import CardBase from "../base/CardBase";
 
 const PostingCard = (props) => {
+
+  const OpenLink = () => {
+    Linking.canOpenURL(props.url).then(supported => {
+      if(supported) {
+        Linking.openURL(props.url);
+      } else {
+        console.log("Cant open URI: " + props.url)
+      }
+    });
+  };
+
   return (
     <CardBase style={styles.rootContainer}>
       <TouchableCustom
@@ -18,10 +29,10 @@ const PostingCard = (props) => {
         useAndroid
         containerStyle={{width: "100%", flex: 1}}
         contentStyle={{ width: "100%", flex: 1}}
-        onPress={() => {}}
+        onPress={OpenLink}
       >
         <View style={styles.imageContainer}>
-          <Image source={{ uri: props.source }} style={styles.image} />
+          <Image source={{ uri: `data:image/jpeg;base64,${props.source}` }} style={styles.image} />
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.titleText}>{props.name}</Text>
@@ -38,6 +49,7 @@ const styles = StyleSheet.create({
     height: 250,
     marginVertical: 5,
     alignItems: "center",
+    borderRadius: 10,
   },
   imageContainer: {
     flex: 3,
@@ -53,21 +65,24 @@ const styles = StyleSheet.create({
     flex: 2,
     width: "100%",
     justifyContent: "flex-start",
-    alignItems: "flex-start",
+    alignItems: "center",
     borderTopColor: BORDER_PRIMARY,
     borderTopWidth: StyleSheet.hairlineWidth,
     paddingHorizontal: 10,
     paddingTop: 10,
-    backgroundColor: POPUP_LIGHT,
+    backgroundColor: "#454545",
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
   },
   titleText: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: "bold",
-    color: TEXT_PRIMARY_LIGHT,
+    color: "white",
   },
   bodyText: {
     fontSize: 14,
     letterSpacing: 1,
+    color: "#D0FFFF"
   },
 });
 
