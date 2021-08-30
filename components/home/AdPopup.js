@@ -7,7 +7,7 @@ import TouchableCustom from "../base/TouchableCustom";
 const AdPopup = (props) => {
   return (
     <ModalPopup {...props} popupStyle={styles.popup} modalStyle={styles.modal}>
-      <Image source={{ uri: props.source, width: "100%", height: "100%" }} />
+      <Image source={require('../../assets/splash.png')} style={{width: "100%", height: "100%" }} />
       <View style={styles.button}>
         <TouchableCustom
           onPress={props.onPress}
