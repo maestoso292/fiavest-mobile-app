@@ -249,7 +249,7 @@ const SignInPage = () => {
       <Text
         style={{ fontSize: 30, marginTop: 20, marginBottom: 5, color: "#ccc" }}
       >
-        Or
+        OR
       </Text>
       <Text style={{ letterSpacing: 1, marginBottom: 10, color: "white" }}>Sign In Via</Text>
       <View style={styles.others}>

@@ -304,7 +304,7 @@ export const loginViaEmail = (email, password) => {
     }
 
     const responseData = await response.json();
-    console.log(responseData);
+    // console.log(responseData);
 
     saveDataToLocal(
       responseData.uuid,
@@ -396,7 +396,7 @@ export const logout = () => {
   return async (dispatch) => {
     const userData = await AsyncStorage.getItem("userData");
     const userDataJson = await JSON.parse(userData);
-    console.log(userDataJson);
+    // console.log(userDataJson);
 
     const fiavestResponse = await fetch(
       "https://fiavest-plus-app-api.fiavest.com/api/public/logout",

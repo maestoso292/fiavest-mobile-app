@@ -49,6 +49,7 @@ class ImageSwiper extends Component {
 
   render() {
     const { images } = this.props;
+    // console.log(images.length);
     const { selectedIndex } = this.state;
     return (
       <View style={styles.scrollContainer}>
@@ -62,14 +63,16 @@ class ImageSwiper extends Component {
           snapToAlignment={"center"}
           snapToInterval={DEVICE_WIDTH}
         >
-          {images.map((image) => (
-            <Image style={styles.image} key={image} source={{ uri: image }} />
-          ))}
+          {images.map((image) => {
+            return (
+              <Image style={styles.image} key={image.adId} source={{ uri: `data:image/jpeg;base64,${image.img}` }} />
+            )
+          })}
         </ScrollView>
         <View style={styles.dotContainer}>
           {images.map((image, i) => (
             <View
-              key={image}
+              key={image.adId}
               style={[styles.dot, { opacity: i === selectedIndex ? 1 : 0.7 }]}
             />
           ))}
