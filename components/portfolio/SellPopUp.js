@@ -3,10 +3,6 @@ import { StyleSheet, View, Text, TextInput, Dimensions } from "react-native";
 import MyButton from "../MyButton";
 import { Picker } from "@react-native-picker/picker";
 import ViewPopup from "../base/ViewPopup";
-import TextButton from "../base/TextButton";
-import {
-  POPUP_LIGHT,
-} from "../../constants/colors";
 
 const DEVICE_HEIGHT = Dimensions.get("window").height;
 
@@ -58,7 +54,7 @@ const SellPopUp = (props) => {
             </Picker>
           </View>
         </View>
-        <View style={styles.buttonContainer}>
+        <View>
           <MyButton onPress={() => {}} style={{backgroundColor: "red", marginTop: 10}}>Sell</MyButton>
           <MyButton onPress={props.onClose} style={{marginTop: 10}}>Close</MyButton>
         </View>

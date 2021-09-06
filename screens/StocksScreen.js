@@ -12,6 +12,7 @@ import {
   Animated,
   FlatList,
   Keyboard,
+  RefreshControl
 } from "react-native";
 
 import {
@@ -29,6 +30,10 @@ import { fade } from "../animations/popup-anims";
 import { useSelector } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+const wait = (timeout) => {
+  return new Promise(resolve => setTimeout(resolve, timeout));
+}
+
 const fetchStocks = () => {
   const data = Object.values(STOCKS_DATA);
   return data;
@@ -42,6 +47,7 @@ const StocksScreen = ({ navigation }) => {
   const route = useRoute();
 
   const [popupVisible, setPopupVisible] = useState(false);
+  const [refreshing, setRefreshing] = useState(false)
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   const unfilteredData = fetchStocks();
@@ -77,6 +83,11 @@ const StocksScreen = ({ navigation }) => {
     setSearch(query);
     setData(newData);
   };
+
+  const RefreshHandler = useCallback(() => {
+    setRefreshing(true)
+    wait(2000).then(() => setRefreshing(false))
+  }, [])
 
   // TODO Decide whether to do this onFocus or onBlur
   useFocusEffect(
@@ -153,6 +164,12 @@ const StocksScreen = ({ navigation }) => {
           renderItem={renderStockEntry}
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.list}
+          refreshControl={
+            <RefreshControl 
+            refreshing={refreshing}
+            onRefresh={RefreshHandler}
+            />
+          }
         />
       </View>
 

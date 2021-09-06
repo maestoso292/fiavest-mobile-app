@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, FlatList } from "react-native";
+import React, { useState, useEffect, useCallback } from "react";
+import { View, Text, StyleSheet, FlatList, RefreshControl } from "react-native";
 import PostingCard from "../components/home/PostingEntry";
 import AdPopup from "../components/home/AdPopup";
 import { ImageSwiper } from "../components/home/AdSwiper";
-import { BACKGROUND_LIGHT } from "../constants/colors";
 
 const renderPosting = ({ item }) => {
   return (
@@ -16,6 +15,7 @@ const HomeScreen = (props) => {
   const [postings, setPostings] = useState([]);
   const [adImages, setAdImages] = useState([]);
   const [adVisible, setAdVisible] = useState(true);
+  const [refreshing, setRefreshing] = useState(false)
 
   const closeAdPopup = () => {
     setAdVisible(false);
@@ -54,6 +54,24 @@ const HomeScreen = (props) => {
       return ResData.data;
     }
   }
+
+  const RefreshHandler = useCallback(() => {
+    setRefreshing(true)
+    const getAllInfo = async () => {
+      const allPost = await getPosting();
+      const allAds = await getAdImages();
+      if(allPost || allAds) {
+        setPostings(allPost)
+        setAdImages(allAds)
+        setRefreshing(false)
+      } else {
+        setPostings([])
+        setAdImages([])
+      }
+    };
+    getAllInfo()
+    // wait(2000).then(() => setRefreshing(false))
+  }, [])
   
   useEffect(() => {
     const getAllInfo = async () => {
@@ -88,6 +106,12 @@ const HomeScreen = (props) => {
           renderItem={renderPosting}
           keyExtractor={(item) => item.postingId}
           contentContainerStyle={styles.list}
+          refreshControl={
+            <RefreshControl 
+            refreshing={refreshing}
+            onRefresh={RefreshHandler}
+            />
+          }
         />
       </View>
     </View>

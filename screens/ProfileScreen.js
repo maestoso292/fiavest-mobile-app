@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Button, Alert } from "react-native";
+import { View, Text, StyleSheet, Button, Alert, RefreshControl } from "react-native";
 import { useDispatch } from "react-redux";
 import CardBase from "../components/base/CardBase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -38,6 +38,7 @@ const ProfileScreen = (props) => {
       const errorResData = await response.json();
       // console.log(errorResData);
       if (errorResData.error.message === "Session expired") {
+        Alert.alert("Session Expired...", "Please Login Again...", [{text: "Okay"}])
         dispatch(authActions.logout())
       }
     } else {
@@ -50,10 +51,14 @@ const ProfileScreen = (props) => {
   useEffect(() => {
     const getAction = async () => {
       const getInfo = await getUserData();
-      if (getInfo) setUserInfo(getInfo)
+      if (getInfo) {
+        setUserInfo(getInfo)
+      } else {
+        setUserInfo([])
+      }
     };
     getAction();
-  }, [props])
+  }, [])
 
   return (
     <View style={styles.screen}>

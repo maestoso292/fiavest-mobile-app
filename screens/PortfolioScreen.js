@@ -55,7 +55,7 @@ const fetchStockData = () => {
       id: "4",
       name: "0001 SCOMNET",
       lots: "100",
-      price: "163",
+      price: "536",
     },
   ];
   return data;
@@ -68,14 +68,24 @@ const formatter = new Intl.NumberFormat("en", {
 
 const PortfolioScreen = (props) => {
   const [stocks, setStocks] = useState(fetchStockData());
-  const [totalAmount, setTotalAmount] = useState(100.65);
+  const [totalAmount, setTotalAmount] = useState();
   const [popupVisible, setPopupVisible] = useState(false);
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
+  const totalHandler = () => {
+    var TOTAL = 0;
+    for (var i in stocks) {
+      TOTAL += parseFloat(stocks[i].price);
+      setTotalAmount(TOTAL)
+    }
+    // return TOTAL;
+  }
+
   useEffect(() => {
     let endValue = popupVisible ? 1 : 0;
     fade(fadeAnim, endValue).start();
+    totalHandler();
   }, [popupVisible]);
 
   useFocusEffect(
@@ -151,7 +161,6 @@ const styles = StyleSheet.create({
   },
   header: {
     borderWidth: StyleSheet.hairlineWidth,
-    borderRadius: 5,
     borderColor: BORDER_PRIMARY,
     shadowColor: "black",
     shadowOffset: { width: 0, height: 2 },
