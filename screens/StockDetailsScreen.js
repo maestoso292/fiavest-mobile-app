@@ -3,7 +3,6 @@ import {
   Text,
   View,
   StyleSheet,
-  Image,
   Animated,
   Keyboard,
 } from "react-native";
@@ -11,6 +10,7 @@ import {
 import HeaderButton from "../components/base/HeaderButton";
 import CartPopup from "../components/stock-details/CartPopup";
 import AlertEnablePopup from "../components/stock-details/AlertEnablePopup";
+import * as PushAction from "../store/actions/notification";
 
 import {
   BACKGROUND_LIGHT,
@@ -44,6 +44,8 @@ const StockDetailsScreen = ({ navigation, route }) => {
 
   const toggleAlertEnablePopup = () => {
     Keyboard.dismiss();
+    let action;
+    action = PushAction.addExpoToken();
     setDisableVisible(false);
     setCartVisible(false);
     setAlertEnableVisible((prev) => !prev);
@@ -143,9 +145,6 @@ const StockDetailsScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.screen} behavior="height">
-      <View style={styles.imageContainer}>
-        <Image source={{ uri: stockData.chartSrc }} style={styles.image} />
-      </View>
       <View style={styles.detailsContainer}>
         <Text style={{ fontSize: 20, fontWeight: "700", marginBottom: 10, color: "white" }}>
           Current Price : {currencyFormatter.format(stockData.price)}
@@ -191,22 +190,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 10,
     backgroundColor: "black",
-  },
-  imageContainer: {
-    height: 250,
-    width: "100%",
-    borderColor: BORDER_PRIMARY,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderRadius: 25,
-    shadowColor: "black",
-    shadowOpacity: 0.5,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 2,
-    overflow: "hidden",
-  },
-  image: {
-    width: "100%",
-    height: "100%",
   },
   detailsContainer: {
     marginVertical: 20,

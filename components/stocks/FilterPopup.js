@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     width: "85%",
     height: "40%",
     borderRadius: 30,
-    backgroundColor: "#454545",
+    backgroundColor: 'rgba(52, 52, 52, 1)',
     overflow: "hidden",
     paddingHorizontal: 20,
     paddingVertical: 20,

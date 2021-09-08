@@ -1,7 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Facebook from "expo-facebook";
 import * as Google from "expo-google-app-auth";
-import { firebase } from "@react-native-firebase/auth";
+import Constants from "expo-constants";
+import * as Notification from "expo-notifications";
 
 export const AUTHENTICATE = "AUTHENTICATE";
 export const LOGOUT = "LOGOUT";

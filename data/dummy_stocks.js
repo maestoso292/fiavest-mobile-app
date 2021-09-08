@@ -14,63 +14,77 @@ export const STOCKS_DATA = {
     "0000",
     "APPLE",
     (Math.random() * 100).toFixed(2),
+    (Math.random() * 100).toFixed(2),
     blindText,
-    uri
   ),
   "0001": new Stock(
     "0001",
-    "GOOGLE",
+    "BANANA",
+    (Math.random() * 100).toFixed(2),
     (Math.random() * 100).toFixed(2),
     blindText,
-    uri
   ),
   "0002": new Stock(
     "0002",
-    "FACEBOOK",
+    "TIGER",
+    (Math.random() * 100).toFixed(2),
     (Math.random() * 100).toFixed(2),
     blindText,
-    uri
   ),
   "0003": new Stock(
     "0003",
-    "AIR ASIA",
+    "ANDROID",
+    (Math.random() * 100).toFixed(2),
     (Math.random() * 100).toFixed(2),
     blindText,
-    uri
   ),
   "0004": new Stock(
     "0004",
     "GRAB",
     (Math.random() * 100).toFixed(2),
+    (Math.random() * 100).toFixed(2),
     blindText,
-    uri
   ),
   "0005": new Stock(
     "0005",
-    "TIGER",
+    "FACEBOOK",
+    (Math.random() * 100).toFixed(2),
     (Math.random() * 100).toFixed(2),
     blindText,
-    uri
   ),
   "0006": new Stock(
     "0006",
-    "MAYBANK",
+    "AIR ASIA",
+    (Math.random() * 100).toFixed(2),
     (Math.random() * 100).toFixed(2),
     blindText,
-    uri
   ),
   "0007": new Stock(
     "0007",
-    "SCOMNET",
+    "GOOGLE",
+    (Math.random() * 100).toFixed(2),
     (Math.random() * 100).toFixed(2),
     blindText,
-    uri
   ),
   "0008": new Stock(
     "0008",
-    "VISA",
+    "MAYBANK",
+    (Math.random() * 100).toFixed(2),
     (Math.random() * 100).toFixed(2),
     blindText,
-    uri
+  ),
+  "0009": new Stock(
+    "0009",
+    "VISA",
+    (Math.random() * 100).toFixed(2),
+    (Math.random() * 100).toFixed(2),
+    blindText,
+  ),
+  "0010": new Stock(
+    "0010",
+    "PUBLIC BANK",
+    (Math.random() * 100).toFixed(2),
+    (Math.random() * 100).toFixed(2),
+    blindText,
   ),
 };

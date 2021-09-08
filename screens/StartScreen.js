@@ -10,6 +10,7 @@ import { Routes } from "../constants/routes";
 
 const StartScreen = ({ navigation }) => {
   // AsyncStorage.removeItem("userData");
+  // AsyncStorage.removeItem("tokenPermission");
   const dispatch = useDispatch();
 
   // TODO tryLogin can probably be broken down into separate functions

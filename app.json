@@ -16,6 +16,16 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon":"./assets/icon.png",
+          "color":"#ffffff",
+          "mode":"production",
+        }
+      ]
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "fiavest.expo.googlesignin",
