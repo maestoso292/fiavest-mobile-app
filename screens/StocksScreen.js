@@ -183,7 +183,10 @@ const StocksScreen = ({ navigation }) => {
         return (
           <SearchBar
             placeholder="Search..."
-            onFocus={() => setPopupVisible(false)}
+            onFocus={() => {
+              setEnablePopupVisible(false)
+              setDisablePopupVisible(false)
+            }}
             onChangeText={searchFilter}
             autoCorrect={false}
             value={search}
